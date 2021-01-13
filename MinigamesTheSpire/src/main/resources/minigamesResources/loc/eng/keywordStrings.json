@@ -1,16 +1,9 @@
 [
   {
-    "PROPER_NAME": "Reshuffle",
+    "PROPER_NAME": "Muppet",
     "NAMES": [
-      "reshuffle"
+      "muppet"
     ],
-    "DESCRIPTION": "When played, shuffle this card into your draw pile."
-  },
-  {
-    "PROPER_NAME": "Repeat",
-    "NAMES": [
-      "repeat"
-    ],
-    "DESCRIPTION": "Repeat the effect of this card."
+    "DESCRIPTION": "Does nothing."
   }
 ]

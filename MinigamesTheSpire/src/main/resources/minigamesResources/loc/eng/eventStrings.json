@@ -1,0 +1,38 @@
+{
+  "${ModID}:ActOneArcade": {
+    "NAME": "The Strange Ritual",
+    "DESCRIPTIONS": [
+      "Bunch of Cultists are praying to an old arcade machine"
+    ],
+    "OPTIONS": [
+      "First minigame",
+      "Second minigame",
+      "Third minigame",
+      "Continue on with your adventure."
+    ]
+  },
+  "${ModID}:ActTwoArcade": {
+    "NAME": "The Cool Hangout Spot",
+    "DESCRIPTIONS": [
+      "An old arcade in the city where the cool kids are"
+    ],
+    "OPTIONS": [
+      "First minigame",
+      "Second minigame",
+      "Third minigame",
+      "Continue on with your adventure."
+    ]
+  },
+  "${ModID}:ActThreeArcade": {
+    "NAME": "???",
+    "DESCRIPTIONS": [
+      "???"
+    ],
+    "OPTIONS": [
+      "First minigame",
+      "Second minigame",
+      "Third minigame",
+      "Continue on with your adventure."
+    ]
+  }
+}
