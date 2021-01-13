@@ -1,37 +1,7 @@
 {
-  "${ModID}:BigPotion": {
+  "${ModID}:ExamplePotion": {
     "TEXT": [
-      "Plentiful",
-      "This potion can be used twice."
-    ]
-  },
-  "${ModID}:ConcentratedPotion": {
-    "TEXT": [
-      "Concentrated",
-      "This potion is #b50% more effective."
-    ]
-  },
-  "${ModID}:CurseRelicTrade": {
-    "TEXT": [
-      "Add a Curse",
-      "This relic has a big discount but you will also get the shown #yCurse when buying it."
-    ]
-  },
-  "${ModID}:PotionSacrifice": {
-    "TEXT": [
-      "Lose a Potion Slot",
-      "This relic has a large discount but you will lose your rightmost #yPotion #ySlot when buying it."
-    ]
-  },
-  "${ModID}:Unidentifiable": {
-    "TEXT": [
-      "????",
-      "This relic is discounted but you don't know which one it is until you buy it."
-    ]
-  },
-  "${ModID}:OptionsMenu": {
-    "TEXT": [
-      "Allow the following card modifiers to spawn in shops:"
+      "Do nothing ya chump."
     ]
   }
 }
