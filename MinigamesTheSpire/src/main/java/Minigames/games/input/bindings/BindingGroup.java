@@ -127,6 +127,9 @@ public class BindingGroup {
 
     public void clearInput() {
         heldKeyInputs.clear();
+        activeBindings.clear();
+        mouseHolds[0] = null;
+        mouseHolds[1] = null;
     }
 
     public void update(float elapsed)
