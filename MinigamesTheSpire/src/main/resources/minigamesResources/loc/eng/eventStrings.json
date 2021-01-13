@@ -1,0 +1,11 @@
+{
+  "minigames:Test": {
+    "NAME": "Test",
+    "DESCRIPTIONS": [
+      "#r@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@"
+    ],
+    "OPTIONS": [
+      "Begin"
+    ]
+  }
+}
