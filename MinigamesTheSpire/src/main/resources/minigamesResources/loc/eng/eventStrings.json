@@ -1,4 +1,13 @@
 {
+  "minigames:Test": {
+    "NAME": "Test",
+    "DESCRIPTIONS": [
+      "#r@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@"
+    ],
+    "OPTIONS": [
+      "Begin"
+    ]
+  },
   "${ModID}:ActOneArcade": {
     "NAME": "The Strange Ritual",
     "DESCRIPTIONS": [

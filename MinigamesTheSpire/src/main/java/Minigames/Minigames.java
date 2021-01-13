@@ -1,31 +1,26 @@
 package Minigames;
 
+import Minigames.events.TestMinigameEvent;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
 import basemod.ModPanel;
-import basemod.interfaces.EditKeywordsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import basemod.interfaces.PostUpdateSubscriber;
-import com.badlogic.gdx.Gdx;
-import com.evacipated.cardcrawl.mod.stslib.Keyword;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.google.gson.Gson;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 @SpireInitializer
 public class Minigames implements
         PostInitializeSubscriber,
         EditStringsSubscriber,
-        PostUpdateSubscriber,
-        EditKeywordsSubscriber {
+        PostUpdateSubscriber {
     private static SpireConfig modConfig = null;
 
     public static final Logger logger = LogManager.getLogger(Minigames.class.getName());
@@ -35,7 +30,8 @@ public class Minigames implements
     }
 
     private ModPanel settingsPanel;
-    private float xPos = 350f, yPos = 750f;
+    private final float xPos = 350f, yPos = 750f;
+
     @Override
     public void receivePostInitialize() {
         //UIStrings UIStrings = CardCrawlGame.languagePack.getUIString(makeID("OptionsMenu"));
@@ -43,6 +39,8 @@ public class Minigames implements
         settingsPanel = new ModPanel();
 
         BaseMod.registerModBadge(TextureLoader.getTexture(makeImgPath("modBadge.png")), "Minigames The Spire", "erasels", "A mod, boyo.", settingsPanel);
+
+        BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
     }
 
     @Override
@@ -56,19 +54,6 @@ public class Minigames implements
         BaseMod.loadCustomStringsFile(EventStrings.class, getModID() + "Resources/loc/"+locPath()+"/eventStrings.json");
     }
 
-    @Override
-    public void receiveEditKeywords() {
-        Gson gson = new Gson();
-        String json = Gdx.files.internal(getModID() + "Resources/loc/"+locPath()+"/keywordStrings.json").readString(String.valueOf(StandardCharsets.UTF_8));
-        com.evacipated.cardcrawl.mod.stslib.Keyword[] keywords = gson.fromJson(json, com.evacipated.cardcrawl.mod.stslib.Keyword[].class);
-
-        if (keywords != null) {
-            for (Keyword keyword : keywords) {
-                BaseMod.addKeyword(getModID().toLowerCase(), keyword.PROPER_NAME, keyword.NAMES, keyword.DESCRIPTION);
-            }
-        }
-    }
-
     private static String locPath() {
         return "eng";
     }
@@ -79,6 +64,10 @@ public class Minigames implements
 
     public static String makeUIPath(String resourcePath) {
         return getModID() + "Resources/img/ui/" + resourcePath;
+    }
+
+    public static String makeGamePath(String resourcePath) {
+        return getModID() + "Resources/img/games/" + resourcePath;
     }
 
     public static String getModID() {
