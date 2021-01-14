@@ -14,17 +14,25 @@ public class Dealer extends AbstractBlackjackPlayer{
         int count = 1;
         int initalXOffset = -AbstractMinigame.SIZE / 2;
         for (PokerCard card : hand) {
-            card.render(sb, new Vector2(initalXOffset + (float)AbstractMinigame.SIZE / 4 * count, (float)AbstractMinigame.SIZE / 3));
+            card.render(sb, new Vector2(initalXOffset + (float)AbstractMinigame.SIZE / 8 * count, (float)AbstractMinigame.SIZE / 3));
             count++;
         }
     }
 
-    public void update(float elapsed) {
+    public void flipUpCard() {
+        for (PokerCard card : hand) {
+            if (card.isFaceDown) {
+                card.flipOver();
+            }
+        }
+    }
+
+    public void takeTurn() {
         if (getHandValue() >= 17) {
             parent.compareHands();
-        }
-        if (getHandValue() < 17) {
+        } else {
             parent.hit(this);
+            takeTurn();
         }
     }
 }

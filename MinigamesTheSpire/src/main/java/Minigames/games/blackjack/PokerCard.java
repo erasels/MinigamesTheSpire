@@ -1,6 +1,5 @@
 package Minigames.games.blackjack;
 
-import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,7 +17,7 @@ public class PokerCard {
     public static final int ROYAL_VALUE = 10;
     public static final int ACE_HIGH_VALUE = 11;
     public static final int ACE_LOW_VALUE = 1;
-    public static final int SIZE = 150;
+    public static final int SIZE = 250;
     public static final Texture cardBack = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/cardBack_blue4.png"));
 
     private int value;
@@ -35,7 +34,6 @@ public class PokerCard {
         this.isAce = isAce;
         this.parent = parent;
         c = Color.WHITE.cpy();
-        System.out.println(makeGamePath("Blackjack/Cards/card" + suite.toString() + value + ".png"));
         if (value <= 10) {
             t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + value + ".png"));
         } else {
@@ -68,9 +66,9 @@ public class PokerCard {
     {
         sb.setColor(c);
         if (isFaceDown) {
-            parent.drawTexture(sb, cardBack, position.x, position.y, SIZE);
+            parent.drawTexture(sb, cardBack, position.x, position.y, 0, cardBack.getWidth(), cardBack.getHeight(), false, false);
         } else {
-            parent.drawTexture(sb, t, position.x, position.y, SIZE);
+            parent.drawTexture(sb, t, position.x, position.y, 0, t.getWidth(), t.getHeight(), false, false);
         }
     }
 
@@ -91,5 +89,10 @@ public class PokerCard {
 
     public void dispose() {
         t.dispose();
+    }
+
+    @Override
+    public String toString() {
+        return value + " of " + suite.toString();
     }
 }

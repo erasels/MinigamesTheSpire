@@ -3,6 +3,7 @@ package Minigames.events;
 import Minigames.games.blackjack.BlackjackMinigame;
 import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.localization.EventStrings;
 
 import static Minigames.Minigames.makeID;
@@ -29,5 +30,13 @@ public class TestBlackjackEvent extends AbstractMinigameEvent {
                 startGame(new BlackjackMinigame());
                 break;
         }
+    }
+
+    @Override
+    public void finishGame() {
+        GenericEventDialog.show();
+        this.imageEventText.updateBodyText("Pogging");
+        this.imageEventText.setDialogOption("Leave");
+        openMap();
     }
 }
