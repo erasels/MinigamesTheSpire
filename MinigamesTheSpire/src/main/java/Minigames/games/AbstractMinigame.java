@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 import static Minigames.Minigames.makeGamePath;
@@ -25,6 +27,7 @@ public abstract class AbstractMinigame implements TextReceiver {
     //Game stuff
     protected boolean isPlaying;
     protected boolean isDone;
+    protected boolean blockingInput;
 
     protected float time = 0;
 
@@ -51,6 +54,7 @@ public abstract class AbstractMinigame implements TextReceiver {
     {
         isPlaying = false;
         isDone = false;
+        blockingInput = false;
 
         c = Color.WHITE.cpy();
     }
@@ -60,8 +64,11 @@ public abstract class AbstractMinigame implements TextReceiver {
         isPlaying = true;
 
         TextInput.startTextReceiver(this);
+        blockingInput = true;
 
-        Input.setBindings(getBindings());
+        BindingGroup b = getBindings();
+        b.allowEsc();
+        Input.setBindings(b);
         background = ImageMaster.loadImage(makeGamePath("tempBG.png"));
         transformScale(getMaxScale(), Settings.FAST_MODE ? 0.5f : 1.0f);
     }
@@ -70,18 +77,32 @@ public abstract class AbstractMinigame implements TextReceiver {
     public void dispose() {
         background.dispose();
         Input.clearBindings();
+        TextInput.stopTextReceiver(this);
     }
 
     public boolean playing() {
         return isPlaying;
     }
 
-    public boolean done() {
+    public boolean gameDone() {
         return isDone;
     }
 
     //will be called as long as isPlaying is true
     public void update(float elapsed) {
+        if (CardCrawlGame.isPopupOpen || AbstractDungeon.screen != AbstractDungeon.CurrentScreen.NONE) {
+            if (blockingInput)
+            {
+                blockingInput = false;
+                TextInput.stopTextReceiver(this);
+            }
+        }
+        else if (!blockingInput)
+        {
+            blockingInput = true;
+            TextInput.startTextReceiver(this);
+        }
+
         Input.update(elapsed);
 
         if (scaleProgress < scaleTime)
@@ -217,5 +238,25 @@ public abstract class AbstractMinigame implements TextReceiver {
 
     @Override
     public void setText(String s) {
+    }
+
+    //This is for a future update of TextReceiver.
+    public boolean isDone() {
+        if (CardCrawlGame.isPopupOpen || AbstractDungeon.screen != AbstractDungeon.CurrentScreen.NONE || isDone || !CardCrawlGame.isInARun()) {
+            blockingInput = false;
+            TextInput.stopTextReceiver(this);
+            if (Input.processor.inactiveBindings == null) {
+                if (isDone)
+                {
+                    Input.clearBindings();
+                }
+                else
+                {
+                    Input.processor.deactivate();
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

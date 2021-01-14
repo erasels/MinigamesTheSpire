@@ -2,12 +2,15 @@ package Minigames.games.input;
 
 
 import Minigames.games.input.bindings.BindingGroup;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.input.ScrollInputProcessor;
 
 public class BoundInputProcessor extends ScrollInputProcessor {
     private static final BindingGroup emptyBinding = new BindingGroup();
 
     protected BindingGroup bindings = emptyBinding;
+    public BindingGroup inactiveBindings = null;
 
     public BoundInputProcessor()
     {
@@ -16,6 +19,14 @@ public class BoundInputProcessor extends ScrollInputProcessor {
 
     public void update(float elapsed)
     {
+        if (CardCrawlGame.isPopupOpen || AbstractDungeon.screen != AbstractDungeon.CurrentScreen.NONE) {
+            deactivate();
+        }
+        else if (inactiveBindings != null)
+        {
+            bindings = inactiveBindings;
+            inactiveBindings = null;
+        }
         bindings.update(elapsed);
     }
 
@@ -59,16 +70,34 @@ public class BoundInputProcessor extends ScrollInputProcessor {
     }
 
     public void bind(BindingGroup bindings) {
-        this.bindings = bindings;
+        if (inactiveBindings != null)
+        {
+            this.inactiveBindings = bindings;
+        }
+        else
+        {
+            this.bindings = bindings;
+        }
         bindings.clearInput();
     }
 
     public void unbind() {
         this.bindings = emptyBinding;
+        this.inactiveBindings = null;
+    }
+
+    public void deactivate() {
+        if (bindings != emptyBinding)
+        {
+            inactiveBindings = bindings;
+            bindings = emptyBinding;
+        }
     }
 
     public void clearInput()
     {
         bindings.clearInput();
+        if (inactiveBindings != null)
+            inactiveBindings.clearInput();
     }
 }

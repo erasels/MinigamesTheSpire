@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.helpers.input.InputActionSet;
+import com.megacrit.cardcrawl.helpers.input.InputHelper;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -119,6 +121,12 @@ public class BindingGroup {
         bind("Right", right, null, stopRight);
     }
 
+    public void allowEsc() {
+        addBinding(InputBinding.create("Escape", new InputBinding.InputInfo(Input.Keys.ESCAPE)));
+
+        bind("Escape", ()->InputHelper.pressedEscape = true);
+    }
+
 
     public ArrayList<InputBinding.InputInfo> bindingInputs(String bindingKey)
     {
@@ -127,6 +135,9 @@ public class BindingGroup {
 
     public void clearInput() {
         heldKeyInputs.clear();
+        activeBindings.clear();
+        mouseHolds[0] = null;
+        mouseHolds[1] = null;
     }
 
     public void update(float elapsed)

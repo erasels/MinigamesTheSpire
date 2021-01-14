@@ -11,17 +11,17 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
 
     public AbstractMinigameEvent(String title, String body, String imgUrl) {
         super(title, body, imgUrl);
+
+        if (game != null)
+        {
+            game.dispose(); //player quit in middle of a minigame, dispose the old one.
+        }
     }
 
     protected void startGame(AbstractMinigame newGame)
     {
         this.imageEventText.clearAllDialogs();
         GenericEventDialog.hide();
-
-        if (game != null)
-        {
-            game.dispose(); //player quit in middle of a minigame, dispose the old one.
-        }
 
         game = newGame;
         game.initialize();
@@ -32,7 +32,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
         {
             game.update(Gdx.graphics.getRawDeltaTime()); //no superfast mode shenangnagiagngas
 
-            if (game.done())
+            if (game.gameDone())
             {
                 game.dispose();
                 game = null;
