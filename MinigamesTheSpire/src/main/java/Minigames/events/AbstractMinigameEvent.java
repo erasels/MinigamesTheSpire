@@ -32,7 +32,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
         {
             game.update(Gdx.graphics.getRawDeltaTime()); //no superfast mode shenangnagiagngas
 
-            if (game.done())
+            if (game.gameDone())
             {
                 game.dispose();
                 game = null;
