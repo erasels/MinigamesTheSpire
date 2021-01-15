@@ -1,9 +1,11 @@
 package Minigames;
 
 import Minigames.events.TestMinigameEvent;
+import Minigames.games.beatpress.BeatPress;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
 import basemod.ModPanel;
+import basemod.interfaces.AddAudioSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import basemod.interfaces.PostUpdateSubscriber;
@@ -20,6 +22,7 @@ import java.io.IOException;
 public class Minigames implements
         PostInitializeSubscriber,
         EditStringsSubscriber,
+        AddAudioSubscriber,
         PostUpdateSubscriber {
     private static SpireConfig modConfig = null;
 
@@ -54,6 +57,20 @@ public class Minigames implements
         BaseMod.loadCustomStringsFile(EventStrings.class, getModID() + "Resources/loc/"+locPath()+"/eventStrings.json");
     }
 
+    @Override
+    public void receiveAddAudio() {
+        BaseMod.addAudio(BeatPress.sfxC, makeAudioPath("C.wav"));
+        BaseMod.addAudio(BeatPress.sfxD, makeAudioPath("D.wav"));
+        BaseMod.addAudio(BeatPress.sfxE, makeAudioPath("E.wav"));
+        BaseMod.addAudio(BeatPress.sfxWrong, makeAudioPath("Wrong.wav"));
+        BaseMod.addAudio(BeatPress.sfxHighE, makeAudioPath("HighE.wav"));
+        BaseMod.addAudio(BeatPress.sfxHighF, makeAudioPath("HighF.wav"));
+        BaseMod.addAudio(BeatPress.sfxHighG, makeAudioPath("HighG.wav"));
+        BaseMod.addAudio(BeatPress.sfxHighWrong, makeAudioPath("HighWrong.wav"));
+        BaseMod.addAudio(BeatPress.sfxHammer, makeAudioPath("Noise.wav"));
+        BaseMod.addAudio(BeatPress.sfxOof, makeAudioPath("Oof.wav"));
+    }
+
     private static String locPath() {
         return "eng";
     }
@@ -68,6 +85,10 @@ public class Minigames implements
 
     public static String makeGamePath(String resourcePath) {
         return getModID() + "Resources/img/games/" + resourcePath;
+    }
+
+    public static String makeAudioPath(String resourcePath) {
+        return getModID() + "Resources/audio/" + resourcePath;
     }
 
     public static String getModID() {
@@ -85,5 +106,4 @@ public class Minigames implements
             e.printStackTrace();
         }
     }
-
 }
