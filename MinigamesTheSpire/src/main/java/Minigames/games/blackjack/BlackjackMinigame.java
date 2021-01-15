@@ -70,6 +70,7 @@ public class BlackjackMinigame extends AbstractMinigame {
                 standButton.update();
                 break;
             case DEALER_TURN:
+                dealer.update(elapsed);
                 break;
             case FINISHED:
                 leaveButton.update();
@@ -94,7 +95,7 @@ public class BlackjackMinigame extends AbstractMinigame {
     public void startDealerTurn() {
         this.setPhase(BlackjackMinigame.DEALER_TURN);
         dealer.flipUpCard();
-        dealer.takeTurn();
+        //dealer.takeTurn();
     }
 
     @Override
@@ -120,10 +121,10 @@ public class BlackjackMinigame extends AbstractMinigame {
         super.dispose();
         player.dispose();
         dealer.dispose();
-        betButton.dispose();
-        hitButton.dispose();
-        standButton.dispose();
-        leaveButton.dispose();
+//        betButton.dispose();
+//        hitButton.dispose();
+//        standButton.dispose();
+//        leaveButton.dispose();
     }
 
     @Override
@@ -174,6 +175,8 @@ public class BlackjackMinigame extends AbstractMinigame {
     public void hit(AbstractBlackjackPlayer person) {
         PokerCard card = deck.remove(0);
         person.addToHand(card);
+        int randomSound = AbstractDungeon.eventRng.random(1, 3);
+        CardCrawlGame.sound.playV(Minigames.makeID("cardPlace" + randomSound), 6.0f);
         if (bust(person)) {
             person.busted = true;
             if (person == player) {
