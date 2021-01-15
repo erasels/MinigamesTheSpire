@@ -10,13 +10,18 @@ public abstract class AbstractGamePhase {
         nextGame = next;
     }
 
+    public void initialize() { }
+
     public abstract void update(); //Should call kill when done
     public abstract void render();
     public abstract void action();
 
     private void kill() {
         if(parent.waiting()) {
+            nextGame.initialize();
             parent.gamePhase = nextGame;
         }
     }
+
+    public void dispose() {}
 }
