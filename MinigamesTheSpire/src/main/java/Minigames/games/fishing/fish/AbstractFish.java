@@ -19,7 +19,7 @@ public abstract class AbstractFish {
     protected ArrayList<Vector2> originBehavior;
     protected Vector2 currentBehavior;
 
-    public AbstractFish(int hp, ArrayList<Vector2> ogBehavior) {
+    public AbstractFish(float hp, ArrayList<Vector2> ogBehavior) {
         mHp = this.hp = hp;
         originBehavior = ogBehavior;
         currentBehavior = originBehavior.get(nextBehavior);
@@ -36,9 +36,12 @@ public abstract class AbstractFish {
         }
 
         ttl += HelperClass.getTime();
-        y = Interpolation.exp10In.apply(initialY, currentBehavior.y, ttl / currentBehavior.x);
+        y = Interpolation.smoother.apply(initialY, currentBehavior.y, ttl / currentBehavior.x);
+        System.out.printf("Interpolation.smoother.apply(%f, %f, %f / %f) = %f%n", initialY, currentBehavior.y, ttl, currentBehavior.x, y);
+        //System.out.println("Y: " + y + " " + currentBehavior.y);
 
-        if(y == currentBehavior.y) {
+        //If fish move has been finished
+        if(ttl >= currentBehavior.x) {
             cycleBehavior();
         }
     }
@@ -63,7 +66,17 @@ public abstract class AbstractFish {
         currentBehavior = originBehavior.get(nextBehavior);
     }
 
+    public boolean isWithinY(float y1, float y2) {
+        return y >= y1 && y <= y2;
+    }
+
+    public void scaleBehaviorY(float maxPos) {
+        for(Vector2 vec : originBehavior) {
+            vec.y *= maxPos;
+        }
+    }
+
     public static AbstractFish returnRandomFish() {
-        return null;
+        return new TestFish();
     }
 }
