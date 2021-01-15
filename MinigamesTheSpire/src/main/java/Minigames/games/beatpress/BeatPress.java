@@ -44,6 +44,21 @@ public class BeatPress extends AbstractMinigame {
     public static final String sfxPress = makeID("sfxPress");
     public static final String sfxPressReady = makeID("sfxPressReady");
 
+    private static final ArrayList<BeatPattern> basicPatterns = new ArrayList<>();
+    private static final ArrayList<BeatPattern> mediumPatterns = new ArrayList<>();
+    private static final ArrayList<BeatPattern> heckPatterns = new ArrayList<>();
+
+    static {
+        basicPatterns.add(new BeatPattern("??1.6 ??1.6"));
+        basicPatterns.add(new BeatPattern("??1.6 =_0.8 !_0.8"));
+        basicPatterns.add(new BeatPattern("??2.4 =R0.8"));
+        basicPatterns.add(new BeatPattern("=_0.8 =_0.8 =?1.6"));
+        basicPatterns.add(new BeatPattern("!?0.8 ==0.8 ??0.8 ==0.8"));
+
+        mediumPatterns.add(new BeatPattern("!?1.066667 !?1.066667 !?1.066667"));
+        mediumPatterns.add(new BeatPattern("??1.6 ?_0.4 =_0.4 =_0.8"));
+    }
+
     private Texture title;
     private Texture input;
     private Texture sides;
@@ -145,9 +160,9 @@ public class BeatPress extends AbstractMinigame {
                     phase = 2;
                     time = -1.5f;
 
-                    queuedSounds.add(new QueuedSound(sfxHighE, -1.2f));
+                    /*queuedSounds.add(new QueuedSound(sfxHighE, -1.2f));
                     queuedSounds.add(new QueuedSound(sfxHighD, -0.8f));
-                    queuedSounds.add(new QueuedSound(sfxHighC, -0.4f));
+                    queuedSounds.add(new QueuedSound(sfxHighC, -0.4f));*/
                 }
                 break;
             case 2:
@@ -234,7 +249,9 @@ public class BeatPress extends AbstractMinigame {
     public void render(SpriteBatch sb) {
         super.render(sb);
 
-        drawTexture(sb, sides, 0, 0, SIZE);
+        if (phase < 4)
+            drawTexture(sb, sides, 0, 0, SIZE);
+
         switch (phase)
         {
             case 0:
@@ -273,7 +290,6 @@ public class BeatPress extends AbstractMinigame {
                         drawTexture(sb, ouch, 0, 0, SIZE);
                         break;
                 }
-                break;
             case 4:
                 drawTexture(sb, grade, 0, 0, SIZE);
                 //first display "Your Grade:"

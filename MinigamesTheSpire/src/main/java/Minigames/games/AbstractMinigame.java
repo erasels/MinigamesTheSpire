@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 import java.util.PriorityQueue;
@@ -218,13 +219,8 @@ public abstract class AbstractMinigame implements TextReceiver {
         return ratio;
     }
 
-    public void getReward() {
-        //figure out how this works later
-    }
-
-    public enum MINIGAME_RESULT {
-        SUCCESS, //maybe some in-between results idk
-        FAILURE
+    public String getOption() {
+        return "[wow] this is just hardcoded! (Please don't hardcode your strings.)";
     }
 
     //Input binding stuff
@@ -250,6 +246,30 @@ public abstract class AbstractMinigame implements TextReceiver {
 
         return cpy;
     }
+
+    public boolean hasInstructionScreen = false;
+    public void setupInstructionScreen(GenericEventDialog event) {
+        event.updateBodyText("UPDATE BODY TEXT");
+        event.setDialogOption("This event has no instructions!");
+    }
+    public boolean instructionsButtonPressed(int buttonIndex) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages of instructions.
+        //Return true here to start the game.
+        return true;
+    }
+
+    public boolean hasPostgameScreen = false;
+    public void setupPostgameScreen(GenericEventDialog event) {
+        event.updateBodyText("UPDATE BODY TEXT\n\nThis is a good place to give the reward.");
+        event.setDialogOption("This event has no special postgame screen!");
+    }
+    public boolean postgameButtonPressed(int buttonIndex) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages.
+        //Return true here to go to ending of event.
+        return true;
+    }
+
+
 
 
     //This class implements TextReceiver to not screw over the console when it disables input, by being compatible with basemod's text input stuff.

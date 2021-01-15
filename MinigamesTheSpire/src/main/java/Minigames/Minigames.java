@@ -1,6 +1,8 @@
 package Minigames;
 
+import Minigames.events.TestBlackjackEvent;
 import Minigames.events.TestMinigameEvent;
+import Minigames.events.gremlinFlipEvent;
 import Minigames.games.beatpress.BeatPress;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
@@ -44,6 +46,11 @@ public class Minigames implements
         BaseMod.registerModBadge(TextureLoader.getTexture(makeImgPath("modBadge.png")), "Minigames The Spire", "erasels", "A mod, boyo.", settingsPanel);
 
         BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
+
+        BaseMod.addEvent(TestBlackjackEvent.ID, TestBlackjackEvent.class);
+
+        BaseMod.addEvent(gremlinFlipEvent.ID, gremlinFlipEvent.class);
+
     }
 
     @Override
@@ -73,6 +80,9 @@ public class Minigames implements
         BaseMod.addAudio(BeatPress.sfxOof, makeAudioPath("Oof.ogg"));
         BaseMod.addAudio(BeatPress.sfxPress, makeAudioPath("Press.ogg"));
         BaseMod.addAudio(BeatPress.sfxPressReady, makeAudioPath("DeepC.ogg"));
+        BaseMod.addAudio(makeID("cardPlace1"), makeGamePath("Blackjack/SFX/cardPlace1.ogg"));
+        BaseMod.addAudio(makeID("cardPlace2"), makeGamePath("Blackjack/SFX/cardPlace2.ogg"));
+        BaseMod.addAudio(makeID("cardPlace3"), makeGamePath("Blackjack/SFX/cardPlace3.ogg"));
     }
 
     private static String locPath() {
