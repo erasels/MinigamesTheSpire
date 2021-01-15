@@ -111,7 +111,7 @@ public class BeatPress extends AbstractMinigame {
             case -1:
             case 0:
                 CardCrawlGame.sound.play(sfxE);
-                queuedSounds.add(new QueuedSound(sfxHighE, 0.4f));
+                queuedSounds.add(new QueuedSound(sfxHighE, 0.2f));
                 press.show(Settings.FAST_MODE ? 0.8f : 1.6f);
                 phase = 1;
                 time = 0;
