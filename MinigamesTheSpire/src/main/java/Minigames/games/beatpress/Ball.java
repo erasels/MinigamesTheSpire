@@ -30,12 +30,13 @@ public class Ball implements Comparable<Ball> {
         SPEED //Comes in from side, bounces from first to the center. 0.4 gap. 0.8ish total?
     }
 
-    private static final int ROLL_DIST = 280;
+    private static final int ROLL_DIST = 275;
+    private static final int ROLL_END = 25;
     private static final int BOUNCE_DIST = 250;
     private static final int SPEED_DIST = 400;
     //speeedy ball is speeedy and comes from the side (goes from -400 -> 200 -> 0) duration 0.8f
     //Bouncy ball goes 250 (from above) -> 200 -> 100 -> 0 duration 1.0f
-    //Rolly ball goes from 280 (from above, falls more on the edge because it moves slow) 230 -> 130 -> 30 duration 2.0f
+    //Rolly ball goes from 275 (from above, falls more on the edge because it moves slow) 225 -> 125 -> 25 duration 2.0f
 
     //time for C O N S T A N T S
         //Roll
@@ -216,6 +217,7 @@ public class Ball implements Comparable<Ball> {
         if (bottom < -320) //falling away
         {
             height = top + 320;
+            bottom += getSize() - height;
         }
         else if (top > 320) //sticking off the top
         {
@@ -317,7 +319,7 @@ public class Ball implements Comparable<Ball> {
 
     private int getEnd() {
         if (type == BallType.ROLL) {
-            return right ? 30 : -30;
+            return right ? ROLL_END : -ROLL_END;
         }
         return 0;
     }
