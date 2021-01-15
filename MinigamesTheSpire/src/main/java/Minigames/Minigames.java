@@ -1,6 +1,7 @@
 package Minigames;
 
 import Minigames.events.TestMinigameEvent;
+import Minigames.events.gremlinFlipEvent;
 import Minigames.games.beatpress.BeatPress;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
@@ -44,6 +45,8 @@ public class Minigames implements
         BaseMod.registerModBadge(TextureLoader.getTexture(makeImgPath("modBadge.png")), "Minigames The Spire", "erasels", "A mod, boyo.", settingsPanel);
 
         BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
+        BaseMod.addEvent(gremlinFlipEvent.ID, gremlinFlipEvent.class);
+
     }
 
     @Override
