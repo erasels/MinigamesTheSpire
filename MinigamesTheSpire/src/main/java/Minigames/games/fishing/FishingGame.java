@@ -91,6 +91,10 @@ public class FishingGame extends AbstractMinigame {
         fish = null;
     }
 
+    public void doDebugAction(Dir dir) {
+
+    }
+
     @Override
     protected BindingGroup getBindings() {
         BindingGroup bindings = new BindingGroup();
@@ -98,6 +102,13 @@ public class FishingGame extends AbstractMinigame {
         bindings.addMouseBind((x, y, pointer) -> this.isWithinArea(x, y) && pointer == 0, this::doAction, new MouseHoldObject((x, y) -> doAction(new Vector2(x, y)), null));
         //Add more bindings which basically do the same thing, maybe space?
 
+        //DEBUG Bindings
+        //bindings.bindDirectional(() -> this.gamePhase.);
+
         return bindings;
+    }
+
+    public enum Dir {
+        UP, DOWN, LEF, RIGHT
     }
 }
