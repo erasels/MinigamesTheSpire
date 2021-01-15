@@ -1,10 +1,10 @@
 package Minigames.games.blackjack;
 
+import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 import static Minigames.Minigames.makeGamePath;
 
@@ -17,8 +17,7 @@ public class PokerCard {
     public static final int ROYAL_VALUE = 10;
     public static final int ACE_HIGH_VALUE = 11;
     public static final int ACE_LOW_VALUE = 1;
-    public static final int SIZE = 250;
-    public static final Texture cardBack = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/cardBack_blue4.png"));
+    public static final Texture cardBack = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/cardBack_blue4.png"));
 
     private int value;
     private Suite suite;
@@ -35,23 +34,23 @@ public class PokerCard {
         this.parent = parent;
         c = Color.WHITE.cpy();
         if (value <= 10) {
-            t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + value + ".png"));
+            t = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/card" + suite.toString() + value + ".png"));
         } else {
             switch (value) {
                 case 11: {
-                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + "J.png"));
+                    t = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/card" + suite.toString() + "J.png"));
                     break;
                 }
                 case 12: {
-                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + "Q.png"));
+                    t = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/card" + suite.toString() + "Q.png"));
                     break;
                 }
                 case 13: {
-                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + "K.png"));
+                    t = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/card" + suite.toString() + "K.png"));
                     break;
                 }
                 case 14: {
-                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + "A.png"));
+                    t = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/card" + suite.toString() + "A.png"));
                     break;
                 }
             }

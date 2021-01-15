@@ -1,7 +1,5 @@
 package Minigames.games.blackjack;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
 
 public abstract class AbstractBlackjackPlayer {
@@ -36,15 +34,23 @@ public abstract class AbstractBlackjackPlayer {
                 pointValue += card.getBlackjackValue();
             }
         }
+        System.out.println("pointValue: " + pointValue);
+        if (numAces == 0) {
+            return pointValue;
+        }
         int testValue;
-        for (int i = 0; i < numAces; i++) {
-            testValue = pointValue + PokerCard.ACE_HIGH_VALUE;
-            if (testValue > BlackjackMinigame.BUST_THRESHOLD) {
-                testValue = pointValue + PokerCard.ACE_LOW_VALUE;
+        for (int i = 0; i <= numAces; i++) {
+            //tries all combination of ace values starting from the highest
+            testValue = pointValue + ((numAces - i) * PokerCard.ACE_HIGH_VALUE) + (i * PokerCard.ACE_LOW_VALUE);
+            if (testValue <= BlackjackMinigame.BUST_THRESHOLD) {
+                System.out.println("testValue: " + testValue);
+                return testValue;
             }
-            pointValue = testValue;
+            if (i == numAces) { //always return on last iteration
+                System.out.println("testValue: " + testValue);
+                return testValue;
+            }
         }
         return pointValue;
-
     }
 }

@@ -16,7 +16,6 @@ public class BlackjackMinigame extends AbstractMinigame {
     private StandButton standButton;
     private BetButton betButton;
     private LeaveButton leaveButton;
-    private int payOutMultiplier = 3;
 
     public static final int BETTING = 0;
     public static final int PLAYER_TURN = 1;
@@ -25,6 +24,8 @@ public class BlackjackMinigame extends AbstractMinigame {
     public static final int LEAVE = 4;
 
     public static final int BUST_THRESHOLD = 21;
+    private static final int MAX_BET = 100;
+    private static final int payOutMultiplier = 3;
     public int bet;
 
     public BlackjackMinigame() {
@@ -74,6 +75,13 @@ public class BlackjackMinigame extends AbstractMinigame {
     public void setPhase(int newPhase) {
         phase = newPhase;
         System.out.println("NEW PHASE: " + newPhase);
+    }
+
+    public void setBet() {
+        bet = Math.min(AbstractDungeon.player.gold, MAX_BET);
+        AbstractDungeon.player.loseGold(bet);
+        setPhase(BlackjackMinigame.PLAYER_TURN);
+        dealInitialCards();
     }
 
     public void startDealerTurn() {
@@ -161,23 +169,23 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     public void playerWin() {
         setPhase(FINISHED);
-        System.out.println(player.getHandValue());
-        System.out.println(dealer.getHandValue());
+        System.out.println("player hand value: " + player.getHandValue());
+        System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU WIN");
         AbstractDungeon.player.gainGold(bet * payOutMultiplier);
     }
 
     public void playerLose() {
         setPhase(FINISHED);
-        System.out.println(player.getHandValue());
-        System.out.println(dealer.getHandValue());
+        System.out.println("player hand value: " + player.getHandValue());
+        System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU LOSE");
     }
 
     public void playerTie() {
         setPhase(FINISHED);
-        System.out.println(player.getHandValue());
-        System.out.println(dealer.getHandValue());
+        System.out.println("player hand value: " + player.getHandValue());
+        System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU TIED");
     }
 
@@ -189,8 +197,6 @@ public class BlackjackMinigame extends AbstractMinigame {
         } else {
             playerTie();
         }
-        System.out.println(player.getHandValue());
-        System.out.println(dealer.getHandValue());
     }
 
     public boolean bust(AbstractBlackjackPlayer player) {

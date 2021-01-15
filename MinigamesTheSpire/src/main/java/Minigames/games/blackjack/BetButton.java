@@ -1,7 +1,6 @@
 package Minigames.games.blackjack;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 import static Minigames.Minigames.makeGamePath;
@@ -16,9 +15,7 @@ public class BetButton extends BlackjackButton {
     public void update() {
         super.update();
         if (pressed) {
-            parent.bet = AbstractDungeon.player.gold;
-            parent.setPhase(BlackjackMinigame.PLAYER_TURN);
-            parent.dealInitialCards();
+            parent.setBet();
             pressed = false;
         }
     }
