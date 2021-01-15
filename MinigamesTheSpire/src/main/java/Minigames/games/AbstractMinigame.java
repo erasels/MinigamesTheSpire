@@ -40,7 +40,7 @@ public abstract class AbstractMinigame implements TextReceiver {
     //0 and up: Whatever you want. Use a switch statement, just stay at 0, doesn't really matter.
 
     //A sound thing, if you want it
-    protected final PriorityQueue<QueuedSound> queuedSounds = new PriorityQueue<>();
+    public final PriorityQueue<QueuedSound> queuedSounds = new PriorityQueue<>();
 
     //Rendering stuff
     //640x640
@@ -243,8 +243,10 @@ public abstract class AbstractMinigame implements TextReceiver {
     public Vector2 getRelativeVector(Vector2 base)
     {
         Vector2 cpy = base.cpy();
-        cpy.x -= x;
+        cpy.x -= x; //convert to be based on centerpoint of area
         cpy.y -= y;
+
+        cpy.scl(1 / scale); //scaling
 
         return cpy;
     }

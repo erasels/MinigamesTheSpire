@@ -40,14 +40,14 @@ public class Press {
     private final Texture mid;
     private final Texture press;
 
-    private STATE state;
+    public STATE state;
 
     private STATE targetState;
     private boolean inTransition; //if inTransition, state is more of a "target state"
     private float stateTimer;
     private float transitionTime;
 
-    private enum STATE {
+    public enum STATE {
         HIDDEN,
         READY,
         PRESS
@@ -72,6 +72,7 @@ public class Press {
 
     public boolean press() {
         if (!inTransition && state == STATE.READY) {
+            CardCrawlGame.sound.play(BeatPress.sfxPress);
             targetState = STATE.PRESS;
             stateTimer = 0;
             inTransition = true;
@@ -129,21 +130,12 @@ public class Press {
                 }
             }
         }
-        else
-        {
-            switch (state)
-            {
-                case READY:
-
-                    break;
-            }
-        }
     }
 
     public void render(SpriteBatch sb) {
         if (baseHeight > 0)
         {
-            parent.drawTexture(sb, press, PRESS_X, pressY, PRESS_WIDTH, pressHeight, 0, 0, PRESS_READY_HEIGHT - pressHeight, PRESS_WIDTH, pressHeight, false, false);
+            parent.drawTexture(sb, press, PRESS_X, pressY, PRESS_WIDTH, pressHeight, 0, 0, 0, PRESS_WIDTH, pressHeight, false, false);
             parent.drawTexture(sb, mid, MID_X, BOTTOM_Y, MID_WIDTH, midHeight, 0, MID_WIDTH, 1, false, false);
             parent.drawTexture(sb, base, BASE_X, BOTTOM_Y, BASE_WIDTH, baseHeight, 0, BASE_WIDTH, 1, false, false);
         }
@@ -158,5 +150,11 @@ public class Press {
             inTransition = true;
             transitionTime = time;
         }
+    }
+
+    public void dispose() {
+        press.dispose();
+        mid.dispose();
+        base.dispose();
     }
 }
