@@ -23,6 +23,8 @@ public class BlackjackMinigame extends AbstractMinigame {
     protected String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
     protected String[] OPTIONS = eventStrings.OPTIONS;
     private GenericEventDialog event;
+    private int pages = 0;
+    private static final int TOTAL_PAGES = 2;
 
     private Player player;
     private Dealer dealer;
@@ -67,6 +69,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         createNewDeck();
         bet = 0;
         phase = BETTING;
+        hasPostgameScreen = false;
     }
 
     @Override
@@ -265,12 +268,23 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     public void setupInstructionScreen(GenericEventDialog event) {
         this.event = event;
-        event.updateBodyText("UPDATE BODY TEXT");
-        event.setDialogOption("This event has no instructions!");
+        event.updateBodyText(DESCRIPTIONS[0]);
+        event.setDialogOption(OPTIONS[0]);
+        event.loadImage("images/events/matchAndKeep.jpg");
+        pages++;
     }
     public boolean instructionsButtonPressed(int buttonIndex) {
-        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages of instructions.
-        //Return true here to start the game.
+        if (pages < TOTAL_PAGES) {
+            event.updateBodyText(DESCRIPTIONS[1]);
+            event.clearAllDialogs();
+            event.setDialogOption(OPTIONS[1]);
+            pages++;
+            return false;
+        }
         return true;
+    }
+
+    public String getOption() {
+        return OPTIONS[2];
     }
 }
