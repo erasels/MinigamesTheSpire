@@ -17,9 +17,10 @@ public abstract class AbstractGamePhase {
     public abstract void render(SpriteBatch sb);
     public abstract void action();
 
-    private void kill() {
+    protected void kill() {
         if(parent.waiting()) {
-            nextGame.initialize();
+            if(nextGame != null)
+                nextGame.initialize();
             dispose();
             parent.gamePhase = nextGame;
         }
