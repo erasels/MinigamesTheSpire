@@ -13,6 +13,10 @@ public class BetButton extends BlackjackButton {
 
     public BetButton(float x, float y, BlackjackMinigame parent) {
         super(x, y, texture, parent);
+        setBet();
+    }
+
+    public void setBet() {
         bet = Math.min(AbstractDungeon.player.gold, MAX_BET);
         this.text = TEXT[0] + bet + TEXT[1];
     }

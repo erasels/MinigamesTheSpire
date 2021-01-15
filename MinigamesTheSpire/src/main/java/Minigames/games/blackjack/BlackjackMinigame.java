@@ -25,6 +25,7 @@ public class BlackjackMinigame extends AbstractMinigame {
     private StandButton standButton;
     private BetButton betButton;
     private LeaveButton leaveButton;
+    private PlayAgainButton playAgainButton;
     private String middleText = "";
     private int playerHandValue = 0;
     private int dealerHandValue = 0;
@@ -36,8 +37,11 @@ public class BlackjackMinigame extends AbstractMinigame {
     public static final int LEAVE = 4;
 
     public static final int BUST_THRESHOLD = 21;
+    public static final int MIN_BET = 50;
     public static final int MAX_BET = 100;
     private static final int payOutMultiplier = 3;
+    private static final int MAX_PLAYS = 3;
+    public int numPlays = 0;
     public int bet;
 
     public BlackjackMinigame() {
@@ -52,7 +56,8 @@ public class BlackjackMinigame extends AbstractMinigame {
         hitButton = new HitButton(400.0f * Settings.scale, 200.0f * Settings.scale, this);
         standButton = new StandButton(200.0f * Settings.scale, 200.0f * Settings.scale, this);
         betButton = new BetButton(300.0f * Settings.scale, 200.0f * Settings.scale, this);
-        leaveButton = new LeaveButton(300.0f * Settings.scale, 200.0f * Settings.scale, this);
+        leaveButton = new LeaveButton(200.0f * Settings.scale, 200.0f * Settings.scale, this);
+        playAgainButton = new PlayAgainButton(400.0f * Settings.scale, 200.0f * Settings.scale, this);
         createNewDeck();
         bet = 0;
         phase = BETTING;
@@ -75,6 +80,7 @@ public class BlackjackMinigame extends AbstractMinigame {
                 break;
             case FINISHED:
                 leaveButton.update();
+                playAgainButton.update();
                 break;
             case LEAVE:
                 isDone = true;
@@ -111,6 +117,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         }
         if (phase == FINISHED) {
             leaveButton.render(sb);
+            playAgainButton.render(sb);
             FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, middleText, (float)1920 / 2 * Settings.scale, (float)1080 / 2 * Settings.scale, Color.WHITE.cpy());
             if (!player.busted) {
                 FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, TEXT[9] + dealerHandValue, (float)1920 / 2 * Settings.scale, ((float)1080 / 2  + 50.0f) * Settings.scale, Color.WHITE.cpy());
@@ -164,6 +171,7 @@ public class BlackjackMinigame extends AbstractMinigame {
     }
 
     public void dealInitialCards() {
+        numPlays++;
         player.busted = false;
         dealer.busted = false;
 
@@ -182,11 +190,18 @@ public class BlackjackMinigame extends AbstractMinigame {
         playerHandValue = player.getHandValue();
     }
 
+    public void playAgain() {
+        player.clearHand();
+        dealer.clearHand();
+        betButton.setBet();
+        setPhase(BETTING);
+    }
+
     public void hit(AbstractBlackjackPlayer person) {
         PokerCard card = deck.remove(0);
         person.addToHand(card);
         int randomSound = AbstractDungeon.eventRng.random(1, 3);
-        CardCrawlGame.sound.playV(Minigames.makeID("cardPlace" + randomSound), 6.0f);
+        CardCrawlGame.sound.playV(Minigames.makeID("cardPlace" + randomSound), 8.0f);
         if (bust(person)) {
             person.busted = true;
             if (person == player) {
@@ -233,5 +248,12 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     public boolean bust(AbstractBlackjackPlayer player) {
         return player.getHandValue() > BUST_THRESHOLD;
+    }
+
+    public boolean canPlayAgain() {
+        if (numPlays < MAX_PLAYS && AbstractDungeon.player.gold >= MIN_BET) {
+            return true;
+        }
+        return false;
     }
 }
