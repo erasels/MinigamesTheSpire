@@ -243,8 +243,10 @@ public abstract class AbstractMinigame implements TextReceiver {
     public Vector2 getRelativeVector(Vector2 base)
     {
         Vector2 cpy = base.cpy();
-        cpy.x -= x;
+        cpy.x -= x; //convert to be based on centerpoint of area
         cpy.y -= y;
+
+        cpy.scl(1 / scale); //scaling
 
         return cpy;
     }
