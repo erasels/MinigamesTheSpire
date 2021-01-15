@@ -3,6 +3,7 @@ package Minigames.games.fishing.phases;
 import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.fishing.FishingGame;
+import Minigames.games.fishing.fish.AbstractFish;
 import Minigames.util.HelperClass;
 import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,13 +20,18 @@ public class CatchPhase extends AbstractGamePhase {
     private static Texture imgSpinner;
     private static Texture imgCatcher;
     private static int cbw = 36, cbh = 124;
+    private static Texture imgFish; //Could be replaced with custom picture of fish
+    private static int fbw = 56, fbh = 53;
 
     private float spinnerAngle, speed, pos, maxPos;
+    protected AbstractFish fish;
 
     public CatchPhase(FishingGame parent, AbstractGamePhase next) {
         super(parent, next);
         maxPos = bbh - (cbh/2f) - 100f;
         pos = 0;
+        fish = parent.fish;
+        fish.scaleBehaviorY(maxPos + 100f);
     }
 
     @Override
@@ -33,6 +39,7 @@ public class CatchPhase extends AbstractGamePhase {
         imgBar = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishingBar.png"));
         imgSpinner = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/SpinnyThing.png"));
         imgCatcher = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishCatcher.png"));
+        imgFish = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Fish.png"));
     }
 
     @Override
@@ -56,7 +63,14 @@ public class CatchPhase extends AbstractGamePhase {
             }
         }
 
-        System.out.println("Pos(" + maxPos + "): " + pos + " Speed: " + speed);
+        fish.update(fish.isWithinY(pos, pos + cbh));
+
+        if(fish.isCaught()) { //TODO: add escape logic and check as well
+            //Add scoring/winning logic to FishingGame
+            kill();
+        }
+
+        //System.out.println("Pos(" + maxPos + "): " + pos + " Speed: " + speed);
     }
 
     @Override
@@ -65,6 +79,8 @@ public class CatchPhase extends AbstractGamePhase {
         parent.drawTexture(sb, imgBar,blBound + (bbw/2f), 0, 0, bbw, bbh, false, false);
         //parent.drawTexture(sb, imgSpinner, 50, 0, spinnerAngle, 12, 32, false, false);
         parent.drawTexture(sb, imgCatcher, blBound + (bbw/2f) + (cbw/2f) - 8f, blBound + (AbstractMinigame.SIZE - bbh) + (cbh/2f) + pos, 0, cbw, cbh, false, false);
+        parent.drawTexture(sb, imgFish, blBound + (bbw/2f) + (fbw/2f) - 20f, blBound + (AbstractMinigame.SIZE - bbh) + (fbh/2f) + fish.y - 12f, 0, fbw, fbh, fish.isWithinY(pos, pos + cbh), fish.isWithinY(pos, pos + cbh));
+        //parent.drawTexture(sb, ImageMaster.WHITE_SQUARE_IMG, 0, blBound + pos, 0, 32, cbh, false, false);
     }
 
     @Override

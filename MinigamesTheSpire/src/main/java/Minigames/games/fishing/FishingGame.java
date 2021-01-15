@@ -7,15 +7,11 @@ import Minigames.games.fishing.phases.CatchPhase;
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.games.input.bindings.MouseHoldObject;
 import Minigames.util.HelperClass;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.megacrit.cardcrawl.helpers.ImageMaster;
-import com.megacrit.cardcrawl.relics.CeramicFish;
 
 public class FishingGame extends AbstractMinigame {
     private static float WAITTIME = 1f;
-    private static Texture imgFish; //Could be replaced with custom picture of fish
 
     public AbstractGamePhase gamePhase;
     public AbstractFish fish;
@@ -31,7 +27,6 @@ public class FishingGame extends AbstractMinigame {
     @Override
     public void initialize() {
         super.initialize();
-        imgFish = ImageMaster.getRelicImg(CeramicFish.ID);
 
         fish = AbstractFish.returnRandomFish();
 
