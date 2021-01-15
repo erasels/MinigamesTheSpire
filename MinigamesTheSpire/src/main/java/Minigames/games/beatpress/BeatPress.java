@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 import java.util.ArrayList;
@@ -110,6 +111,23 @@ public class BeatPress extends AbstractMinigame {
         PERFECT,
         NOT_BAD,
         OUCH
+    }
+
+    public BeatPress() {
+        super();
+
+        hasInstructionScreen = false;
+    }
+
+    @Override
+    public String getOption() {
+        return "I'll add localization later.";
+    }
+
+    @Override
+    public void setupPostgameScreen(GenericEventDialog event) {
+        event.updateBodyText("How'd you do?");
+        event.setDialogOption("There will probably be rewards.");
     }
 
     @Override
