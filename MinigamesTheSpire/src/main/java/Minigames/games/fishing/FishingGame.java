@@ -35,6 +35,7 @@ public class FishingGame extends AbstractMinigame {
         fish = AbstractFish.returnRandomFish();
 
         gamePhase = new CatchPhase(this, null);
+        gamePhase.initialize();
         score = 0;
     }
 
