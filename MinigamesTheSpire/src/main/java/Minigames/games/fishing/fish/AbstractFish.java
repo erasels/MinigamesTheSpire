@@ -22,7 +22,7 @@ public abstract class AbstractFish {
     public AbstractFish(int hp, ArrayList<Vector2> ogBehavior) {
         mHp = this.hp = hp;
         originBehavior = ogBehavior;
-        currentBehavior = originBehavior.get(nextBehavior).cpy();
+        currentBehavior = originBehavior.get(nextBehavior);
         y = initialY = 0;
     }
 
