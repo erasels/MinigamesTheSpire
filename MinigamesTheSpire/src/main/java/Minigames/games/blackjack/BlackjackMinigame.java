@@ -8,15 +8,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class BlackjackMinigame extends AbstractMinigame {
+    protected static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(Minigames.makeID("Blackjack"));
     protected static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(Minigames.makeID("BlackjackText"));
     protected String[] TEXT = uiStrings.TEXT;
+    protected String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
+    protected String[] OPTIONS = eventStrings.OPTIONS;
+    private GenericEventDialog event;
 
     private Player player;
     private Dealer dealer;
@@ -255,5 +261,16 @@ public class BlackjackMinigame extends AbstractMinigame {
             return true;
         }
         return false;
+    }
+
+    public void setupInstructionScreen(GenericEventDialog event) {
+        this.event = event;
+        event.updateBodyText("UPDATE BODY TEXT");
+        event.setDialogOption("This event has no instructions!");
+    }
+    public boolean instructionsButtonPressed(int buttonIndex) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages of instructions.
+        //Return true here to start the game.
+        return true;
     }
 }
