@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class CatchPhase extends AbstractGamePhase {
-    private static final float SPEED_THRESHOLD = 2.5f;
-    private static final float GRAVITY_ACCEL = 45f;
-    private static final float TERMINAL_VELOCITY = -100f;
-    private static final float BOUNCE_COEFFICIENT = -0.6f;
+    private static final float SPEED_THRESHOLD = 6.5f;
+    private static final float GRAVITY_ACCEL = 180f, PULL_ACCEL = 170f;
+    private static final float TERMINAL_VELOCITY = -1000f;
+    private static final float BOUNCE_COEFFICIENT = -0.55f;
 
     private static Texture imgBar;
     private static int bbw = 152, bbh = 600;
@@ -24,7 +24,7 @@ public class CatchPhase extends AbstractGamePhase {
 
     public CatchPhase(FishingGame parent, AbstractGamePhase next) {
         super(parent, next);
-        maxPos = bbh - (cbh/2f) - 75f;
+        maxPos = bbh - (cbh/2f) - 100f;
         pos = 0;
     }
 
@@ -71,10 +71,10 @@ public class CatchPhase extends AbstractGamePhase {
     public void action() {
         float dt = HelperClass.getTime();
         //increase speed
-        speed += (30f + GRAVITY_ACCEL) * dt;
+        speed += (PULL_ACCEL + GRAVITY_ACCEL) * dt;
         float inc = 1.05f;
         if(speed < 0)
-            inc -= 0.1f;
+            inc -= 0.15f;
         speed *= (float) Math.pow(inc, dt / (1f / 30f));
 
         spinnerAngle += 5f;
