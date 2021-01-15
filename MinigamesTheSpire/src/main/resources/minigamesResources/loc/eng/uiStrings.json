@@ -11,9 +11,10 @@
       "Hit",
       "Stand",
       "Leave",
-      "You win!",
-      "You lose!",
-      "You tied!"
+      "You win! ",
+      "You lose! ",
+      "You tied! ",
+      "Your total hand value: "
     ]
   }
 }

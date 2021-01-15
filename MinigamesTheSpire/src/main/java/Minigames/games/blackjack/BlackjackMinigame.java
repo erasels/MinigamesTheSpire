@@ -3,7 +3,6 @@ package Minigames.games.blackjack;
 import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -26,7 +25,8 @@ public class BlackjackMinigame extends AbstractMinigame {
     private StandButton standButton;
     private BetButton betButton;
     private LeaveButton leaveButton;
-    private String finishText = null;
+    private String middleText = "";
+    private int playerHandValue = 0;
 
     public static final int BETTING = 0;
     public static final int PLAYER_TURN = 1;
@@ -110,8 +110,8 @@ public class BlackjackMinigame extends AbstractMinigame {
         }
         if (phase == FINISHED) {
             leaveButton.render(sb);
-            FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, finishText, (float)1920 / 2 * Settings.scale, (float)1080 / 2 * Settings.scale, Color.WHITE.cpy());
         }
+        FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, middleText + TEXT[8] + playerHandValue, (float)1920 / 2 * Settings.scale, (float)1080 / 2 * Settings.scale, Color.WHITE.cpy());
         player.render(sb);
         dealer.render(sb);
     }
@@ -170,6 +170,9 @@ public class BlackjackMinigame extends AbstractMinigame {
         dealer.addToHand(card);
         card = deck.remove(0);
         dealer.addToHand(card);
+
+        middleText = "";
+        playerHandValue = player.getHandValue();
     }
 
     public void hit(AbstractBlackjackPlayer person) {
@@ -189,6 +192,7 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     public void playerHit() {
         hit(player);
+        playerHandValue = player.getHandValue();
     }
 
     public void playerWin() {
@@ -197,7 +201,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU WIN");
         AbstractDungeon.player.gainGold(bet * payOutMultiplier);
-        finishText = TEXT[5];
+        middleText = TEXT[5];
     }
 
     public void playerLose() {
@@ -205,7 +209,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         System.out.println("player hand value: " + player.getHandValue());
         System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU LOSE");
-        finishText = TEXT[6];
+        middleText = TEXT[6];
     }
 
     public void playerTie() {
@@ -214,7 +218,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU TIED");
         AbstractDungeon.player.gainGold(bet);
-        finishText = TEXT[7];
+        middleText = TEXT[7];
     }
 
     public void compareHands() {
