@@ -81,7 +81,6 @@ public class FishingGame extends AbstractMinigame {
     @Override
     public void dispose() {
         super.dispose();
-        gamePhase.dispose();
 
         fish = null;
     }
