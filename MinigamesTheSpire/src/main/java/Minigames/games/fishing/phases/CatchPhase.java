@@ -6,6 +6,7 @@ import Minigames.games.fishing.FishingGame;
 import Minigames.games.fishing.fish.AbstractFish;
 import Minigames.util.HelperClass;
 import Minigames.util.TextureLoader;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -22,6 +23,8 @@ public class CatchPhase extends AbstractGamePhase {
     private static int cbw = 36, cbh = 124;
     private static Texture imgFish; //Could be replaced with custom picture of fish
     private static int fbw = 56, fbh = 53;
+    private static Color notCatchingColor = Color.SALMON.cpy();
+    private static Color catchingColor = new Color(0.1f, 0.2f, 0.1f, 1f);
 
     private float spinnerAngle, speed, pos, maxPos;
     protected AbstractFish fish;
@@ -32,6 +35,7 @@ public class CatchPhase extends AbstractGamePhase {
         pos = 0;
         fish = parent.fish;
         fish.scaleBehaviorY(maxPos + 100f);
+        notCatchingColor.a = 0.75f;
     }
 
     @Override
@@ -79,7 +83,12 @@ public class CatchPhase extends AbstractGamePhase {
         parent.drawTexture(sb, imgBar,blBound + (bbw/2f), 0, 0, bbw, bbh, false, false);
         //parent.drawTexture(sb, imgSpinner, 50, 0, spinnerAngle, 12, 32, false, false);
         parent.drawTexture(sb, imgCatcher, blBound + (bbw/2f) + (cbw/2f) - 8f, blBound + (AbstractMinigame.SIZE - bbh) + (cbh/2f) + pos, 0, cbw, cbh, false, false);
-        parent.drawTexture(sb, imgFish, blBound + (bbw/2f) + (fbw/2f) - 20f, blBound + (AbstractMinigame.SIZE - bbh) + (fbh/2f) + fish.y - 12f, 0, fbw, fbh, fish.isWithinY(pos, pos + cbh), fish.isWithinY(pos, pos + cbh));
+
+        boolean catching = fish.isWithinY(pos, pos + cbh);
+        Color fC = catching? catchingColor : notCatchingColor;
+        sb.setColor(fC);
+        parent.drawTexture(sb, imgFish, blBound + (bbw/2f) + (fbw/2f) - 20f, blBound + (AbstractMinigame.SIZE - bbh) + (fbh/2f) + fish.y - 12f, 0, fbw, fbh, catching, false);
+        sb.setColor(Color.WHITE);
         //parent.drawTexture(sb, ImageMaster.WHITE_SQUARE_IMG, 0, blBound + pos, 0, 32, cbh, false, false);
     }
 
