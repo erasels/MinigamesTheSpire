@@ -3,5 +3,14 @@
     "TEXT": [
       "Do nothing ya chump."
     ]
+  },
+  "${ModID}:BlackjackButtonText": {
+    "TEXT": [
+      "Bet ",
+      " gold.",
+      "Hit",
+      "Stand",
+      "Leave"
+    ]
   }
 }

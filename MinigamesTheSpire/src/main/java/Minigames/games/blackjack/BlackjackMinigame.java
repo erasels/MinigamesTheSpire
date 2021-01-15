@@ -24,7 +24,7 @@ public class BlackjackMinigame extends AbstractMinigame {
     public static final int LEAVE = 4;
 
     public static final int BUST_THRESHOLD = 21;
-    private static final int MAX_BET = 100;
+    public static final int MAX_BET = 100;
     private static final int payOutMultiplier = 3;
     public int bet;
 
@@ -46,7 +46,6 @@ public class BlackjackMinigame extends AbstractMinigame {
         createNewDeck();
         bet = 0;
         phase = BETTING;
-        System.out.println(deck);
     }
 
     @Override
@@ -74,11 +73,10 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     public void setPhase(int newPhase) {
         phase = newPhase;
-        System.out.println("NEW PHASE: " + newPhase);
     }
 
-    public void setBet() {
-        bet = Math.min(AbstractDungeon.player.gold, MAX_BET);
+    public void setBet(int bet) {
+        this.bet = bet;
         AbstractDungeon.player.loseGold(bet);
         setPhase(BlackjackMinigame.PLAYER_TURN);
         dealInitialCards();
@@ -133,12 +131,20 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     public void addAllCardsOfSuite(PokerCard.Suite suite) {
         for (int i = 2; i <= 14; i++) {
-            PokerCard card = new PokerCard(i, suite, this);
+            PokerCard card;
+            if (i == 14) {
+                card = new PokerCard(i, suite, true, this);
+            } else {
+                card = new PokerCard(i, suite, this);
+            }
             deck.add(card);
         }
     }
 
     public void dealInitialCards() {
+        player.busted = false;
+        dealer.busted = false;
+
         PokerCard card = deck.remove(0);
         player.addToHand(card);
         card = deck.remove(0);
@@ -155,6 +161,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         PokerCard card = deck.remove(0);
         person.addToHand(card);
         if (bust(person)) {
+            person.busted = true;
             if (person == player) {
                 playerLose();
             } else {
@@ -200,9 +207,6 @@ public class BlackjackMinigame extends AbstractMinigame {
     }
 
     public boolean bust(AbstractBlackjackPlayer player) {
-        if (player.getHandValue() > BUST_THRESHOLD) {
-            return true;
-        }
-        return false;
+        return player.getHandValue() > BUST_THRESHOLD;
     }
 }

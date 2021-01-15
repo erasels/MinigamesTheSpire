@@ -32,7 +32,9 @@ public class Dealer extends AbstractBlackjackPlayer{
             parent.compareHands();
         } else {
             parent.hit(this);
-            takeTurn();
+            if (!busted) {
+                takeTurn();
+            }
         }
     }
 }

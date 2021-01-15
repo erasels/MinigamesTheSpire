@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public abstract class AbstractBlackjackPlayer {
     protected final BlackjackMinigame parent;
     protected ArrayList<PokerCard> hand = new ArrayList<>();
+    public boolean busted = false;
 
     public AbstractBlackjackPlayer(BlackjackMinigame parent) {
         this.parent = parent;
@@ -34,7 +35,6 @@ public abstract class AbstractBlackjackPlayer {
                 pointValue += card.getBlackjackValue();
             }
         }
-        System.out.println("pointValue: " + pointValue);
         if (numAces == 0) {
             return pointValue;
         }
@@ -43,11 +43,9 @@ public abstract class AbstractBlackjackPlayer {
             //tries all combination of ace values starting from the highest
             testValue = pointValue + ((numAces - i) * PokerCard.ACE_HIGH_VALUE) + (i * PokerCard.ACE_LOW_VALUE);
             if (testValue <= BlackjackMinigame.BUST_THRESHOLD) {
-                System.out.println("testValue: " + testValue);
                 return testValue;
             }
             if (i == numAces) { //always return on last iteration
-                System.out.println("testValue: " + testValue);
                 return testValue;
             }
         }
