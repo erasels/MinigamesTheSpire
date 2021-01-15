@@ -87,6 +87,8 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
 
     @Override
     public void endOfEvent() {
+        this.imageEventText.clearAllDialogs();
+
         this.imageEventText.updateBodyText("hmmmm");
         this.imageEventText.setDialogOption("I guess it's over?");
 

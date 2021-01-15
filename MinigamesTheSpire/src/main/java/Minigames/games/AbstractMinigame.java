@@ -247,9 +247,9 @@ public abstract class AbstractMinigame implements TextReceiver {
         return cpy;
     }
 
-    public boolean hasInstructionScreen = false;
+    public boolean hasInstructionScreen = true;
     public void setupInstructionScreen(GenericEventDialog event) {
-        event.updateBodyText("UPDATE BODY TEXT");
+        event.updateBodyText("UPDATE BODY TEXT\n\nSet hasInstructionScreen to false in your constructor if you have no instructions!");
         event.setDialogOption("This event has no instructions!");
     }
     public boolean instructionsButtonPressed(int buttonIndex) {
@@ -258,9 +258,9 @@ public abstract class AbstractMinigame implements TextReceiver {
         return true;
     }
 
-    public boolean hasPostgameScreen = false;
+    public boolean hasPostgameScreen = true;
     public void setupPostgameScreen(GenericEventDialog event) {
-        event.updateBodyText("UPDATE BODY TEXT\n\nThis is a good place to give the reward.");
+        event.updateBodyText("UPDATE BODY TEXT\n\nSet hasPostgameScreen to false in your constructor if you have no post-game screen!");
         event.setDialogOption("This event has no special postgame screen!");
     }
     public boolean postgameButtonPressed(int buttonIndex) {
