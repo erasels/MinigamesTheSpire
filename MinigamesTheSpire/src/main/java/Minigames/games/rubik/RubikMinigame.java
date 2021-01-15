@@ -155,8 +155,8 @@ public class RubikMinigame extends AbstractMinigame
         y -= Settings.HEIGHT / 2;
 
         Vector3 p = new Vector3(
-                ((float)x) / SIZE * 2f,
-                ((float)y) / SIZE * 2f,
+                ((float)x) / (SIZE * 1.5f) * 2f,
+                ((float)y) / (SIZE * 1.5f) * 2f,
                 0
         );
         float opSquared = p.x * p.x + p.y * p.y;
