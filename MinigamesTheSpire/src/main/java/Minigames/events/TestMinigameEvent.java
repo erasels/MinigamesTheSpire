@@ -1,5 +1,6 @@
 package Minigames.events;
 
+import Minigames.games.beatpress.BeatPress;
 import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.EventStrings;
@@ -18,6 +19,7 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
         super(NAME, DESCRIPTIONS[0], null);
 
         imageEventText.setDialogOption(OPTIONS[0]);
+        imageEventText.setDialogOption(OPTIONS[0]);
     }
 
     @Override
@@ -25,7 +27,14 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     {
         switch (screenNum) {
             default:
-                startGame(new TestMinigame());
+                switch (buttonPressed) {
+                    case 0:
+                        startGame(new TestMinigame());
+                        break;
+                    case 1:
+                        startGame(new BeatPress());
+                        break;
+                }
                 break;
         }
     }
