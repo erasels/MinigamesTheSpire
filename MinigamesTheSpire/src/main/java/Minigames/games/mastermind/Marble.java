@@ -9,13 +9,18 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import static Minigames.Minigames.makeGamePath;
 
 public class Marble {
-    private static final int BOX_SIZE = 80;
 
-    private static final int SIZE = 75;
+    public static final int BOX_SIZE = 64;
+    public static final int SIZE = 60;
+    public static final int MARGIN = BOX_SIZE / 4;
+    public static final int EMPTY = 0;
+    public static final int SELECTED_EMPTY = -1;
 
     private final MastermindMinigame parent;
 
     public Vector2 position;
+
+    public Vector2 dragPosition;
 
     private Texture t;
 
@@ -23,20 +28,33 @@ public class Marble {
 
     private int value;
 
-    public Marble(MastermindMinigame parent, int x, int y, int value) {
+    private Integer row;
+
+    public Marble(MastermindMinigame parent, int x, int y, int value, Integer row) {
         this.parent = parent;
-        position = new Vector2(x, y);
+        this.position = new Vector2(x, y);
+        this.dragPosition = new Vector2(0, 0);
         this.value = value;
+        this.row = row;
 
-        t = ImageMaster.loadImage(makeGamePath("mastermind/" + value + ".png"));
+        this.t = getTexture(parent, value);
 
-        hb = new Hitbox(x, y, SIZE, SIZE);
+        this.hb = new Hitbox(x, y, SIZE, SIZE);
+    }
+
+    public void updateValue(int newValue) {
+        this.value = newValue;
+        this.t = getTexture(parent, value);
+    }
+
+    private Texture getTexture(MastermindMinigame parent, int value) {
+        int valueToRender = value == EMPTY ? (row == parent.getActiveRow() ? SELECTED_EMPTY : EMPTY) : value;
+        return ImageMaster.loadImage(makeGamePath("mastermind/" + valueToRender + ".png"));
     }
 
     public void render(SpriteBatch sb) {
         sb.setColor(1F, 1F, 1F, 1F);
-        parent.drawTexture(sb, t, position.x, position.y, SIZE); //why this doesn't work?
-        //sb.draw(t, position.x, position.y, SIZE, SIZE); //this works
+        parent.drawTexture(sb, t, position.x + dragPosition.x, position.y + dragPosition.y, SIZE, SIZE, 0, 0, 0, t.getWidth(), t.getHeight(), false, false);
     }
 
     public void dispose() {
@@ -45,5 +63,9 @@ public class Marble {
 
     public void update(float elapsed) {
 
+    }
+
+    public int getValue() {
+        return value;
     }
 }
