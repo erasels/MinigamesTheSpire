@@ -120,6 +120,10 @@ public class BlackjackMinigame extends AbstractMinigame {
         super.dispose();
         player.dispose();
         dealer.dispose();
+        betButton.dispose();
+        hitButton.dispose();
+        standButton.dispose();
+        leaveButton.dispose();
     }
 
     @Override

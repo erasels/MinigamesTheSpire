@@ -26,4 +26,8 @@ public class BlackjackButton extends Button {
        super.render(sb);
        FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, text, this.x + (float)texture.getWidth() / 2, this.y + (float)texture.getHeight() / 2, Color.WHITE.cpy());
     }
+
+    public void dispose() {
+        texture.dispose();
+    }
 }
