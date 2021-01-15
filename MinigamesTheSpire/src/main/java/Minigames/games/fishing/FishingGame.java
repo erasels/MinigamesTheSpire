@@ -1,12 +1,10 @@
 package Minigames.games.fishing;
 
-import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.fishing.fish.AbstractFish;
 import Minigames.games.fishing.phases.AbstractGamePhase;
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.util.HelperClass;
-import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -15,9 +13,6 @@ import com.megacrit.cardcrawl.relics.CeramicFish;
 
 public class FishingGame extends AbstractMinigame {
     private static float WAITTIME = 1f;
-    private static Texture imgBar;
-    private static Texture imgSpinner;
-    private static Texture imgCatcher;
     private static Texture imgFish; //Could be replaced with custom picture of fish
 
     public AbstractGamePhase gamePhase;
@@ -34,10 +29,6 @@ public class FishingGame extends AbstractMinigame {
     @Override
     public void initialize() {
         super.initialize();
-
-        imgBar = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishingBar.png"));
-        imgSpinner = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/SpinnyThing.png"));
-        imgCatcher = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishCatcher.png"));
         imgFish = ImageMaster.getRelicImg(CeramicFish.ID);
 
         fish = AbstractFish.returnRandomFish();
@@ -47,7 +38,8 @@ public class FishingGame extends AbstractMinigame {
     }
 
     private void doAction(Vector2 vec) {
-        gamePhase.action();
+        if(gamePhase != null)
+            gamePhase.action();
     }
 
     @Override
@@ -91,13 +83,7 @@ public class FishingGame extends AbstractMinigame {
     @Override
     public void dispose() {
         super.dispose();
-
-        imgSpinner.dispose();
-        imgSpinner = null;
-        imgBar.dispose();
-        imgBar = null;
-        imgCatcher.dispose();
-        imgCatcher = null;
+        gamePhase.dispose();
 
         fish = null;
     }
