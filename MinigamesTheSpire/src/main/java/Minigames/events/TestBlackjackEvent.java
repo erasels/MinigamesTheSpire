@@ -1,24 +1,24 @@
 package Minigames.events;
 
-import Minigames.games.beatpress.BeatPress;
+import Minigames.games.blackjack.BlackjackMinigame;
 import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.localization.EventStrings;
 
 import static Minigames.Minigames.makeID;
 
-public class TestMinigameEvent extends AbstractMinigameEvent {
-    public static final String ID = makeID("Test");
+public class TestBlackjackEvent extends AbstractMinigameEvent {
+    public static final String ID = makeID("BlackjackTest");
     private static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(ID);
     private static final String NAME = eventStrings.NAME;
     private static final String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
     private static final String[] OPTIONS = eventStrings.OPTIONS;
 
 
-    public TestMinigameEvent() {
+    public TestBlackjackEvent() {
         super(NAME, DESCRIPTIONS[0], null);
 
-        imageEventText.setDialogOption(OPTIONS[0]);
         imageEventText.setDialogOption(OPTIONS[0]);
     }
 
@@ -27,15 +27,16 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     {
         switch (screenNum) {
             default:
-                switch (buttonPressed) {
-                    case 0:
-                        startGame(new TestMinigame());
-                        break;
-                    case 1:
-                        startGame(new BeatPress());
-                        break;
-                }
+                startGame(new BlackjackMinigame());
                 break;
         }
+    }
+
+    @Override
+    public void finishGame() {
+        GenericEventDialog.show();
+        this.imageEventText.updateBodyText("Pogging");
+        this.imageEventText.setDialogOption("Leave");
+        openMap();
     }
 }

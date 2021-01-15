@@ -2,6 +2,7 @@ package Minigames.games;
 
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.patches.Input;
+import Minigames.util.QueuedSound;
 import basemod.interfaces.TextReceiver;
 import basemod.patches.com.megacrit.cardcrawl.helpers.input.ScrollInputProcessor.TextInput;
 import com.badlogic.gdx.graphics.Color;
@@ -13,6 +14,8 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+
+import java.util.PriorityQueue;
 
 import static Minigames.Minigames.makeGamePath;
 
@@ -35,6 +38,9 @@ public abstract class AbstractMinigame implements TextReceiver {
     //-2: Minigame area fading in.
     //-1: Displaying controls.
     //0 and up: Whatever you want. Use a switch statement, just stay at 0, doesn't really matter.
+
+    //A sound thing, if you want it
+    public final PriorityQueue<QueuedSound> queuedSounds = new PriorityQueue<>();
 
     //Rendering stuff
     //640x640
@@ -108,7 +114,15 @@ public abstract class AbstractMinigame implements TextReceiver {
         if (scaleProgress < scaleTime)
         {
             scaleProgress += elapsed;
-            setScale(Interpolation.linear.apply(initialScale, targetScale, Math.min(1, scaleProgress / scaleTime)));
+            this.scale = Interpolation.linear.apply(initialScale, targetScale, Math.min(1, scaleProgress / scaleTime));
+        }
+
+        QueuedSound s = queuedSounds.peek();
+        while (s != null && time > s.time)
+        {
+            CardCrawlGame.sound.play(s.key);
+            queuedSounds.remove();
+            s = queuedSounds.peek();
         }
 
         switch (phase) {
@@ -126,7 +140,7 @@ public abstract class AbstractMinigame implements TextReceiver {
             case -1:
                 time += elapsed;
 
-                if (time > (Settings.FAST_MODE ? 2.5f : 4.0f))
+                if (time > (Settings.FAST_MODE ? 0.2f : 0.5f))
                 {
                     time = 0;
                     phase = 0;
@@ -158,6 +172,14 @@ public abstract class AbstractMinigame implements TextReceiver {
     {
         sb.draw(t, x + cX - baseWidth / 2.0f, y + cY - baseHeight / 2.0f, -(cX - baseWidth / 2.0f), -(cY - baseHeight / 2.0f), baseWidth, baseHeight, scale, scale, this.angle + angle, 0, 0, baseWidth, baseHeight, flipX, flipY);
     }
+    public void drawTexture(SpriteBatch sb, Texture t, float x, float y, float width, float height, float angle, int originWidth, int originHeight, boolean flipX, boolean flipY)
+    {
+        sb.draw(t, this.x + x, this.y + y, -x, -y, width, height, scale, scale, this.angle + angle, 0, 0, originWidth, originHeight, flipX, flipY);
+    }
+    public void drawTexture(SpriteBatch sb, Texture t, float x, float y, float width, float height, float angle, int originX, int originY, int originWidth, int originHeight, boolean flipX, boolean flipY)
+    {
+        sb.draw(t, this.x + x, this.y + y, -x, -y, width, height, scale, scale, this.angle + angle, originX, originY, originWidth, originHeight, flipX, flipY);
+    }
 
 
     // Position/Scale control
@@ -169,6 +191,9 @@ public abstract class AbstractMinigame implements TextReceiver {
     public void setScale(float newScale)
     {
         this.scale = newScale;
+        this.initialScale = scale;
+        this.scaleProgress = 1;
+        this.scaleTime = 1;
     }
 
     public void transformScale(float targetScale, float time)
@@ -218,8 +243,10 @@ public abstract class AbstractMinigame implements TextReceiver {
     public Vector2 getRelativeVector(Vector2 base)
     {
         Vector2 cpy = base.cpy();
-        cpy.x -= x;
+        cpy.x -= x; //convert to be based on centerpoint of area
         cpy.y -= y;
+
+        cpy.scl(1 / scale); //scaling
 
         return cpy;
     }
