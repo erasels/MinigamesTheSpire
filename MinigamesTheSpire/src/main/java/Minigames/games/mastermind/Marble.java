@@ -33,13 +33,13 @@ public class Marble {
     public Marble(MastermindMinigame parent, int x, int y, int value, Integer row) {
         this.parent = parent;
         this.position = new Vector2(x, y);
-        this.dragPosition = new Vector2(0, 0);
+        this.dragPosition = null;
         this.value = value;
         this.row = row;
 
         this.t = getTexture(parent, value);
 
-        this.hb = new Hitbox(x, y, SIZE, SIZE);
+        this.hb = new Hitbox(position.x, position.y, SIZE, SIZE);
     }
 
     public void updateValue(int newValue) {
@@ -54,7 +54,7 @@ public class Marble {
 
     public void render(SpriteBatch sb) {
         sb.setColor(1F, 1F, 1F, 1F);
-        parent.drawTexture(sb, t, position.x + dragPosition.x, position.y + dragPosition.y, SIZE, SIZE, 0, 0, 0, t.getWidth(), t.getHeight(), false, false);
+        parent.drawTexture(sb, t, dragPosition != null ? dragPosition.x : position.x, dragPosition != null ? dragPosition.y : position.y, SIZE, SIZE, 0, 0, 0, t.getWidth(), t.getHeight(), false, false);
     }
 
     public void dispose() {
@@ -62,7 +62,6 @@ public class Marble {
     }
 
     public void update(float elapsed) {
-
     }
 
     public int getValue() {

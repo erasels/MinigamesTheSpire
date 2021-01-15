@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import static Minigames.games.mastermind.Marble.BOX_SIZE;
 import static Minigames.games.mastermind.Marble.MARGIN;
 import static Minigames.games.mastermind.MastermindMinigame.POSSIBLE_COLORS;
+import static Minigames.games.mastermind.MastermindMinigame.isClicked;
 
 public class MarbleControllers {
 
@@ -15,6 +16,7 @@ public class MarbleControllers {
     private final MastermindMinigame parent;
 
     private Marble activeMarble;
+    private Vector2 startingVector;
 
     public MarbleControllers(MastermindMinigame parent) {
         this.parent = parent;
@@ -25,6 +27,7 @@ public class MarbleControllers {
         }
 
         activeMarble = null;
+        startingVector = null;
     }
 
     public void render(SpriteBatch sb) {
@@ -45,32 +48,29 @@ public class MarbleControllers {
         }
     }
 
-    public void onMouse(Vector2 vector2) {
-        for (int i = 0; i < POSSIBLE_COLORS; i++) {
-
-        }
-    }
-
     public void doActionOnPress(Vector2 vector2) {
         for (int i = 0; i < POSSIBLE_COLORS; i++) {
-            if (marbles[i].hb.clicked) {
+            System.out.println(i + " " + isClicked(marbles[i].hb, vector2));
+            if (isClicked(marbles[i].hb, vector2)) {
                 activeMarble = marbles[i];
+                startingVector = new Vector2(vector2);
             }
         }
     }
 
     public void doActionOnDrag(Vector2 vector2) {
         if (activeMarble != null) {
-            activeMarble.dragPosition.x = vector2.x;
-            activeMarble.dragPosition.y = vector2.y;
+            activeMarble.dragPosition = new Vector2(activeMarble.position.x + vector2.x - startingVector.x, activeMarble.position.y + vector2.y - startingVector.y);
         }
     }
 
     public void doActionOnRelease(Vector2 vector2) {
         if (activeMarble != null) {
             parent.getMarbleBoard().updateState(activeMarble, vector2);
+            activeMarble.dragPosition = null;
         }
         activeMarble = null;
+        startingVector = null;
     }
 
 }

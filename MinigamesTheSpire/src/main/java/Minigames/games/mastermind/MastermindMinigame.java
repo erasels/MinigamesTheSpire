@@ -5,6 +5,7 @@ import Minigames.games.input.bindings.BindingGroup;
 import Minigames.games.input.bindings.MouseHoldObject;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.helpers.Hitbox;
 
 import java.security.SecureRandom;
 
@@ -27,9 +28,9 @@ public class MastermindMinigame extends AbstractMinigame {
     @Override
     public void initialize() {
         super.initialize();
+        activeRow = 0;
         marbleBoard = new MarbleBoard(this);
         marbleControllers = new MarbleControllers(this);
-        activeRow = NUMBER_OF_ROWS - 1;
         randomizeAnswer();
     }
 
@@ -80,7 +81,8 @@ public class MastermindMinigame extends AbstractMinigame {
     protected BindingGroup getBindings() {
         BindingGroup bindings = new BindingGroup();
 
-        bindings.addMouseBind((x, y, pointer) -> this.isWithinArea(x, y) && pointer == 0, this::doActionOnPress, new MouseHoldObject((x, y) -> doActionOnDrag(new Vector2(x, y)), ((x, y) -> doActionOnRelease(new Vector2(x, y)))));
+        bindings.addMouseBind((x, y, pointer) -> this.isWithinArea(x, y) && pointer == 0, v2 -> doActionOnPress(getRelativeVector(v2)),
+                new MouseHoldObject((x, y) -> doActionOnDrag(getRelativeVector(new Vector2(x, y))), ((x, y) -> doActionOnRelease(getRelativeVector(new Vector2(x, y))))));
 
         return bindings;
     }
@@ -108,5 +110,11 @@ public class MastermindMinigame extends AbstractMinigame {
 
     public int getActiveRow() {
         return activeRow;
+    }
+
+    public static boolean isClicked(Hitbox hb, Vector2 v2) {
+        Hitbox mouseClickHitbox = new Hitbox(0, 0);
+        mouseClickHitbox.move(v2.x, v2.y);
+        return hb.intersects(mouseClickHitbox);
     }
 }

@@ -7,8 +7,7 @@ import com.megacrit.cardcrawl.helpers.Hitbox;
 
 import static Minigames.games.mastermind.Marble.BOX_SIZE;
 import static Minigames.games.mastermind.Marble.MARGIN;
-import static Minigames.games.mastermind.MastermindMinigame.NUMBER_OF_COLUMNS;
-import static Minigames.games.mastermind.MastermindMinigame.NUMBER_OF_ROWS;
+import static Minigames.games.mastermind.MastermindMinigame.*;
 
 public class MarbleBoard {
 
@@ -52,8 +51,11 @@ public class MarbleBoard {
     }
 
     public void updateState(Marble activeMarble, Vector2 vector2) {
+        System.out.println("vector2: " + vector2);
+        System.out.println("activeRow: " + parent.getActiveRow());
         for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
-            if (marbles[parent.getActiveRow()][i].hb.intersects(new Hitbox(activeMarble.hb.x + activeMarble.dragPosition.x, activeMarble.hb.y + activeMarble.dragPosition.y))) {
+            System.out.println(i + ": " + isClicked(marbles[parent.getActiveRow()][i].hb, vector2));
+            if (isClicked(marbles[parent.getActiveRow()][i].hb, vector2)) {
                 marbles[parent.getActiveRow()][i].updateValue(activeMarble.getValue());
             }
         }
