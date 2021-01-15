@@ -61,10 +61,10 @@ public class CatchPhase extends AbstractGamePhase {
 
     @Override
     public void render(SpriteBatch sb) {
-        float blBound = (-(AbstractMinigame.BG_SIZE/2f));
+        float blBound = (-(AbstractMinigame.SIZE/2f));
         parent.drawTexture(sb, imgBar,blBound + (bbw/2f), 0, 0, bbw, bbh, false, false);
         //parent.drawTexture(sb, imgSpinner, 50, 0, spinnerAngle, 12, 32, false, false);
-        parent.drawTexture(sb, imgCatcher, blBound + (bbw/2f) + (cbw/2f) - 8f, blBound + (AbstractMinigame.BG_SIZE - bbh) + (cbh/2f) + pos, 0, cbw, cbh, false, false);
+        parent.drawTexture(sb, imgCatcher, blBound + (bbw/2f) + (cbw/2f) - 8f, blBound + (AbstractMinigame.SIZE - bbh) + (cbh/2f) + pos, 0, cbw, cbh, false, false);
     }
 
     @Override
