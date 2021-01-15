@@ -8,12 +8,10 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.*;
 import com.megacrit.cardcrawl.core.Settings;
 
 public class RubikMinigame extends AbstractMinigame
@@ -48,35 +46,50 @@ public class RubikMinigame extends AbstractMinigame
 
         ModelBuilder modelBuilder = new ModelBuilder();
         modelBuilder.begin();
-        modelBuilder.node().translation.set(2.1f, 2.1f, 2.1f);
+        modelBuilder.node().id = "back_top_right";
+        faceTranslation.set(2.1f, 2.1f, 2.1f);
         face(modelBuilder, "back");
         face(modelBuilder, "top");
         face(modelBuilder, "right");
-        modelBuilder.node().translation.set(-2.1f, 2.1f, 2.1f);
+
+        modelBuilder.node().id = "back_top_left";
+        faceTranslation.set(-2.1f, 2.1f, 2.1f);
         face(modelBuilder, "back");
         face(modelBuilder, "top");
         face(modelBuilder, "left");
-        modelBuilder.node().translation.set(2.1f, -2.1f, 2.1f);
+
+        modelBuilder.node().id = "back_bottom_right";
+        faceTranslation.set(2.1f, -2.1f, 2.1f);
         face(modelBuilder, "back");
         face(modelBuilder, "bottom");
         face(modelBuilder, "right");
-        modelBuilder.node().translation.set(-2.1f, -2.1f, 2.1f);
+
+        modelBuilder.node().id = "back_bottom_left";
+        faceTranslation.set(-2.1f, -2.1f, 2.1f);
         face(modelBuilder, "back");
         face(modelBuilder, "bottom");
         face(modelBuilder, "left");
-        modelBuilder.node().translation.set(2.1f, 2.1f, -2.1f);
+
+        modelBuilder.node().id = "front_top_right";
+        faceTranslation.set(2.1f, 2.1f, -2.1f);
         face(modelBuilder, "front");
         face(modelBuilder, "top");
         face(modelBuilder, "right");
-        modelBuilder.node().translation.set(-2.1f, 2.1f, -2.1f);
+
+        modelBuilder.node().id = "front_top_left";
+        faceTranslation.set(-2.1f, 2.1f, -2.1f);
         face(modelBuilder, "front");
         face(modelBuilder, "top");
         face(modelBuilder, "left");
-        modelBuilder.node().translation.set(2.1f, -2.1f, -2.1f);
+
+        modelBuilder.node().id = "front_bottom_right";
+        faceTranslation.set(2.1f, -2.1f, -2.1f);
         face(modelBuilder, "front");
         face(modelBuilder, "bottom");
         face(modelBuilder, "right");
-        modelBuilder.node().translation.set(-2.1f, -2.1f, -2.1f);
+
+        modelBuilder.node().id = "front_bottom_left";
+        faceTranslation.set(-2.1f, -2.1f, -2.1f);
         face(modelBuilder, "front");
         face(modelBuilder, "bottom");
         face(modelBuilder, "left");
@@ -84,33 +97,44 @@ public class RubikMinigame extends AbstractMinigame
         instance = new ModelInstance(model);
     }
 
+    private Vector3 faceTranslation = new Vector3();
+
     private void face(ModelBuilder modelBuilder, String face)
     {
         int attr = VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal;
+        Matrix4 transform = new Matrix4().translate(faceTranslation);
+        MeshPartBuilder part;
+
         switch (face) {
             case "front":
-                modelBuilder.part("front", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.GREEN)))
-                        .rect(-2, -2, -2, -2, 2, -2, 2, 2, -2, 2, -2, -2, 0, 0, -1);
+                part = modelBuilder.part("front", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.GREEN)));
+                part.setVertexTransform(transform);
+                part.rect(-2, -2, -2, -2, 2, -2, 2, 2, -2, 2, -2, -2, 0, 0, -1);
                 break;
             case "back":
-                modelBuilder.part("back", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.BLUE)))
-                        .rect(-2,2,2, -2,-2,2, 2,-2,2, 2,2,2, 0,0,1);
+                part = modelBuilder.part("back", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.BLUE)));
+                part.setVertexTransform(transform);
+                part.rect(-2,2,2, -2,-2,2, 2,-2,2, 2,2,2, 0,0,1);
                 break;
             case "bottom":
-                modelBuilder.part("bottom", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.YELLOW)))
-                        .rect(-2,-2,2, -2,-2,-2, 2,-2,-2, 2,-2,2, 0,-1,0);
+                part = modelBuilder.part("bottom", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.YELLOW)));
+                part.setVertexTransform(transform);
+                part.rect(-2,-2,2, -2,-2,-2, 2,-2,-2, 2,-2,2, 0,-1,0);
                 break;
             case "top":
-                modelBuilder.part("top", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.WHITE)))
-                        .rect(-2,2,-2, -2,2,2, 2,2,2, 2,2,-2, 0,1,0);
+                part = modelBuilder.part("top", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.WHITE)));
+                part.setVertexTransform(transform);
+                part.rect(-2,2,-2, -2,2,2, 2,2,2, 2,2,-2, 0,1,0);
                 break;
             case "left":
-                modelBuilder.part("left", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.ORANGE)))
-                        .rect(-2,-2,2, -2,2,2, -2,2,-2, -2,-2,-2, -1,0,0);
+                part = modelBuilder.part("left", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.ORANGE)));
+                part.setVertexTransform(transform);
+                part.rect(-2,-2,2, -2,2,2, -2,2,-2, -2,-2,-2, -1,0,0);
                 break;
             case "right":
-                modelBuilder.part("right", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.RED)))
-                        .rect(2,-2,-2, 2,2,-2, 2,2,2, 2,-2,2, 1,0,0);
+                part = modelBuilder.part("right", GL20.GL_TRIANGLES, attr, new Material(ColorAttribute.createDiffuse(Color.RED)));
+                part.setVertexTransform(transform);
+                part.rect(2,-2,-2, 2,2,-2, 2,2,2, 2,-2,2, 1,0,0);
                 break;
         }
     }
