@@ -59,16 +59,17 @@ public class Minigames implements
 
     @Override
     public void receiveAddAudio() {
-        BaseMod.addAudio(BeatPress.sfxC, makeAudioPath("C.wav"));
-        BaseMod.addAudio(BeatPress.sfxD, makeAudioPath("D.wav"));
-        BaseMod.addAudio(BeatPress.sfxE, makeAudioPath("E.wav"));
-        BaseMod.addAudio(BeatPress.sfxWrong, makeAudioPath("Wrong.wav"));
-        BaseMod.addAudio(BeatPress.sfxHighE, makeAudioPath("HighE.wav"));
-        BaseMod.addAudio(BeatPress.sfxHighF, makeAudioPath("HighF.wav"));
-        BaseMod.addAudio(BeatPress.sfxHighG, makeAudioPath("HighG.wav"));
-        BaseMod.addAudio(BeatPress.sfxHighWrong, makeAudioPath("HighWrong.wav"));
-        BaseMod.addAudio(BeatPress.sfxHammer, makeAudioPath("Noise.wav"));
-        BaseMod.addAudio(BeatPress.sfxOof, makeAudioPath("Oof.wav"));
+        BaseMod.addAudio(BeatPress.sfxC, makeAudioPath("C.ogg"));
+        BaseMod.addAudio(BeatPress.sfxD, makeAudioPath("D.ogg"));
+        BaseMod.addAudio(BeatPress.sfxE, makeAudioPath("E.ogg"));
+        BaseMod.addAudio(BeatPress.sfxWrong, makeAudioPath("Wrong.ogg"));
+        BaseMod.addAudio(BeatPress.sfxHighE, makeAudioPath("HighE.ogg"));
+        BaseMod.addAudio(BeatPress.sfxHighF, makeAudioPath("HighF.ogg"));
+        BaseMod.addAudio(BeatPress.sfxHighG, makeAudioPath("HighG.ogg"));
+        BaseMod.addAudio(BeatPress.sfxHighWrong, makeAudioPath("HighWrong.ogg"));
+        BaseMod.addAudio(BeatPress.sfxOof, makeAudioPath("Oof.ogg"));
+        BaseMod.addAudio(BeatPress.sfxPress, makeAudioPath("Press.ogg"));
+        BaseMod.addAudio(BeatPress.sfxPressReady, makeAudioPath("DeepC.ogg"));
     }
 
     private static String locPath() {
