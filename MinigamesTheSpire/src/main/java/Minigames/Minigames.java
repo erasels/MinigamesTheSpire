@@ -63,10 +63,13 @@ public class Minigames implements
         BaseMod.addAudio(BeatPress.sfxD, makeAudioPath("D.ogg"));
         BaseMod.addAudio(BeatPress.sfxE, makeAudioPath("E.ogg"));
         BaseMod.addAudio(BeatPress.sfxWrong, makeAudioPath("Wrong.ogg"));
+        BaseMod.addAudio(BeatPress.sfxHighC, makeAudioPath("HighC.ogg"));
+        BaseMod.addAudio(BeatPress.sfxHighD, makeAudioPath("HighD.ogg"));
         BaseMod.addAudio(BeatPress.sfxHighE, makeAudioPath("HighE.ogg"));
         BaseMod.addAudio(BeatPress.sfxHighF, makeAudioPath("HighF.ogg"));
         BaseMod.addAudio(BeatPress.sfxHighG, makeAudioPath("HighG.ogg"));
         BaseMod.addAudio(BeatPress.sfxHighWrong, makeAudioPath("HighWrong.ogg"));
+        BaseMod.addAudio(BeatPress.sfxHigherHighC, makeAudioPath("VeryHighC.ogg"));
         BaseMod.addAudio(BeatPress.sfxOof, makeAudioPath("Oof.ogg"));
         BaseMod.addAudio(BeatPress.sfxPress, makeAudioPath("Press.ogg"));
         BaseMod.addAudio(BeatPress.sfxPressReady, makeAudioPath("DeepC.ogg"));
