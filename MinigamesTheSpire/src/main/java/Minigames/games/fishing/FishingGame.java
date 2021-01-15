@@ -5,6 +5,7 @@ import Minigames.games.fishing.fish.AbstractFish;
 import Minigames.games.fishing.phases.AbstractGamePhase;
 import Minigames.games.fishing.phases.CatchPhase;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.input.bindings.MouseHoldObject;
 import Minigames.util.HelperClass;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -94,7 +95,7 @@ public class FishingGame extends AbstractMinigame {
     protected BindingGroup getBindings() {
         BindingGroup bindings = new BindingGroup();
 
-        bindings.addMouseBind((x, y, pointer) -> this.isWithinArea(x, y) && pointer == 0, this::doAction);
+        bindings.addMouseBind((x, y, pointer) -> this.isWithinArea(x, y) && pointer == 0, this::doAction, new MouseHoldObject((x, y) -> doAction(new Vector2(x, y)), null));
         //Add more bindings which basically do the same thing, maybe space?
 
         return bindings;
