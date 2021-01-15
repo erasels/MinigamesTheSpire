@@ -2,6 +2,7 @@ package Minigames.games;
 
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.patches.Input;
+import Minigames.util.QueuedSound;
 import basemod.interfaces.TextReceiver;
 import basemod.patches.com.megacrit.cardcrawl.helpers.input.ScrollInputProcessor.TextInput;
 import com.badlogic.gdx.graphics.Color;
@@ -9,8 +10,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+
+import java.util.PriorityQueue;
 
 import static Minigames.Minigames.makeGamePath;
 
@@ -25,6 +30,7 @@ public abstract class AbstractMinigame implements TextReceiver {
     //Game stuff
     protected boolean isPlaying;
     protected boolean isDone;
+    protected boolean blockingInput;
 
     protected float time = 0;
 
@@ -32,6 +38,9 @@ public abstract class AbstractMinigame implements TextReceiver {
     //-2: Minigame area fading in.
     //-1: Displaying controls.
     //0 and up: Whatever you want. Use a switch statement, just stay at 0, doesn't really matter.
+
+    //A sound thing, if you want it
+    protected final PriorityQueue<QueuedSound> queuedSounds = new PriorityQueue<>();
 
     //Rendering stuff
     //640x640
@@ -51,6 +60,7 @@ public abstract class AbstractMinigame implements TextReceiver {
     {
         isPlaying = false;
         isDone = false;
+        blockingInput = false;
 
         c = Color.WHITE.cpy();
     }
@@ -60,8 +70,11 @@ public abstract class AbstractMinigame implements TextReceiver {
         isPlaying = true;
 
         TextInput.startTextReceiver(this);
+        blockingInput = true;
 
-        Input.setBindings(getBindings());
+        BindingGroup b = getBindings();
+        b.allowEsc();
+        Input.setBindings(b);
         background = ImageMaster.loadImage(makeGamePath("tempBG.png"));
         transformScale(getMaxScale(), Settings.FAST_MODE ? 0.5f : 1.0f);
     }
@@ -70,24 +83,46 @@ public abstract class AbstractMinigame implements TextReceiver {
     public void dispose() {
         background.dispose();
         Input.clearBindings();
+        TextInput.stopTextReceiver(this);
     }
 
     public boolean playing() {
         return isPlaying;
     }
 
-    public boolean done() {
+    public boolean gameDone() {
         return isDone;
     }
 
     //will be called as long as isPlaying is true
     public void update(float elapsed) {
+        if (CardCrawlGame.isPopupOpen || AbstractDungeon.screen != AbstractDungeon.CurrentScreen.NONE) {
+            if (blockingInput)
+            {
+                blockingInput = false;
+                TextInput.stopTextReceiver(this);
+            }
+        }
+        else if (!blockingInput)
+        {
+            blockingInput = true;
+            TextInput.startTextReceiver(this);
+        }
+
         Input.update(elapsed);
 
         if (scaleProgress < scaleTime)
         {
             scaleProgress += elapsed;
             setScale(Interpolation.linear.apply(initialScale, targetScale, Math.min(1, scaleProgress / scaleTime)));
+        }
+
+        QueuedSound s = queuedSounds.peek();
+        while (s != null && time > s.time)
+        {
+            CardCrawlGame.sound.play(s.key);
+            queuedSounds.remove();
+            s = queuedSounds.peek();
         }
 
         switch (phase) {
@@ -105,7 +140,7 @@ public abstract class AbstractMinigame implements TextReceiver {
             case -1:
                 time += elapsed;
 
-                if (time > (Settings.FAST_MODE ? 2.5f : 4.0f))
+                if (time > (Settings.FAST_MODE ? 0.2f : 0.5f))
                 {
                     time = 0;
                     phase = 0;
@@ -137,6 +172,14 @@ public abstract class AbstractMinigame implements TextReceiver {
     {
         sb.draw(t, x + cX - baseWidth / 2.0f, y + cY - baseHeight / 2.0f, -(cX - baseWidth / 2.0f), -(cY - baseHeight / 2.0f), baseWidth, baseHeight, scale, scale, this.angle + angle, 0, 0, baseWidth, baseHeight, flipX, flipY);
     }
+    public void drawTexture(SpriteBatch sb, Texture t, float x, float y, float width, float height, float angle, int originWidth, int originHeight, boolean flipX, boolean flipY)
+    {
+        sb.draw(t, this.x + x, this.y + y, -x, -y, width, height, scale, scale, this.angle + angle, 0, 0, originWidth, originHeight, flipX, flipY);
+    }
+    public void drawTexture(SpriteBatch sb, Texture t, float x, float y, float width, float height, float angle, int originX, int originY, int originWidth, int originHeight, boolean flipX, boolean flipY)
+    {
+        sb.draw(t, this.x + x, this.y + y, -x, -y, width, height, scale, scale, this.angle + angle, originX, originY, originWidth, originHeight, flipX, flipY);
+    }
 
 
     // Position/Scale control
@@ -148,6 +191,9 @@ public abstract class AbstractMinigame implements TextReceiver {
     public void setScale(float newScale)
     {
         this.scale = newScale;
+        this.initialScale = scale;
+        this.scaleProgress = 1;
+        this.scaleTime = 1;
     }
 
     public void transformScale(float targetScale, float time)
@@ -217,5 +263,25 @@ public abstract class AbstractMinigame implements TextReceiver {
 
     @Override
     public void setText(String s) {
+    }
+
+    //This is for a future update of TextReceiver.
+    public boolean isDone() {
+        if (CardCrawlGame.isPopupOpen || AbstractDungeon.screen != AbstractDungeon.CurrentScreen.NONE || isDone || !CardCrawlGame.isInARun()) {
+            blockingInput = false;
+            TextInput.stopTextReceiver(this);
+            if (Input.processor.inactiveBindings == null) {
+                if (isDone)
+                {
+                    Input.clearBindings();
+                }
+                else
+                {
+                    Input.processor.deactivate();
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

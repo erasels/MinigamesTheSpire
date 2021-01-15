@@ -8,7 +8,7 @@ import com.megacrit.cardcrawl.helpers.input.ScrollInputProcessor;
 import javassist.CtBehavior;
 
 public class Input {
-    private static BoundInputProcessor processor;
+    public static BoundInputProcessor processor;
 
     public static void update(float elapsed)
     {
