@@ -53,7 +53,7 @@ public abstract class AbstractMinigame implements TextReceiver {
     private final Color c;
 
     //background
-    private static final int BG_SIZE = 648;
+    public static final int BG_SIZE = 648;
     private Texture background;
 
     public AbstractMinigame()
