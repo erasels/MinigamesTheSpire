@@ -114,7 +114,7 @@ public abstract class AbstractMinigame implements TextReceiver {
         if (scaleProgress < scaleTime)
         {
             scaleProgress += elapsed;
-            setScale(Interpolation.linear.apply(initialScale, targetScale, Math.min(1, scaleProgress / scaleTime)));
+            this.scale = Interpolation.linear.apply(initialScale, targetScale, Math.min(1, scaleProgress / scaleTime));
         }
 
         QueuedSound s = queuedSounds.peek();
