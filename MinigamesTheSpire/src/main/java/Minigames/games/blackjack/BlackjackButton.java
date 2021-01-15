@@ -13,7 +13,7 @@ public class BlackjackButton extends Button {
     protected BlackjackMinigame parent;
     protected Texture texture;
     protected String text = "";
-    protected static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(Minigames.makeID("BlackjackButtonText"));
+    protected static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(Minigames.makeID("BlackjackText"));
     protected String[] TEXT = uiStrings.TEXT;
 
     public BlackjackButton(float x, float y, Texture texture, BlackjackMinigame parent) {

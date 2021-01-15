@@ -4,13 +4,16 @@
       "Do nothing ya chump."
     ]
   },
-  "${ModID}:BlackjackButtonText": {
+  "${ModID}:BlackjackText": {
     "TEXT": [
       "Bet ",
       " gold.",
       "Hit",
       "Stand",
-      "Leave"
+      "Leave",
+      "You win!",
+      "You lose!",
+      "You tied!"
     ]
   }
 }

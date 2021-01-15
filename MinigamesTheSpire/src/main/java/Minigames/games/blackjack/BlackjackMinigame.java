@@ -1,14 +1,24 @@
 package Minigames.games.blackjack;
 
+import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.localization.UIStrings;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class BlackjackMinigame extends AbstractMinigame {
+    protected static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(Minigames.makeID("BlackjackText"));
+    protected String[] TEXT = uiStrings.TEXT;
+
     private Player player;
     private Dealer dealer;
     private ArrayList<PokerCard> deck = new ArrayList<>();
@@ -16,6 +26,7 @@ public class BlackjackMinigame extends AbstractMinigame {
     private StandButton standButton;
     private BetButton betButton;
     private LeaveButton leaveButton;
+    private String finishText = null;
 
     public static final int BETTING = 0;
     public static final int PLAYER_TURN = 1;
@@ -37,8 +48,6 @@ public class BlackjackMinigame extends AbstractMinigame {
         super.initialize();
         player = new Player(this);
         dealer = new Dealer(this);
-//        hitButton = new HitButton(-AbstractMinigame.SIZE / 3.0f, AbstractMinigame.SIZE / 3.0f, this);
-//        standButton = new StandButton(-AbstractMinigame.SIZE / 3.0f, -AbstractMinigame.SIZE / 3.0f, this);
         hitButton = new HitButton(400.0f, 200.0f, this);
         standButton = new StandButton(200.0f, 200.0f, this);
         betButton = new BetButton(300.0f, 200.0f, this);
@@ -100,6 +109,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         }
         if (phase == FINISHED) {
             leaveButton.render(sb);
+            FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, finishText, (float)1920 / 2 * Settings.scale, (float)1080 / 2 * Settings.scale, Color.WHITE.cpy());
         }
         player.render(sb);
         dealer.render(sb);
@@ -180,6 +190,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU WIN");
         AbstractDungeon.player.gainGold(bet * payOutMultiplier);
+        finishText = TEXT[5];
     }
 
     public void playerLose() {
@@ -187,6 +198,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         System.out.println("player hand value: " + player.getHandValue());
         System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU LOSE");
+        finishText = TEXT[6];
     }
 
     public void playerTie() {
@@ -194,6 +206,8 @@ public class BlackjackMinigame extends AbstractMinigame {
         System.out.println("player hand value: " + player.getHandValue());
         System.out.println("dealer hand value: " + dealer.getHandValue());
         System.out.println("YOU TIED");
+        AbstractDungeon.player.gainGold(bet);
+        finishText = TEXT[7];
     }
 
     public void compareHands() {
