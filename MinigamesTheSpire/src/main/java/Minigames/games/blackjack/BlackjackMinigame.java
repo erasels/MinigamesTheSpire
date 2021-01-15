@@ -27,6 +27,7 @@ public class BlackjackMinigame extends AbstractMinigame {
     private LeaveButton leaveButton;
     private String middleText = "";
     private int playerHandValue = 0;
+    private int dealerHandValue = 0;
 
     public static final int BETTING = 0;
     public static final int PLAYER_TURN = 1;
@@ -48,10 +49,10 @@ public class BlackjackMinigame extends AbstractMinigame {
         super.initialize();
         player = new Player(this);
         dealer = new Dealer(this);
-        hitButton = new HitButton(400.0f, 200.0f, this);
-        standButton = new StandButton(200.0f, 200.0f, this);
-        betButton = new BetButton(300.0f, 200.0f, this);
-        leaveButton = new LeaveButton(300.0f, 200.0f, this);
+        hitButton = new HitButton(400.0f * Settings.scale, 200.0f * Settings.scale, this);
+        standButton = new StandButton(200.0f * Settings.scale, 200.0f * Settings.scale, this);
+        betButton = new BetButton(300.0f * Settings.scale, 200.0f * Settings.scale, this);
+        leaveButton = new LeaveButton(300.0f * Settings.scale, 200.0f * Settings.scale, this);
         createNewDeck();
         bet = 0;
         phase = BETTING;
@@ -110,8 +111,14 @@ public class BlackjackMinigame extends AbstractMinigame {
         }
         if (phase == FINISHED) {
             leaveButton.render(sb);
+            FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, middleText, (float)1920 / 2 * Settings.scale, (float)1080 / 2 * Settings.scale, Color.WHITE.cpy());
+            if (!player.busted) {
+                FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, TEXT[9] + dealerHandValue, (float)1920 / 2 * Settings.scale, ((float)1080 / 2  + 50.0f) * Settings.scale, Color.WHITE.cpy());
+            }
         }
-        FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, middleText + TEXT[8] + playerHandValue, (float)1920 / 2 * Settings.scale, (float)1080 / 2 * Settings.scale, Color.WHITE.cpy());
+        if (phase > BETTING) {
+            FontHelper.renderFontCentered(sb, FontHelper.topPanelInfoFont, TEXT[8] + playerHandValue, (float)1920 / 2 * Settings.scale, ((float)1080 / 2  - 50.0f) * Settings.scale, Color.WHITE.cpy());
+        }
         player.render(sb);
         dealer.render(sb);
     }
@@ -185,6 +192,7 @@ public class BlackjackMinigame extends AbstractMinigame {
             if (person == player) {
                 playerLose();
             } else {
+                dealerHandValue = dealer.getHandValue();
                 playerWin();
             }
         }
@@ -197,31 +205,23 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     public void playerWin() {
         setPhase(FINISHED);
-        System.out.println("player hand value: " + player.getHandValue());
-        System.out.println("dealer hand value: " + dealer.getHandValue());
-        System.out.println("YOU WIN");
         AbstractDungeon.player.gainGold(bet * payOutMultiplier);
         middleText = TEXT[5];
     }
 
     public void playerLose() {
         setPhase(FINISHED);
-        System.out.println("player hand value: " + player.getHandValue());
-        System.out.println("dealer hand value: " + dealer.getHandValue());
-        System.out.println("YOU LOSE");
         middleText = TEXT[6];
     }
 
     public void playerTie() {
         setPhase(FINISHED);
-        System.out.println("player hand value: " + player.getHandValue());
-        System.out.println("dealer hand value: " + dealer.getHandValue());
-        System.out.println("YOU TIED");
         AbstractDungeon.player.gainGold(bet);
         middleText = TEXT[7];
     }
 
     public void compareHands() {
+        dealerHandValue = dealer.getHandValue();
         if (player.getHandValue() > dealer.getHandValue()) {
             playerWin();
         } else if (dealer.getHandValue() > player.getHandValue()) {

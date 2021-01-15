@@ -14,7 +14,8 @@
       "You win! ",
       "You lose! ",
       "You tied! ",
-      "Your total hand value: "
+      "Your total hand value: ",
+      "Dealer's total hand value: "
     ]
   }
 }
