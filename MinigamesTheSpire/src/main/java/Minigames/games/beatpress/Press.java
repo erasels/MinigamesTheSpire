@@ -27,7 +27,7 @@ public class Press {
 
     private static final int PRESS_WIDTH = 96;
     private static final int PRESS_READY_HEIGHT = 180;
-    private static final int PRESS_PRESSING_Y = 150;
+    private static final int PRESS_PRESSING_Y = BOTTOM_Y + 150;
     private static final int PRESS_X = -PRESS_WIDTH / 2;
 
     private int baseHeight;
