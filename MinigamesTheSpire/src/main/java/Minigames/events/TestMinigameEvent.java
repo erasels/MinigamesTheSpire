@@ -1,6 +1,6 @@
 package Minigames.events;
 
-import Minigames.games.test.TestMinigame;
+import Minigames.games.mastermind.MastermindMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.EventStrings;
 
@@ -25,7 +25,7 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     {
         switch (screenNum) {
             default:
-                startGame(new TestMinigame());
+                startGame(new MastermindMinigame());
                 break;
         }
     }
