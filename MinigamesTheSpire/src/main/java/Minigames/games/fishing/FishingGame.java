@@ -3,6 +3,7 @@ package Minigames.games.fishing;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.fishing.fish.AbstractFish;
 import Minigames.games.fishing.phases.AbstractGamePhase;
+import Minigames.games.fishing.phases.CatchPhase;
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.util.HelperClass;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,7 +34,7 @@ public class FishingGame extends AbstractMinigame {
 
         fish = AbstractFish.returnRandomFish();
 
-        //gamePhase = new CatchPhase(this);
+        gamePhase = new CatchPhase(this, null);
         score = 0;
     }
 
@@ -67,7 +68,7 @@ public class FishingGame extends AbstractMinigame {
     public void render(SpriteBatch sb) {
         super.render(sb);
         if(gamePhase != null)
-            gamePhase.render();
+            gamePhase.render(sb);
     }
 
     //To be called by AbstractGamePhase once task is finished
