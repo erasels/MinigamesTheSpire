@@ -64,8 +64,8 @@ public class Ball implements Comparable<Ball> {
 
     private AbstractMinigame parent;
 
-    private BallType type;
-    private boolean right;
+    protected BallType type;
+    protected boolean right;
 
     public boolean done;
     public BeatPress.PressResult score = BeatPress.PressResult.MISS;

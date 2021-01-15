@@ -52,8 +52,10 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
 
     public void finishGame() {
         GenericEventDialog.show();
-        this.imageEventText.updateBodyText("Uh oh");
-        this.imageEventText.setDialogOption("Go override the finishGame method!");
-        //Should set "screen" of the event to finishing (or claim reward screen, idk yet)
+    }
+
+    public void endOfEvent() {
+        this.imageEventText.updateBodyText("hmmmm");
+        this.imageEventText.setDialogOption("I guess it's over?");
     }
 }
