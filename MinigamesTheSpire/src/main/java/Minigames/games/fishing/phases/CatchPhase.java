@@ -1,6 +1,7 @@
 package Minigames.games.fishing.phases;
 
 import Minigames.Minigames;
+import Minigames.games.AbstractMinigame;
 import Minigames.games.fishing.FishingGame;
 import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,8 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class CatchPhase extends AbstractGamePhase {
     private static Texture imgBar;
+    private static int bbw = 152, bbh = 600;
     private static Texture imgSpinner;
     private static Texture imgCatcher;
+    private static int cbw = 36, cbh = 124;
 
     private float spinnerAngle, speed;
 
@@ -31,9 +34,10 @@ public class CatchPhase extends AbstractGamePhase {
 
     @Override
     public void render(SpriteBatch sb) {
-        parent.drawTexture(sb, imgBar, 0, 0, 0, 152, 600, false, false);
-        parent.drawTexture(sb, imgSpinner, 50, 0, spinnerAngle, 12, 32, false, false);
-        parent.drawTexture(sb, imgCatcher, 100, 0, 0, 36, 124, false, false);
+        float blBound = (-(AbstractMinigame.BG_SIZE/2f));
+        parent.drawTexture(sb, imgBar,blBound + (bbw/2f), 0, 0, bbw, bbh, false, false);
+        //parent.drawTexture(sb, imgSpinner, 50, 0, spinnerAngle, 12, 32, false, false);
+        parent.drawTexture(sb, imgCatcher, blBound + (bbw/2f) + (cbw/2f) - 8f, blBound + (AbstractMinigame.BG_SIZE - bbh) + (cbh/2f), 0, cbw, cbh, false, false);
     }
 
     @Override
