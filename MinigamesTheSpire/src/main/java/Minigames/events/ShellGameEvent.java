@@ -1,6 +1,6 @@
 package Minigames.events;
 
-import Minigames.games.gremlinFlip.gremlinFlip;
+import Minigames.games.shellgame.Shell;
 import Minigames.games.shellgame.ShellGame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
@@ -25,8 +25,7 @@ public class ShellGameEvent extends AbstractMinigameEvent {
     }
 
     @Override
-    protected void buttonEffect(int buttonPressed)
-    {
+    protected void buttonEffect(int buttonPressed) {
         if (screenNum == 0) {
             switch (buttonPressed) {
                 case 0: {
@@ -55,14 +54,19 @@ public class ShellGameEvent extends AbstractMinigameEvent {
 
     @Override
     public void finishGame() {
+        if (game instanceof ShellGame) {
+            for (Shell s : ((ShellGame) game).shellsToRender) {
+                s.heldCard = null;
+                s.heldRelic = null;
+            }
+        }
         GenericEventDialog.show();
         imageEventText.clearAllDialogs();
-        if(ShellGame.gotCurse){
+        if (ShellGame.gotCurse) {
             this.imageEventText.updateBodyText(DESCRIPTIONS[1]);
             this.imageEventText.setDialogOption(OPTIONS[3]);
             screenNum = 2;
-        }
-        else {
+        } else {
             this.imageEventText.updateBodyText(DESCRIPTIONS[2]);
             this.imageEventText.setDialogOption(OPTIONS[3]);
             screenNum = 2;

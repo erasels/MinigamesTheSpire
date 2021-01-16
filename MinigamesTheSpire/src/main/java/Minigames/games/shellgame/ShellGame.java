@@ -37,7 +37,7 @@ public class ShellGame extends AbstractMinigame {
     like how Gremlin Match puts the cards in your deck from the screen. Boom!
      */
 
-    private Shell shell1;
+    public Shell shell1;
     private Shell shell2;
     private Shell shell3;
 
@@ -83,7 +83,7 @@ public class ShellGame extends AbstractMinigame {
 
     float timer = 1F;
 
-    private ArrayList<Shell> shellsToRender = new ArrayList<>();
+    public ArrayList<Shell> shellsToRender = new ArrayList<>();
 
     public static int difficultyMode = 0;
 
@@ -305,8 +305,11 @@ public class ShellGame extends AbstractMinigame {
                     if (currentSwaps >= totalSwaps) {
                         phase = 3;
                         shell1.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
+                        shell1.setEnclosedLocations();
                         shell2.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
+                        shell2.setEnclosedLocations();
                         shell3.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
+                        shell3.setEnclosedLocations();
                         timeModifier = 1F;  //Reset time modifier back to normal so the timers aren't still going at lightning speed
                     } else if (timeToBeginNextSwap > 0F) {
                         timeToBeginNextSwap -= Gdx.graphics.getDeltaTime() * timeModifier;
