@@ -2,6 +2,8 @@ package Minigames.games.shellgame;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.tempCards.Shiv;
@@ -50,6 +52,8 @@ public class ShellGame extends AbstractMinigame {
     public static float scaleForegroundSwap = 1.25F;
     public static float scaleBackgroundSwap = 0.75F;
 
+    private int subPhase = 0;
+
     private static int totalSwaps = 10;
     private static int currentSwaps = 0;
 
@@ -60,6 +64,8 @@ public class ShellGame extends AbstractMinigame {
     private static float sppedIncreasePerSwap = 0.25F;
 
     public static float timeToBeginNextSwap;
+
+    private float timer = 1F;
 
     private ArrayList<Shell> shellsToRender = new ArrayList<>();
 
@@ -90,7 +96,7 @@ public class ShellGame extends AbstractMinigame {
 
     private void onClick() {
         switch (phase) {
-            case 2:
+            case 3:
                 if (shell1.hb.hovered) {
                     chosen = 1;
                     phase = 3;
@@ -101,49 +107,238 @@ public class ShellGame extends AbstractMinigame {
                     chosen = 3;
                     phase = 3;
                 }
+
+                switch (chosen) {
+                    case 1:
+                        shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
+                        shell1.targetY = 100;
+                        break;
+                    case 2:
+                        shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
+                        shell2.targetY = 100;
+                        break;
+                    case 3:
+                        shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
+                        shell3.targetY = 100;
+                        break;
+                }
+
+                phase = 4;
+                timer = 1F;
         }
     }
 
     @Override
     public void update(float elapsed) {
-        if (phase == 3) {
-            switch (chosen) {
-                case 1:
-                    shell1.targetY = 100;
-                    if (shell1.y == shell1.targetY) {
-                        phase = 4;
+        timer -= Gdx.graphics.getDeltaTime() * timeModifier;
+        switch (phase){
+            case 0:{
+                /**
+                 Phase 1: Show each Reward animating in and getting into its proper position.
+                 Subphase 0: Left Reward
+                 Subphase 1: Right Reward
+                 Subphsae 2: Center Reward
+                 */
+                if (timer <= 0F){
+                    switch(subPhase){
+                        case 0:{
+                            shell1.currentPhase = Shell.animPhase.REWARDINTRO;
+                            timer = 1F;  //Wait time for next Reward to animate in and get into place
+                            subPhase = 1;
+                            break;
+                        }
+                        case 1:{
+                            //Shell 3 second, since the right one needs to animate first or it will be covered by the middle's anim
+                            shell3.currentPhase = Shell.animPhase.REWARDINTRO;
+                            timer = 1F;  //Wait time for next Reward to animate in and get into place
+                            subPhase = 2;
+                            break;
+                        }
+                        case 2:{
+                            shell2.currentPhase = Shell.animPhase.REWARDINTRO;
+                            timer = 1F;  //Wait time for next Reward to animate in and get into place
+                            subPhase = 0;
+                            phase = 1;
+                            break;
+                        }
                     }
-                    break;
-                case 2:
-                    shell2.targetY = 100;
-                    if (shell2.y == shell2.targetY) {
-                        phase = 4;
-                    }
-                    break;
-                case 3:
-                    shell3.targetY = 100;
-                    if (shell3.y == shell3.targetY) {
-                        phase = 4;
-                    }
-                    break;
+                }
+                break;
             }
-        } else if (phase == 4) {
-            switch (chosen) {
-                case 1:
-                    shell1.grantReward();
-                    break;
-                case 2:
-                    shell2.grantReward();
-                    break;
-                case 3:
-                    shell3.grantReward();
-                    break;
+            case 1:{
+                /**
+                 Phase 1: Show each Shell animating from the top, covering the reward
+                 Subphase 0: Left Reward
+                 Subphase 1: Center Reward
+                 Subphsae 2: Right Reward
+                 **/
+                if (timer <= 0F){
+                    switch(subPhase){
+                        case 0:{
+                            shell1.currentPhase = Shell.animPhase.SHELLINTRO;
+                            timer = .25F;  //Wait time for next Reward to animate in and get into place
+                            subPhase = 1;
+                            break;
+                        }
+                        case 1:{
+                            shell2.currentPhase = Shell.animPhase.SHELLINTRO;
+                            timer = .25F;  //Wait time for next Reward to animate in and get into place
+                            subPhase = 2;
+                            break;
+                        }
+                        case 2:{
+                            shell3.currentPhase = Shell.animPhase.SHELLINTRO;
+                            timer = 1F;  //Wait time before starting the Swaps
+                            subPhase = 0;
+                            phase = 2;
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            case 2:{
+                /**
+                 Phase 2: Animate the swaps.  Controlled mostly in decideSwap() and linked
+                 functions within.
+                 Subphase 0: Waiting to start the Switcheroo.
+                 Subphase 1: Switcheroo has begun.
+                 **/
+                if (timer <= 0F) {
+                    if (subPhase == 0) {
+                        shell1.currentPhase = Shell.animPhase.SWITCHEROO;
+                        shell2.currentPhase = Shell.animPhase.SWITCHEROO;
+                        shell3.currentPhase = Shell.animPhase.SWITCHEROO;
+                        subPhase = 1;
+                    }
+                    if (currentSwaps >= totalSwaps) {
+                        //TODO - enable interaction!  Show interactivity somehow
+                        phase = 4;
+                        shell1.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
+                        shell2.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
+                        shell3.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
+                    } else if (timeToBeginNextSwap > 0F) {
+                        timeToBeginNextSwap -= Gdx.graphics.getDeltaTime() * timeModifier;
+                        if (timeToBeginNextSwap <= 0F) {
+                            decideSwap();
+                        }
+                    }
+                }
+                break;
+            }
+            case 3:{
+                /**
+                 Phase 3: Wait for interactivity.  When a Shell is selected,
+                 animate it up and offscreen.  Controlled in the onClick method.
+                 **/
+
+                break;
+            }
+            case 4:{
+                /**
+                 Phase 4: Grant the Reward.
+                 **/
+                if (timer <= 0F) {
+                    switch (chosen) {
+                        case 1: {
+                            shell1.grantReward();
+                            break;
+                        }
+                        case 2: {
+                            shell2.grantReward();
+                            break;
+                        }
+                        case 3: {
+                            shell3.grantReward();
+                            break;
+                        }
+                    }
+                    phase = 5;
+                    subPhase = 0;
+                    timer = 1F;
+                }
+                break;
+            }case 5:{
+                /**
+                 Phase 5: Reveal the other rewards.
+                 Subphase 0: Reveal First reward not chosen.
+                 Subphase 1: Reveal Second reward not chosen.
+                 **/
+                if (timer <= 0F) {
+                    switch (chosen) {
+                        case 1: {
+                            switch (subPhase){
+                                case 0:{
+                                    shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    phase5Settings();
+                                    break;
+                                }
+                                case 1:{
+                                    shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    phase5Settings();
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        case 2: {
+                            switch (subPhase){
+                                case 0:{
+                                    shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    phase5Settings();
+                                    break;
+                                }
+                                case 1:{
+                                    shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    phase5Settings();
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        case 3: {
+                            switch (subPhase){
+                                case 0:{
+                                    shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    phase5Settings();
+                                    break;
+                                }
+                                case 1:{
+                                    shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    phase5Settings();
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                }
+                break;
+            }case 6: {
+                /**
+                 Phase 6: End the game.
+                 **/
+                if (timer <= 0F) {
+                    //TODO - End the game.  It's all over.
+                }
+
             }
         }
 
         shell1.update();
         shell2.update();
         shell3.update();
+    }
+
+    public void phase5Settings(){
+        if (subPhase == 0) {
+            subPhase = 1;
+            timer = 0.25F;
+        } else {
+            phase = 6;
+            timer = 1F;
+        }
     }
 
     @Override
@@ -177,8 +372,6 @@ public class ShellGame extends AbstractMinigame {
                 timeModifier += sppedIncreasePerSwap;
                 currentSwaps++;
                 timeToBeginNextSwap = 0.25F / timeModifier;
-            } else {
-                //enable interaction!
             }
         }
     }
@@ -211,6 +404,7 @@ public class ShellGame extends AbstractMinigame {
 
         s1.moveTimerY = 0;
         s2.moveTimerY = 0;
+
 
         s1.startMoveTimer = baseSpeed / timeModifier;
         s2.startMoveTimer = baseSpeed / timeModifier;

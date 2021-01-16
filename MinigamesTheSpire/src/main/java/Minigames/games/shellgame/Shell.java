@@ -48,6 +48,8 @@ public class Shell {
 
     public float upDist = UP_DISTANCE_Y;
 
+    public animPhase currentPhase = animPhase.REWARDINTRO;
+
     public Shell(float x, float y, AbstractCard held) {
         this.x = x;
         this.y = y;
@@ -81,38 +83,72 @@ public class Shell {
         if (heldRelic != null) {
             heldRelic.render(sb);
         }
-    }
-    public void update() {
-        if (isMoving) {
-            moveTimer += Gdx.graphics.getDeltaTime();
-            moveTimerY += Gdx.graphics.getDeltaTime();
+    }    public void update() {
+        switch (currentPhase)
+        {
+            case REWARDINTRO:{
 
-            scale = MathUtils.lerp(startScale, targetScale, moveTimerY / startMoveTimerY);
-            y = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
-
-            if (!yApexReached) {
-                if (moveTimerY >= startMoveTimerY) {
-                    y = targetY;
-                    startY = targetY;
-                    targetY = ShellGame.yMid;
-                    yApexReached = true;
-                    scale = targetScale;
-                    targetScale = 1F;
-                    startScale = scale;
-                    moveTimerY -= startMoveTimerY;
-                }
+                break;
             }
+            case SHELLINTRO:{
 
-            x = MathUtils.lerp(startX, targetX, moveTimer / startMoveTimer);
+                break;
+            }
+            case SWITCHEROO:{
+                if (isMoving) {
+                    moveTimer += Gdx.graphics.getDeltaTime();
+                    moveTimerY += Gdx.graphics.getDeltaTime();
 
-            if (moveTimer >= startMoveTimer) {
-                x = targetX;
-                y = ShellGame.yMid;
-                scale = 1F;
-                isMoving = false;
-                ShellGame.receiveSwapComplete();
+                    scale = MathUtils.lerp(startScale, targetScale, moveTimerY / startMoveTimerY);
+                    y = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
+
+                    if (!yApexReached) {
+                        if (moveTimerY >= startMoveTimerY) {
+                            y = targetY;
+                            startY = targetY;
+                            targetY = ShellGame.yMid;
+                            yApexReached = true;
+                            scale = targetScale;
+                            targetScale = 1F;
+                            startScale = scale;
+                            moveTimerY -= startMoveTimerY;
+                        }
+                    }
+
+                    x = MathUtils.lerp(startX, targetX, moveTimer / startMoveTimer);
+
+                    if (moveTimer >= startMoveTimer) {
+                        x = targetX;
+                        y = ShellGame.yMid;
+                        scale = 1F;
+                        isMoving = false;
+                        ShellGame.receiveSwapComplete();
+                    }
+                }
+                break;
+            }
+            case WAITINGFORPLAYER:{
+
+                break;
+            }
+            case SHELLOUTRO:{
+
+                break;
             }
         }
+
     }
 
+
+
+    public enum animPhase {
+        REWARDINTRO,
+        SHELLINTRO,
+        SWITCHEROO,
+        WAITINGFORPLAYER,
+        SHELLOUTRO;
+
+        animPhase() {
+        }
+    }
 }
