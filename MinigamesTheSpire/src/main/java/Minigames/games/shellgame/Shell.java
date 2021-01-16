@@ -72,15 +72,15 @@ public class Shell {
 
     public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE.cpy());
-        sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY, shellTex.getWidth() * scale, shellTex.getHeight() * scale);
-
-
         if (heldCard != null) {
             heldCard.render(sb);
         }
         if (heldRelic != null) {
             heldRelic.render(sb);
         }
+
+        sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY, shellTex.getWidth() * scale, shellTex.getHeight() * scale);
+
     }
 
     public void update() {
