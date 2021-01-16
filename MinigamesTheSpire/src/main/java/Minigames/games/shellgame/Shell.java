@@ -1,6 +1,5 @@
 package Minigames.games.shellgame;
 
-import Minigames.events.AbstractMinigameEvent;
 import Minigames.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -50,6 +49,8 @@ public class Shell {
 
     public float relicDrawScale;
     public float targetRelicDrawScale;
+    public float relicTransparency;
+    public float targetRelicTransparency;
 
     public animPhase currentPhase = animPhase.REWARDINTRO;
 
@@ -117,8 +118,7 @@ public class Shell {
             case REWARDINTRO: {
                 if (heldCard != null) {
 
-                }
-                else if (heldRelic != null) {
+                } else if (heldRelic != null) {
 
                 }
                 break;
