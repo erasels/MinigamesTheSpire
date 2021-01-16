@@ -3,6 +3,7 @@ package Minigames.games.fishing.fish;
 import Minigames.util.HelperClass;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.rewards.RewardItem;
 
 import java.util.ArrayList;
 
@@ -37,8 +38,7 @@ public abstract class AbstractFish {
 
         ttl += HelperClass.getTime();
         y = Interpolation.smoother.apply(initialY, currentBehavior.y, ttl / currentBehavior.x);
-        System.out.printf("Interpolation.smoother.apply(%f, %f, %f / %f) = %f%n", initialY, currentBehavior.y, ttl, currentBehavior.x, y);
-        //System.out.println("Y: " + y + " " + currentBehavior.y);
+        //System.out.printf("Interpolation.smoother.apply(%f, %f, %f / %f) = %f%n", initialY, currentBehavior.y, ttl, currentBehavior.x, y);
 
         //If fish move has been finished
         if(ttl >= currentBehavior.x) {
@@ -50,10 +50,9 @@ public abstract class AbstractFish {
         return hp <= 0;
     }
 
-    public void dispose() {
-        originBehavior = null;
-        currentBehavior = null;
-    }
+    public abstract ArrayList<RewardItem> returnReward();
+
+    public void dispose() { }
 
     private void cycleBehavior() {
         initialY = y;
