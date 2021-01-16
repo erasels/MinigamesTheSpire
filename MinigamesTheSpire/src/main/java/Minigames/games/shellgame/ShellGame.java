@@ -46,6 +46,8 @@ public class ShellGame extends AbstractMinigame {
     private static float xpos2 = Settings.WIDTH * 0.5F;
     private static float xpos3 = Settings.WIDTH * 0.6F;
 
+    public static float offscreenShellHeight = 200F;
+
     public static float yBackgroundSwap = Settings.HEIGHT * 0.55F;
     public static float yForegroundSwap = Settings.HEIGHT * 0.45F;
     public static float yMid = Settings.HEIGHT * 0.5F;
@@ -94,6 +96,10 @@ public class ShellGame extends AbstractMinigame {
         timer = 1F;
         phase = 0;
         subPhase = 0;
+
+        shell1.shellOffsetY = offscreenShellHeight;
+        shell2.shellOffsetY = offscreenShellHeight;
+        shell3.shellOffsetY = offscreenShellHeight;
     }
 
     private void onClick() {
@@ -175,6 +181,7 @@ public class ShellGame extends AbstractMinigame {
                     switch (subPhase) {
                         case 0: {
                             shell1.currentPhase = Shell.animPhase.SHELLINTRO;
+                            shell1.targetY = yMid;
                             shell1.moveTimerY = 0F;
                             shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = .25F;  //Wait time before showing next Shell
@@ -183,6 +190,7 @@ public class ShellGame extends AbstractMinigame {
                         }
                         case 1: {
                             shell2.currentPhase = Shell.animPhase.SHELLINTRO;
+                            shell2.targetY = yMid;
                             shell2.moveTimerY = 0F;
                             shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = .25F;  //Wait time before showing next Shell
@@ -191,6 +199,7 @@ public class ShellGame extends AbstractMinigame {
                         }
                         case 2: {
                             shell3.currentPhase = Shell.animPhase.SHELLINTRO;
+                            shell3.targetY = yMid;
                             shell3.moveTimerY = 0F;
                             shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = 1F;  //Wait time before starting the Swaps
@@ -346,9 +355,9 @@ public class ShellGame extends AbstractMinigame {
             }
         }
 
-        shell1.update();
-        shell2.update();
-        shell3.update();
+        shell1.update(elapsed);
+        shell2.update(elapsed);
+        shell3.update(elapsed);
     }
 
     public void phase5Settings() {
