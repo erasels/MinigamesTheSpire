@@ -40,7 +40,8 @@ public class ShellGame extends AbstractMinigame {
     private int chosen = -1;
 
     private static float timeModifier = 1F;
-
+    private static float debugTimeModifier = .25F;
+    
     private static float xpos1 = Settings.WIDTH * 0.4F;
     private static float xpos2 = Settings.WIDTH * 0.5F;
     private static float xpos3 = Settings.WIDTH * 0.6F;
@@ -127,7 +128,7 @@ public class ShellGame extends AbstractMinigame {
 
     @Override
     public void update(float elapsed) {
-        timer -= elapsed * timeModifier;
+        timer -= elapsed * timeModifier * debugTimeModifier;
         switch (phase){
             case 0:{
                 /**
