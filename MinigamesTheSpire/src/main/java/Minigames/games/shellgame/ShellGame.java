@@ -217,6 +217,7 @@ public class ShellGame extends AbstractMinigame {
                         shell1.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
                         shell2.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
                         shell3.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
+                        timeModifier = 1F;  //Reset time modifier back to normal so the timers aren't still going at lightning speed
                     } else if (timeToBeginNextSwap > 0F) {
                         timeToBeginNextSwap -= Gdx.graphics.getDeltaTime() * timeModifier;
                         if (timeToBeginNextSwap <= 0F) {
