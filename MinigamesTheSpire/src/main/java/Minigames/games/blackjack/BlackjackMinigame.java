@@ -45,8 +45,8 @@ public class BlackjackMinigame extends AbstractMinigame {
     public static final int LEAVE = 4;
 
     public static final int BUST_THRESHOLD = 21;
-    public static final int MIN_BET = 50;
-    public static final int MAX_BET = 100;
+    public static final int MIN_BET = 15;
+    public static final int MAX_BET = 50;
     private static final int payOutMultiplier = 3;
     private static final int MAX_PLAYS = 3;
     public int numPlays = 0;
