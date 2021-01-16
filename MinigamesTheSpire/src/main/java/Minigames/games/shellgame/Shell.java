@@ -86,11 +86,12 @@ public class Shell {
     public void update() {
         hb.update();
         if (this.heldCard != null) {
+            this.heldCard.drawScale = this.heldCard.targetDrawScale = 0.66F;
             this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
             this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
         } else if (this.heldRelic != null) {
             this.heldRelic.currentX = this.heldRelic.targetX = x + (shellTex.getWidth() / 2F);
-            this.heldRelic.currentY = this.heldRelic.targetY = x + (shellTex.getHeight() / 2F);
+            this.heldRelic.currentY = this.heldRelic.targetY = y + (shellTex.getHeight() / 2F);
         }
         switch (currentPhase) {
             case REWARDINTRO: {
