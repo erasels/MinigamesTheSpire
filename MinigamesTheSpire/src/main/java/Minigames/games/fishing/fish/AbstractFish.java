@@ -8,6 +8,7 @@ import com.megacrit.cardcrawl.rewards.RewardItem;
 import java.util.ArrayList;
 
 public abstract class AbstractFish {
+    //How long the player has to be catching the fish (percentage of total game time)
     public float hp, mHp;
     public float y, initialY;
 
@@ -15,7 +16,7 @@ public abstract class AbstractFish {
     //time taken so far
     protected float ttl;
 
-    //Y = Y location to move to
+    //Y = Y location to move to (percentage of total area)
     //X = time spent on the move
     protected ArrayList<Vector2> originBehavior;
     protected Vector2 currentBehavior;
@@ -69,7 +70,8 @@ public abstract class AbstractFish {
         return y >= y1 && y <= y2;
     }
 
-    public void scaleBehaviorY(float maxPos) {
+    public void scaleBehavior(float maxGameTime, float maxPos) {
+        hp = mHp = mHp * maxGameTime;
         for(Vector2 vec : originBehavior) {
             vec.y *= maxPos;
         }
