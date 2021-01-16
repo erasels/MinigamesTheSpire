@@ -55,6 +55,8 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
     }
 
     public void endOfEvent() {
+        this.imageEventText.clearAllDialogs();
+
         this.imageEventText.updateBodyText("hmmmm");
         this.imageEventText.setDialogOption("I guess it's over?");
     }

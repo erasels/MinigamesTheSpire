@@ -2,6 +2,7 @@ package Minigames.events;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
+import Minigames.games.gremlinFlip.gremlinFlip;
 import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
@@ -25,9 +26,11 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
         minigames = new AbstractMinigame[3];
         minigames[0] = new TestMinigame();
         minigames[1] = new BeatPress();
+        minigames[2] = new gremlinFlip();
 
         imageEventText.setDialogOption(minigames[0].getOption());
         imageEventText.setDialogOption(minigames[1].getOption());
+        imageEventText.setDialogOption(minigames[2].getOption());
     }
 
     @Override
@@ -53,12 +56,12 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
                 }
                 break;
             case 2:
-                if (minigames[chosenMinigame].instructionsButtonPressed(buttonPressed)) {
+                if (minigames[chosenMinigame].instructionsButtonPressed(buttonPressed, this.imageEventText)) {
                     startGame(minigames[chosenMinigame]);
                 }
                 break;
             case 3:
-                if (minigames[chosenMinigame].postgameButtonPressed(buttonPressed)) {
+                if (minigames[chosenMinigame].postgameButtonPressed(buttonPressed, this.imageEventText)) {
                     endOfEvent();
                 }
                 break;
@@ -87,6 +90,8 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
 
     @Override
     public void endOfEvent() {
+        this.imageEventText.clearAllDialogs();
+
         this.imageEventText.updateBodyText("hmmmm");
         this.imageEventText.setDialogOption("I guess it's over?");
 
