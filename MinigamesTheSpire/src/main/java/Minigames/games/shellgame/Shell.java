@@ -43,6 +43,6 @@ public class Shell {
         if (heldRelic != null) {
             heldRelic.render(sb);
         }
-
+        sb.draw(shellTex, x, y); //TODO: Scale
     }
 }
