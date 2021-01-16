@@ -47,4 +47,8 @@ public class Shell {
         }
         sb.draw(shellTex, x, y); //TODO: Scale
     }
+
+    public void update(float elapsedRealTime) {
+        //Here is where the moving stuff will be happen
+    }
 }

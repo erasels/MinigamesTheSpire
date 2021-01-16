@@ -70,6 +70,13 @@ public class ShellGame extends AbstractMinigame {
     }
 
     @Override
+    public void update(float elapsed) {
+        shell1.update(elapsed);
+        shell2.update(elapsed);
+        shell3.update(elapsed);
+    }
+
+    @Override
     protected BindingGroup getBindings() {
         BindingGroup bindings = new BindingGroup();
 
