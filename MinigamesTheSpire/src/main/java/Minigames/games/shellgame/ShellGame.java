@@ -167,16 +167,19 @@ public class ShellGame extends AbstractMinigame {
 
                 switch (chosen) {
                     case 1:
+                        CardCrawlGame.sound.playAV("SHOP_PURCHASE", .1F, 2F);
                         shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
                         shell1.startMoveTimerY = 0.5F;
                         shell1.moveTimerY = 0F;
                         break;
                     case 2:
+                        CardCrawlGame.sound.playAV("SHOP_PURCHASE", .1F, 2F);
                         shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
                         shell2.startMoveTimerY = 0.5F;
                         shell2.moveTimerY = 0F;
                         break;
                     case 3:
+                        CardCrawlGame.sound.playA("INTIMIDATE", .1F);
                         shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
                         shell3.startMoveTimerY = 0.5F;
                         shell3.moveTimerY = 0F;
@@ -207,6 +210,7 @@ public class ShellGame extends AbstractMinigame {
                     switch (subPhase) {
                         case 0: {
                             shell1.currentPhase = Shell.animPhase.REWARDINTRO;
+                            CardCrawlGame.sound.playAV("HEAL_1", -.2F, 2F);
                             shell1.moveTimer = 0F;
                             shell1.startMoveTimer = .5F;
                             shell1.targetX = xpos1;
@@ -217,6 +221,7 @@ public class ShellGame extends AbstractMinigame {
                         case 1: {
                             //Shell 3 second, since the right one needs to animate first or it will be covered by the middle's anim
                             shell3.currentPhase = Shell.animPhase.REWARDINTRO;
+                            CardCrawlGame.sound.playAV("HEAL_2", -.2F, 2F);
                             shell3.moveTimer = 0F;
                             shell3.startMoveTimer = .5F;
                             shell3.targetX = xpos3;
@@ -226,6 +231,7 @@ public class ShellGame extends AbstractMinigame {
                         }
                         case 2: {
                             shell2.currentPhase = Shell.animPhase.REWARDINTRO;
+                            CardCrawlGame.sound.playAV("HEAL_3", -.2F, 2F);
                             shell2.moveTimer = 0F;
                             shell2.startMoveTimer = .5F;
                             shell2.targetX = xpos2;
@@ -249,6 +255,7 @@ public class ShellGame extends AbstractMinigame {
                     switch (subPhase) {
                         case 0: {
                             shell1.currentPhase = Shell.animPhase.SHELLINTRO;
+                            CardCrawlGame.sound.playAV("BLOCK_GAIN_1", .15F, .4F);
                             //shell1.targetY = yMid;
                             shell1.moveTimerY = 0F;
                             shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
@@ -258,6 +265,7 @@ public class ShellGame extends AbstractMinigame {
                         }
                         case 1: {
                             shell2.currentPhase = Shell.animPhase.SHELLINTRO;
+                            CardCrawlGame.sound.playAV("BLOCK_GAIN_2", .15F, .4F);
                             //shell2.targetY = yMid;
                             shell2.moveTimerY = 0F;
                             shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
@@ -267,6 +275,7 @@ public class ShellGame extends AbstractMinigame {
                         }
                         case 2: {
                             shell3.currentPhase = Shell.animPhase.SHELLINTRO;
+                            CardCrawlGame.sound.playAV("BLOCK_GAIN_3", .15F, .4F);
                             //shell3.targetY = yMid;
                             shell3.moveTimerY = 0F;
                             shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
@@ -428,6 +437,7 @@ public class ShellGame extends AbstractMinigame {
     }
 
     public void phase5Settings() {
+        CardCrawlGame.sound.playAV("CARD_POWER_WOOSH", .8F, 5F);
         if (subPhase == 0) {
             subPhase = 1;
             timer = 0.25F;
@@ -462,6 +472,9 @@ public class ShellGame extends AbstractMinigame {
         } else {
             setShellTarget(shellsToRender.get(0), shellsToRender.get(2), shellsToRender.get(1));
         }
+
+
+        CardCrawlGame.sound.playA("ATTACK_WHIFF_1", .3F * (timeModifier / 5F));
 
     }
 
