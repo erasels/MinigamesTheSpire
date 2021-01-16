@@ -54,11 +54,6 @@ public class Shell {
     public float moveTimerY;
     public float startMoveTimerY;
 
-    public float relicDrawScale;
-    public float targetRelicDrawScale;
-    public float relicTransparency;
-    public float targetRelicTransparency;
-
     public animPhase currentPhase = animPhase.NONE;
 
     public Shell(AbstractMinigame parent, float x, float y, AbstractCard held) {
@@ -71,6 +66,10 @@ public class Shell {
         heldCard.current_y = heldCard.target_y = Settings.HEIGHT / 2F;
         heldCard.drawScale = heldCard.targetDrawScale = 1.33F;
         heldCard.targetTransparency = heldCard.transparency = 1F;
+
+        currentPhase = animPhase.NONE;
+
+        shellOffsetX = shellTex.getWidth() * -0.5F;
     }
 
     public Shell(AbstractMinigame parent, float x, float y, AbstractRelic held) {
@@ -81,9 +80,11 @@ public class Shell {
         this.heldRelic = held;
         heldRelic.currentX = heldRelic.targetX = Settings.WIDTH / 2F;
         heldRelic.currentY = heldRelic.targetY = Settings.HEIGHT / 2F;
-        relicDrawScale = targetRelicDrawScale = 1.5F;
-        relicTransparency = targetRelicTransparency = 0F;
-    }
+
+        currentPhase = animPhase.NONE;
+
+        shellOffsetX = shellTex.getWidth() * -0.5F;
+}
 
     public void grantReward() {
         if (this.heldCard != null) {
@@ -96,11 +97,16 @@ public class Shell {
     public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE.cpy());
         if (heldCard != null) {
-            heldCard.render(sb);
+            if (currentPhase != animPhase.SWITCHEROO && currentPhase != animPhase.NONE) {
+                heldCard.render(sb);
+            }
         }
         if (heldRelic != null) {
-            sb.setColor(1F, 1F, 1F, 1F);
-            sb.draw(heldRelic.img, heldRelic.currentX, heldRelic.currentY, 64 * relicDrawScale, 64 * relicDrawScale);
+            if (currentPhase != animPhase.SWITCHEROO && currentPhase != animPhase.NONE) {
+                sb.setColor(1F, 1F, 1F, 1F);
+                sb.draw(heldRelic.img, heldRelic.currentX - (64 * heldRelic.scale / 2), heldRelic.currentY - (64 * heldRelic.scale / 2), 64 * heldRelic.scale, 64 * heldRelic.scale);
+
+            }
         }
 
         sb.setColor(1F, 1F, 1F, alpha);
@@ -111,10 +117,10 @@ public class Shell {
 
     public void update(float elapsed) {
         hb.update();
-        if (heldCard != null){
+        if (heldCard != null) {
             heldCard.update();
         }
-        if (heldRelic != null){
+        if (heldRelic != null) {
             heldRelic.update();
         }
         /*
@@ -133,23 +139,48 @@ public class Shell {
                 moveTimer += elapsed;
                 if (heldCard != null) {
                     heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScaleStart, ShellGame.cardScalePeak, moveTimer / startMoveTimer);
-                     heldCard.transparency = heldCard.targetTransparency = MathUtils.lerp(0F, 2F, moveTimer / startMoveTimer);
                     if (moveTimer >= startMoveTimer) {
                         heldCard.drawScale = ShellGame.cardScalePeak;
                         startMoveTimer = 0.3F;
                         moveTimer = 0F;
-                        currentPhase = animPhase.REWARDMOVETOSPACE;
-                        heldCard.transparency = heldCard.targetTransparency = 1F;
+                        currentPhase = animPhase.REWARDINTRO2;
                     }
                 } else if (heldRelic != null) {
-                    relicDrawScale = targetRelicDrawScale = MathUtils.lerp(ShellGame.relicScaleStart, ShellGame.relicScalePeak, moveTimer / startMoveTimer);
-                    relicTransparency = targetRelicTransparency = MathUtils.lerp(0F, 2F, moveTimer / startMoveTimer);
+                    heldRelic.scale = MathUtils.lerp(ShellGame.relicScaleStart, ShellGame.relicScalePeak, moveTimer / startMoveTimer);
                     if (moveTimer >= startMoveTimer) {
-                        relicDrawScale = ShellGame.cardScalePeak;
+                        heldRelic.scale = ShellGame.relicScalePeak;
                         startMoveTimer = 0.3F;
                         moveTimer = 0F;
-                        currentPhase = animPhase.REWARDMOVETOSPACE;
-                        relicTransparency = targetRelicTransparency = 1F;
+                        currentPhase = animPhase.REWARDINTRO2;
+                    }
+                }
+                break;
+            }
+            case REWARDINTRO2: {
+                moveTimer += elapsed;
+                if (heldCard != null) {
+                    if (moveTimer < startMoveTimer) {
+                        heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScalePeak, ShellGame.cardScaleNorm, moveTimer / startMoveTimer);
+                    } else {
+                        heldCard.drawScale = ShellGame.cardScaleNorm;
+                        //heldCard.current_x = heldCard.target_x = targetX;
+                        if (moveTimer >= startMoveTimer * 2.5) {
+                            startMoveTimer = 0.3F;
+                            moveTimer = 0F;
+                            currentPhase = animPhase.REWARDMOVETOSPACE;
+                        }
+                    }
+                } else if (heldRelic != null) {
+                    if (moveTimer < startMoveTimer) {
+                        heldRelic.scale = MathUtils.lerp(ShellGame.relicScalePeak, ShellGame.relicScaleNorm, moveTimer / startMoveTimer);
+                    } else {
+                        heldRelic.scale = ShellGame.relicScaleNorm;
+                        //heldCard.current_x = heldCard.target_x = targetX;
+                        if (moveTimer >= startMoveTimer) {
+                            startMoveTimer = 0.3F;
+                            moveTimer = 0F;
+                            currentPhase = animPhase.REWARDMOVETOSPACE;
+                        }
                     }
                 }
                 break;
@@ -157,22 +188,20 @@ public class Shell {
             case REWARDMOVETOSPACE: {
                 moveTimer += elapsed;
                 if (heldCard != null) {
-                    heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScalePeak, ShellGame.cardScaleCup, moveTimer / startMoveTimer);
-                    // heldCard.transparency = heldCard.targetTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
+                    heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScaleNorm, ShellGame.cardScaleCup, moveTimer / startMoveTimer);
                     x = MathUtils.lerp(x, targetX, moveTimer / startMoveTimer);
                     heldCard.current_x = heldCard.target_x = x;
                     if (moveTimer >= startMoveTimer) {
-                        heldCard.drawScale = ShellGame.cardScaleCup;
+                        heldCard.drawScale = heldCard.targetDrawScale = ShellGame.cardScaleCup;
                         heldCard.current_x = heldCard.target_x = targetX;
                     }
                 } else if (heldRelic != null) {
-                    relicDrawScale = targetRelicDrawScale = MathUtils.lerp(ShellGame.cardScalePeak, ShellGame.cardScaleCup, moveTimer / startMoveTimer);
-                    // heldCard.transparency = heldCard.targetTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
-                    x = MathUtils.lerp(x, targetX, moveTimer / startMoveTimer);
-                    heldRelic.targetX = heldRelic.currentX = x;
+                    heldRelic.scale = MathUtils.lerp(ShellGame.relicScaleNorm, ShellGame.relicScaleCup, moveTimer / startMoveTimer);
+                    //x = MathUtils.lerp(x, targetX, moveTimer / startMoveTimer);
+                    //heldRelic.targetX = heldRelic.currentX = x;
                     if (moveTimer >= startMoveTimer) {
-                        relicDrawScale = ShellGame.cardScaleCup;
-                        heldRelic.targetX = heldRelic.currentX = targetX;
+                        heldRelic.scale = ShellGame.relicScaleCup;
+                       // heldRelic.targetX = heldRelic.currentX = targetX;
                     }
                 }
                 break;
@@ -241,6 +270,7 @@ public class Shell {
     public enum animPhase {
         NONE,
         REWARDINTRO,
+        REWARDINTRO2,
         REWARDMOVETOSPACE,
         SHELLINTRO,
         SWITCHEROO,

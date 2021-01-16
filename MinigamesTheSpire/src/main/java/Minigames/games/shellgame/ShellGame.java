@@ -40,7 +40,6 @@ public class ShellGame extends AbstractMinigame {
     private int chosen = -1;
 
     private static float timeModifier = 1F;
-    private static float debugTimeModifier = .25F;
 
     private static float xpos1 = Settings.WIDTH * 0.4F;
     private static float xpos2 = Settings.WIDTH * 0.5F;
@@ -55,13 +54,15 @@ public class ShellGame extends AbstractMinigame {
     public static float scaleForegroundSwap = 1.25F;
     public static float scaleBackgroundSwap = 0.75F;
 
-    public static float cardScaleStart = .6F;
-    public static float cardScalePeak = 1.33F;
+    public static float cardScaleStart = 0.05F;
+    public static float cardScalePeak = 1.15F;
+    public static float cardScaleNorm = 1F;
     public static float cardScaleCup = .35F;
 
-    public static float relicScaleStart = 1F;
-    public static float relicScalePeak = 3F;
-    public static float relicScaleCup = .35F;
+    public static float relicScaleStart = 0.05F;
+    public static float relicScalePeak = 15F;
+    public static float relicScaleNorm = 13F;
+    public static float relicScaleCup = 8F;
 
     private int subPhase = 0;
 
@@ -95,16 +96,12 @@ public class ShellGame extends AbstractMinigame {
         shell2 = new Shell(this, xpos2, yMid, rewardRelic);
         shell3 = new Shell(this, xpos2, yMid, nastyCurse);
 
-        shell1.heldCard.drawScale = cardScaleStart;
+        shell1.heldCard.drawScale = shell1.heldCard.targetDrawScale = cardScaleStart;
         shell2.heldRelic.scale = relicScaleStart;
-        shell3.heldCard.drawScale = cardScaleStart;
-
-        shell1.heldCard.targetTransparency = shell1.heldCard.transparency = 0F;
-        //shell1.heldCard.targetTransparency = shell1.heldCard.transparency = 0F;
-        shell3.heldCard.targetTransparency = shell3.heldCard.transparency = 0F;
+        shell3.heldCard.drawScale = shell3.heldCard.targetDrawScale = cardScaleStart;
 
         shell1.heldCard.current_x = shell1.heldCard.target_x = xpos2;
-        // shell2.heldCard.current_x = shell1.heldCard.target_x = xpos2;
+        shell2.heldRelic.currentX = shell2.heldRelic.targetX = xpos2;
         shell3.heldCard.current_x = shell3.heldCard.target_x = xpos2;
 
         shellsToRender.add(shell1);
@@ -146,14 +143,14 @@ public class ShellGame extends AbstractMinigame {
                 }
 
                 phase = 4;
-                timer = 1F;
+                timer = .25F;
         }
     }
 
     @Override
     public void update(float elapsed) {
         super.update(elapsed);
-        timer -= elapsed * timeModifier * debugTimeModifier;
+        timer -= elapsed * timeModifier;
         switch (phase) {
             case 0: {
                 /**
@@ -169,7 +166,7 @@ public class ShellGame extends AbstractMinigame {
                             shell1.moveTimer = 0F;
                             shell1.startMoveTimer = .5F;
                             shell1.targetX = xpos1;
-                            timer = 1F;  //Wait time for next Reward to animate in and get into place
+                            timer = 1.25F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 1;
                             break;
                         }
@@ -179,7 +176,7 @@ public class ShellGame extends AbstractMinigame {
                             shell3.moveTimer = 0F;
                             shell3.startMoveTimer = .5F;
                             shell3.targetX = xpos3;
-                            timer = 1F;  //Wait time for next Reward to animate in and get into place
+                            timer = 1.25F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 2;
                             break;
                         }
@@ -188,7 +185,7 @@ public class ShellGame extends AbstractMinigame {
                             shell2.moveTimer = 0F;
                             shell2.startMoveTimer = .5F;
                             shell2.targetX = xpos2;
-                            timer = 1F;  //Wait time for next Reward to animate in and get into place
+                            timer = 1.5F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 0;
                             phase = 1;
                             break;
@@ -208,7 +205,7 @@ public class ShellGame extends AbstractMinigame {
                     switch (subPhase) {
                         case 0: {
                             shell1.currentPhase = Shell.animPhase.SHELLINTRO;
-                            shell1.targetY = yMid;
+                            //shell1.targetY = yMid;
                             shell1.moveTimerY = 0F;
                             shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = .25F;  //Wait time before showing next Shell
@@ -217,7 +214,7 @@ public class ShellGame extends AbstractMinigame {
                         }
                         case 1: {
                             shell2.currentPhase = Shell.animPhase.SHELLINTRO;
-                            shell2.targetY = yMid;
+                            //shell2.targetY = yMid;
                             shell2.moveTimerY = 0F;
                             shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = .25F;  //Wait time before showing next Shell
@@ -226,7 +223,7 @@ public class ShellGame extends AbstractMinigame {
                         }
                         case 2: {
                             shell3.currentPhase = Shell.animPhase.SHELLINTRO;
-                            shell3.targetY = yMid;
+                            //shell3.targetY = yMid;
                             shell3.moveTimerY = 0F;
                             shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = 1F;  //Wait time before starting the Swaps
