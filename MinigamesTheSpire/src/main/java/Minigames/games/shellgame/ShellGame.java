@@ -91,9 +91,9 @@ public class ShellGame extends AbstractMinigame {
         AbstractCard nastyCurse = CardLibrary.getCurse();
 
         //yMid + some offset to get them to start above at the beginning
-        shell1 = new Shell(xpos2, yMid, rewardCard);
-        shell2 = new Shell(xpos2, yMid, rewardRelic);
-        shell3 = new Shell(xpos2, yMid, nastyCurse);
+        shell1 = new Shell(this, xpos2, yMid, rewardCard);
+        shell2 = new Shell(this, xpos2, yMid, rewardRelic);
+        shell3 = new Shell(this, xpos2, yMid, nastyCurse);
 
         shell1.heldCard.drawScale = cardScaleStart;
         shell2.heldRelic.scale = relicScaleStart;
