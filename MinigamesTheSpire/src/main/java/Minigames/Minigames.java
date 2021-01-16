@@ -1,5 +1,6 @@
 package Minigames;
 
+import Minigames.events.ShellGameEvent;
 import Minigames.events.TestBlackjackEvent;
 import Minigames.events.TestMinigameEvent;
 import Minigames.events.gremlinFlipEvent;
@@ -50,6 +51,8 @@ public class Minigames implements
         BaseMod.addEvent(TestBlackjackEvent.ID, TestBlackjackEvent.class);
 
         BaseMod.addEvent(gremlinFlipEvent.ID, gremlinFlipEvent.class);
+
+        BaseMod.addEvent(ShellGameEvent.ID, ShellGameEvent.class);
 
     }
 
