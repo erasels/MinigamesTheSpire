@@ -2,6 +2,10 @@ package Minigames.games.shellgame;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.CardLibrary;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 public class ShellGame extends AbstractMinigame {
 
@@ -22,7 +26,18 @@ public class ShellGame extends AbstractMinigame {
     private Shell shell2;
     private Shell shell3;
 
-    private int chosen;
+    private int chosen = -1;
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        AbstractRelic rewardRelic = AbstractDungeon.returnRandomRelic(AbstractDungeon.returnRandomRelicTier());
+        AbstractCard rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
+        AbstractCard nastyCurse = CardLibrary.getCurse();
+        shell1 = new Shell(100, 100, rewardCard);
+        shell2 = new Shell(200, 100, rewardRelic);
+        shell3 = new Shell(300, 100, nastyCurse);
+    }
 
     private void onClick() {
         switch (phase) {
@@ -30,12 +45,10 @@ public class ShellGame extends AbstractMinigame {
                 if (shell1.hb.hovered) {
                     chosen = 1;
                     phase = 3;
-                }
-                else if (shell2.hb.hovered) {
+                } else if (shell2.hb.hovered) {
                     chosen = 2;
                     phase = 3;
-                }
-                else if (shell3.hb.hovered) {
+                } else if (shell3.hb.hovered) {
                     chosen = 3;
                     phase = 3;
                 }
