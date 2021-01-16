@@ -6,9 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class AbstractGamePhase {
     protected FishingGame parent;
     protected AbstractGamePhase nextGame;
+
+    public boolean isDone, waiting;
+
     public AbstractGamePhase(FishingGame parent, AbstractGamePhase next) {
         this.parent = parent;
         nextGame = next;
+        isDone = false;
+        waiting = false;
     }
 
     public void initialize() { }
@@ -21,10 +26,15 @@ public abstract class AbstractGamePhase {
         if(parent.waiting()) {
             if(nextGame != null)
                 nextGame.initialize();
+            killAction();
             dispose();
             parent.gamePhase = nextGame;
+        } else {
+            waiting = true;
         }
     }
+
+    protected void killAction() {}
 
     public void dispose() {}
 }
