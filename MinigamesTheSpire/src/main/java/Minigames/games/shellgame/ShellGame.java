@@ -137,6 +137,7 @@ public class ShellGame extends AbstractMinigame {
 
     @Override
     public void update(float elapsed) {
+        super.update(elapsed);
         timer -= elapsed * timeModifier * debugTimeModifier;
         switch (phase){
             case 0:{
@@ -474,6 +475,7 @@ public class ShellGame extends AbstractMinigame {
 
 
     public void render(SpriteBatch sb) {
+        super.render(sb);
 
         FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(timer), Settings.HEIGHT / 2F, Settings.WIDTH / 2F, Color.RED.cpy());
         FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(phase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (50 * Settings.scale), Color.RED.cpy());
