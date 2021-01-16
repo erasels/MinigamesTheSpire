@@ -121,6 +121,16 @@ public class Shell {
         hb.render(sb);
     }
 
+    public void setEnclosedLocations() {
+        if (this.heldCard != null) {
+            this.heldCard.current_x = this.heldCard.target_x = x;
+            this.heldCard.current_y = this.heldCard.target_y = y;
+        } else if (this.heldRelic != null) {
+            this.heldRelic.currentX = this.heldRelic.targetX = x;
+            this.heldRelic.currentY = this.heldRelic.targetY = y;
+        }
+    }
+
     public void update(float elapsed) {
         hb.update();
         /*
@@ -129,17 +139,6 @@ public class Shell {
         }
         if (heldRelic != null) {
             heldRelic.update();
-        }
-        */
-        /*
-        if (currentPhase != animPhase.REWARDINTRO && currentPhase != animPhase.REWARDMOVETOSPACE && currentPhase != animPhase.NONE) {
-            if (this.heldCard != null) {
-                this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
-                this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
-            } else if (this.heldRelic != null) {
-                this.heldRelic.currentX = this.heldRelic.targetX = x + (shellTex.getWidth() / 2F);
-                this.heldRelic.currentY = this.heldRelic.targetY = y + (shellTex.getHeight() / 2F);
-            }
         }
         */
         switch (currentPhase) {
