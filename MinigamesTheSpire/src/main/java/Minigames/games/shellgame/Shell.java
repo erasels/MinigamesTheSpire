@@ -10,6 +10,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
+import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
@@ -23,8 +24,8 @@ public class Shell {
     public float targetX;
     public float y;
     public float targetY;
-    private AbstractCard heldCard;
-    private AbstractRelic heldRelic;
+    public AbstractCard heldCard;
+    public AbstractRelic heldRelic;
     public Hitbox hb;
 
     public boolean isMoving;
@@ -50,13 +51,22 @@ public class Shell {
     public float moveTimerY;
     public float startMoveTimerY;
 
-    public animPhase currentPhase = animPhase.REWARDINTRO;
+    public float relicDrawScale;
+    public float targetRelicDrawScale;
+    public float relicTransparency;
+    public float targetRelicTransparency;
+
+    public animPhase currentPhase = animPhase.NONE;
 
     public Shell(float x, float y, AbstractCard held) {
         this.x = x;
         this.y = y;
         this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
         this.heldCard = held;
+        heldCard.current_x = heldCard.target_x = Settings.WIDTH / 2F;
+        heldCard.current_y = heldCard.target_y = Settings.HEIGHT / 2F;
+        heldCard.drawScale = heldCard.targetDrawScale = 1.33F;
+        heldCard.targetTransparency = heldCard.transparency = 0F;
     }
 
     public Shell(float x, float y, AbstractRelic held) {
@@ -64,6 +74,10 @@ public class Shell {
         this.y = y;
         this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
         this.heldRelic = held;
+        heldRelic.currentX = heldRelic.targetX = Settings.WIDTH / 2F;
+        heldRelic.currentY = heldRelic.targetY = Settings.HEIGHT / 2F;
+        relicDrawScale = targetRelicDrawScale = 1.5F;
+        relicTransparency = targetRelicTransparency = 0F;
     }
 
     public void grantReward() {
@@ -80,7 +94,8 @@ public class Shell {
             heldCard.render(sb);
         }
         if (heldRelic != null) {
-            heldRelic.render(sb);
+            sb.setColor(1F, 1F, 1F, relicTransparency);
+            sb.draw(heldRelic.img, heldRelic.currentX, heldRelic.currentY, 64 * relicDrawScale, 64 * relicDrawScale);
         }
 
         sb.setColor(1F, 1F, 1F, alpha);
@@ -91,16 +106,35 @@ public class Shell {
 
     public void update(float elapsed) {
         hb.update();
-        if (this.heldCard != null) {
-            this.heldCard.drawScale = this.heldCard.targetDrawScale = 0.66F;
-            this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
-            this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
-        } else if (this.heldRelic != null) {
-            this.heldRelic.currentX = this.heldRelic.targetX = x + (shellTex.getWidth() / 2F);
-            this.heldRelic.currentY = this.heldRelic.targetY = y + (shellTex.getHeight() / 2F);
+        if (currentPhase != animPhase.REWARDINTRO && currentPhase != animPhase.NONE) {
+            if (this.heldCard != null) {
+                this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
+                this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
+            } else if (this.heldRelic != null) {
+                this.heldRelic.currentX = this.heldRelic.targetX = x + (shellTex.getWidth() / 2F);
+                this.heldRelic.currentY = this.heldRelic.targetY = y + (shellTex.getHeight() / 2F);
+            }
         }
         switch (currentPhase) {
             case REWARDINTRO: {
+                if (heldCard != null) {
+                    if (moveTimer == startMoveTimer) {
+                        heldCard.targetTransparency = 1F;
+                    } else if (moveTimer < 0.5F) {
+                        heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(1.33F, 0.6F, moveTimer / 0.5F);
+                        heldCard.transparency = heldCard.targetTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
+                        heldCard.current_x = heldCard.target_x = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
+                    }
+                } else if (heldRelic != null) {
+                    if (moveTimer == startMoveTimer) {
+                        targetRelicTransparency = 1F;
+                    } else if (moveTimer < 0.5F) {
+                        targetRelicDrawScale = relicDrawScale = MathUtils.lerp(1.5F, 1, moveTimer / 0.5F);
+                        targetRelicTransparency = relicTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
+                        heldRelic.currentX = heldRelic.targetX = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
+                    }
+                }
+                moveTimer -= elapsed;
                 break;
             }
             case SHELLINTRO: {
@@ -155,7 +189,7 @@ public class Shell {
                 if (moveTimerY < startMoveTimerY) {
                     moveTimerY += Gdx.graphics.getDeltaTime();
                     shellOffsetY = MathUtils.lerp(0F, ShellGame.offscreenShellHeight, moveTimerY / startMoveTimerY);
-                   // alpha = MathUtils.lerp(targetAlpha, startAlpha, moveTimerY / startMoveTimerY);
+                    // alpha = MathUtils.lerp(targetAlpha, startAlpha, moveTimerY / startMoveTimerY);
                 }
                 break;
             }
@@ -165,6 +199,7 @@ public class Shell {
 
 
     public enum animPhase {
+        NONE,
         REWARDINTRO,
         SHELLINTRO,
         SWITCHEROO,
