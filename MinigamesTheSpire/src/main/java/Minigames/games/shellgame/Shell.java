@@ -11,7 +11,6 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
-import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
@@ -20,6 +19,7 @@ import static Minigames.Minigames.makeGamePath;
 public class Shell {
 
     static Texture shellTex = TextureLoader.getTexture(makeGamePath("shells/lagavulinshell.png"));
+    static Texture hoveredShellTex = TextureLoader.getTexture(makeGamePath("shells/lagavulinshellHighlighted.png"));
 
     private AbstractMinigame parent;
 
@@ -84,7 +84,7 @@ public class Shell {
         currentPhase = animPhase.NONE;
 
         shellOffsetX = shellTex.getWidth() * -0.5F;
-}
+    }
 
     public void grantReward() {
         if (this.heldCard != null) {
@@ -111,7 +111,11 @@ public class Shell {
 
         sb.setColor(1F, 1F, 1F, alpha);
 
-        sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY - (shellTex.getHeight() / 2), shellTex.getWidth() * scale, shellTex.getHeight() * scale);
+        if (this.hb.hovered && parent.phase == 3) {
+            sb.draw(hoveredShellTex, x + shellOffsetX, y + shellOffsetY - (hoveredShellTex.getHeight() / 2), hoveredShellTex.getWidth() * scale, hoveredShellTex.getHeight() * scale);
+        } else {
+            sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY - (shellTex.getHeight() / 2), shellTex.getWidth() * scale, shellTex.getHeight() * scale);
+        }
 
     }
 
@@ -203,7 +207,7 @@ public class Shell {
                     //heldRelic.targetX = heldRelic.currentX = x;
                     if (moveTimer >= startMoveTimer) {
                         heldRelic.scale = ShellGame.relicScaleCup;
-                       // heldRelic.targetX = heldRelic.currentX = targetX;
+                        // heldRelic.targetX = heldRelic.currentX = targetX;
                     }
                 }
                 break;
