@@ -176,13 +176,13 @@ public class ShellGame extends AbstractMinigame {
                     switch(subPhase){
                         case 0:{
                             shell1.currentPhase = Shell.animPhase.SHELLINTRO;
-                            timer = .25F;  //Wait time for next Reward to animate in and get into place
+                            timer = .25F;  //Wait time before showing next Shell
                             subPhase = 1;
                             break;
                         }
                         case 1:{
                             shell2.currentPhase = Shell.animPhase.SHELLINTRO;
-                            timer = .25F;  //Wait time for next Reward to animate in and get into place
+                            timer = .25F;  //Wait time before showing next Shell
                             subPhase = 2;
                             break;
                         }
