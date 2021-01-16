@@ -4,10 +4,15 @@ import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.tempCards.Shiv;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static Minigames.Minigames.getModID;
 
@@ -32,9 +37,41 @@ public class ShellGame extends AbstractMinigame {
 
     private int chosen = -1;
 
+    private static float timeModifier = 1F;
+
+    private static float xpos1 = Settings.WIDTH * 0.4F;
+    private static float xpos2 = Settings.WIDTH * 0.5F;
+    private static float xpos3 = Settings.WIDTH * 0.6F;
+
+    public static float yBackgroundSwap = Settings.HEIGHT * 0.55F;
+    public static float yForegroundSwap = Settings.HEIGHT * 0.45F;
+    public static float yMid = Settings.HEIGHT * 0.5F;
+
+    public static float scaleForegroundSwap = 1.25F;
+    public static float scaleBackgroundSwap = 0.75F;
+
+    private static int totalSwaps = 10;
+    private static int currentSwaps = 0;
+
+    public static float baseSpeed = .75F;
+
+    private static boolean listenForSwap = false;
+
+    private static float sppedIncreasePerSwap = 0.25F;
+
+    public static float timeToBeginNextSwap;
+
+    private ArrayList<Shell> shellsToRender = new ArrayList<>();
+
     @Override
     public void initialize() {
         super.initialize();
+
+        /**
+        These should probably be just a part of the Shell object.  That way they move
+         when the shells move.  At the end, after clicking, the shell can just slide up and reveal
+         the reward underneath.
+         **/
         AbstractRelic rewardRelic = AbstractDungeon.returnRandomRelic(AbstractDungeon.returnRandomRelicTier());
         rewardRelic.currentX = rewardRelic.targetX = 100;
         rewardRelic.currentY = rewardRelic.targetY = 0;
@@ -44,9 +81,17 @@ public class ShellGame extends AbstractMinigame {
         AbstractCard nastyCurse = CardLibrary.getCurse();
         nastyCurse.current_x = nastyCurse.target_x = 300;
         nastyCurse.current_y = nastyCurse.target_y = 0;
-        shell1 = new Shell(100, 100, rewardCard);
-        shell2 = new Shell(200, 100, rewardRelic);
-        shell3 = new Shell(300, 100, nastyCurse);
+
+        //yMid + some offset to get them to start above at the beginning
+        shell1 = new Shell(xpos1, yMid, rewardCard);
+        shell2 = new Shell(xpos2, yMid, rewardRelic);
+        shell3 = new Shell(xpos3, yMid, nastyCurse);
+
+        shellsToRender.add(shell1);
+        shellsToRender.add(shell2);
+        shellsToRender.add(shell3);
+
+        timeToBeginNextSwap = 1F;
     }
 
     private void onClick() {
@@ -65,12 +110,6 @@ public class ShellGame extends AbstractMinigame {
         }
     }
 
-    @Override
-    public void render(SpriteBatch sb) {
-        shell1.render(sb);
-        shell2.render(sb);
-        shell3.render(sb);
-    }
 
     private void updateShellWhyIsPhaseProtected(Shell shell) {
         if (phase == 0) {
@@ -117,12 +156,10 @@ public class ShellGame extends AbstractMinigame {
                     break;
             }
         }
-        updateShellWhyIsPhaseProtected(shell1);
-        shell1.update(elapsed);
-        updateShellWhyIsPhaseProtected(shell2);
-        shell2.update(elapsed);
-        updateShellWhyIsPhaseProtected(shell3);
-        shell3.update(elapsed);
+
+        shell1.update();
+        shell2.update();
+        shell3.update();
     }
 
     @Override
@@ -136,5 +173,94 @@ public class ShellGame extends AbstractMinigame {
     @Override
     public String getOption() {
         return CardCrawlGame.languagePack.getEventString(getModID() + "ShellGame").OPTIONS[0];
+    }
+
+
+    public void decideSwap(){
+        Collections.shuffle(shellsToRender, AbstractDungeon.cardRng.random);
+        if (AbstractDungeon.cardRng.randomBoolean()){
+            setShellTarget(shellsToRender.get(0), shellsToRender.get(1), shellsToRender.get(2));
+        } else {
+            setShellTarget(shellsToRender.get(0), shellsToRender.get(2), shellsToRender.get(1));
+        }
+
+    }
+
+    public static void receiveSwapComplete(){
+        if (listenForSwap) {
+            if (currentSwaps < totalSwaps) {
+                listenForSwap = false;
+                timeModifier += sppedIncreasePerSwap;
+                currentSwaps++;
+                timeToBeginNextSwap = 0.25F / timeModifier;
+            } else {
+                //enable interaction!
+            }
+        }
+    }
+
+    public void setShellTarget(Shell s1, Shell s2, Shell unmoved) {
+        shellsToRender.clear();
+
+        listenForSwap = true;
+
+        s1.targetX = s2.x;
+        s2.targetX = s1.x;
+
+        s1.startX = s1.x;
+        s2.startX = s2.x;
+
+        s1.startY = yMid;
+        s2.startY = yMid;
+
+        s1.startScale = 1F;
+        s2.startScale = 1F;
+
+        s1.isMoving = true;
+        s2.isMoving = true;
+
+        s1.yApexReached = false;
+        s2.yApexReached = false;
+
+        s1.moveTimer = 0;
+        s2.moveTimer = 0;
+
+        s1.moveTimerY = 0;
+        s2.moveTimerY = 0;
+
+        s1.startMoveTimer = baseSpeed / timeModifier;
+        s2.startMoveTimer = baseSpeed / timeModifier;
+
+        s1.startMoveTimerY = baseSpeed / timeModifier / 2;
+        s2.startMoveTimerY = baseSpeed / timeModifier / 2;
+
+        //Whichever shell is moving left becomes the one rotating left into the backgruond
+        //the shell moving right rotates right into the foreground
+        if (s1.targetX < s2.targetX){
+            s1.targetY = yBackgroundSwap;
+            s1.targetScale = scaleBackgroundSwap;
+            s2.targetY = yForegroundSwap;
+            s2.targetScale = scaleForegroundSwap;
+            shellsToRender.add(s1);  //becomes the first one to render (behind others)
+            shellsToRender.add(unmoved);  //becomes the second one to render
+            shellsToRender.add(s2);  //becomes the last one to render (in front of others)
+        } else {
+            s2.targetY = yBackgroundSwap;
+            s2.targetScale = scaleBackgroundSwap;
+            s1.targetY = yForegroundSwap;
+            s1.targetScale = scaleForegroundSwap;
+            shellsToRender.add(s2); //becomes the first one to render
+            shellsToRender.add(unmoved);  //becomes the second one to render
+            shellsToRender.add(s1);  //becomes the last one to render (in front of others)
+        }
+
+    }
+
+
+    public void render(SpriteBatch sb) {
+
+        for (Shell s : shellsToRender){
+            s.render(sb);
+        }
     }
 }
