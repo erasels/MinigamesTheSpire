@@ -41,7 +41,7 @@ public class ShellGame extends AbstractMinigame {
 
     private static float timeModifier = 1F;
     private static float debugTimeModifier = .25F;
-    
+
     private static float xpos1 = Settings.WIDTH * 0.4F;
     private static float xpos2 = Settings.WIDTH * 0.5F;
     private static float xpos3 = Settings.WIDTH * 0.6F;
@@ -90,6 +90,10 @@ public class ShellGame extends AbstractMinigame {
         shellsToRender.add(shell3);
 
         timeToBeginNextSwap = 1F;
+
+        timer = 1F;
+        phase = 0;
+        subPhase = 0;
     }
 
     private void onClick() {
