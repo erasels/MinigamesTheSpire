@@ -115,7 +115,12 @@ public class Shell {
         }
         switch (currentPhase) {
             case REWARDINTRO: {
+                if (heldCard != null) {
 
+                }
+                else if (heldRelic != null) {
+
+                }
                 break;
             }
             case SHELLINTRO: {
