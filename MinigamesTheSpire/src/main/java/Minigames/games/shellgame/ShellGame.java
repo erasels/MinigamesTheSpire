@@ -12,6 +12,7 @@ public class ShellGame extends AbstractMinigame {
     private void onClick() {
         switch (phase) {
             case 1:
+
         }
     }
 

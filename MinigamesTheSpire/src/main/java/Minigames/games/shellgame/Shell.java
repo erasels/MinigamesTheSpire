@@ -1,11 +1,10 @@
 package Minigames.games.shellgame;
 
-import Minigames.events.AbstractMinigameEvent;
-import Minigames.games.AbstractMinigame;
 import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import static Minigames.Minigames.makeGamePath;
@@ -18,13 +17,12 @@ public class Shell {
     }
 
     static Texture shellTex = TextureLoader.getTexture(makeGamePath("shells/shell.png"));
-    static Texture shellInBetweenTex = TextureLoader.getTexture(makeGamePath("shells/shellbetween.png"));
-    static Texture shellUpTex = TextureLoader.getTexture(makeGamePath("shells/shellup.png"));
 
     private float x;
     private float y;
     private AbstractCard heldCard;
     private AbstractRelic heldRelic;
+    private Hitbox hb;
 
     public Shell(float x, float y, AbstractCard held) {
         this.x = x;
