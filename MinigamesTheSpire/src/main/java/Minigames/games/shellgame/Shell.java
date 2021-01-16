@@ -10,7 +10,6 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
-import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
@@ -46,10 +45,6 @@ public class Shell {
 
     public float moveTimerY;
     public float startMoveTimerY;
-
-    public static float UP_DISTANCE_Y = 100F;
-
-    public float upDist = UP_DISTANCE_Y;
 
     public animPhase currentPhase = animPhase.REWARDINTRO;
 
@@ -89,6 +84,13 @@ public class Shell {
     }
 
     public void update() {
+        if (this.heldCard != null) {
+            this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
+            this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
+        } else if (this.heldRelic != null) {
+            this.heldRelic.currentX = this.heldRelic.targetX = x + (shellTex.getWidth() / 2F);
+            this.heldRelic.currentY = this.heldRelic.targetY = x + (shellTex.getHeight() / 2F);
+        }
         switch (currentPhase) {
             case REWARDINTRO: {
                 break;
