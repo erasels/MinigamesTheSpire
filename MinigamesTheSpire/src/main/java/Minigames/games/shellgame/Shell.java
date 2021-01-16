@@ -34,6 +34,10 @@ public class Shell {
     public float targetScale = 1F;
     public float startScale = 1F;
 
+    public float alpha = 0F;
+    public float targetAlpha = 1F;
+    public float startAlpha = 0F;
+
     public float startX;
     public float startY;
 
@@ -79,11 +83,13 @@ public class Shell {
             heldRelic.render(sb);
         }
 
+        sb.setColor(1F, 1F, 1F, alpha);
+
         sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY, shellTex.getWidth() * scale, shellTex.getHeight() * scale);
 
     }
 
-    public void update() {
+    public void update(float elapsed) {
         hb.update();
         if (this.heldCard != null) {
             this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
@@ -98,15 +104,19 @@ public class Shell {
             }
             case SHELLINTRO: {
                 if (moveTimerY < startMoveTimerY) {
-                    moveTimerY += Gdx.graphics.getDeltaTime();
-                    shellOffsetY = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
+                    moveTimerY += elapsed;
+                    shellOffsetY = MathUtils.lerp(ShellGame.offscreenShellHeight, 0F, moveTimerY / startMoveTimerY);
+                    alpha = Math.min(1F, MathUtils.lerp(startAlpha, targetAlpha, moveTimerY / (startMoveTimerY / 2)));
+                } else {
+                    shellOffsetY = 0F;
+                    alpha = 1F;
                 }
                 break;
             }
             case SWITCHEROO: {
                 if (isMoving) {
-                    moveTimer += Gdx.graphics.getDeltaTime();
-                    moveTimerY += Gdx.graphics.getDeltaTime();
+                    moveTimer += elapsed;
+                    moveTimerY += elapsed;
 
                     scale = MathUtils.lerp(startScale, targetScale, moveTimerY / startMoveTimerY);
                     y = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
@@ -143,7 +153,8 @@ public class Shell {
             case SHELLOUTRO: {
                 if (moveTimerY < startMoveTimerY) {
                     moveTimerY += Gdx.graphics.getDeltaTime();
-                    shellOffsetY = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
+                    shellOffsetY = MathUtils.lerp(0F, ShellGame.offscreenShellHeight, moveTimerY / startMoveTimerY);
+                   // alpha = MathUtils.lerp(targetAlpha, startAlpha, moveTimerY / startMoveTimerY);
                 }
                 break;
             }
