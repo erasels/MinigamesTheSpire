@@ -8,6 +8,15 @@
       "Begin"
     ]
   },
+  "${ModID}:SlimePopper": {
+    "NAME": "Test Slime Popper",
+    "DESCRIPTIONS": [
+      "Test Slime Popper"
+    ],
+    "OPTIONS": [
+      "Start"
+    ]
+  },
   "${ModID}:ActOneArcade": {
     "NAME": "The Strange Ritual",
     "DESCRIPTIONS": [
