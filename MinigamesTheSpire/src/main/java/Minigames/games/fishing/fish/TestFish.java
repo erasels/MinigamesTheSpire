@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TestFish extends AbstractFish {
-    public static final float MAX_HP = 10f;
+    public static final float MAX_HP = 0.5f;
     private static final ArrayList<Vector2> BEHAVIORS = new ArrayList<>(Arrays.asList(new Vector2(10f, 0), new Vector2(2f, 1f)));
     public TestFish() {
         super(MAX_HP, BEHAVIORS);
