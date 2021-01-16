@@ -65,5 +65,11 @@
       "Obtain #b%1$s #ygold",
       "Leave"
     ]
+  },
+  "${ModID}:ShellGame": {
+    "NAME": "Shell Game",
+    "DESCRIPTIONS": [
+      "A mysterious gremlin offers you crazy gaming. Accept? (you have no choice)"
+    ]
   }
 }

@@ -4,9 +4,12 @@ import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+
+import static Minigames.Minigames.getModID;
 
 public class ShellGame extends AbstractMinigame {
 
@@ -73,6 +76,9 @@ public class ShellGame extends AbstractMinigame {
         if (phase == 0) {
             shell.targetY = 0;
         }
+        if (phase == 0 && shell.y == shell.targetY) {
+            phase = 1;
+        }
     }
 
     @Override
@@ -98,8 +104,7 @@ public class ShellGame extends AbstractMinigame {
                     }
                     break;
             }
-        }
-        else if (phase == 4) {
+        } else if (phase == 4) {
             switch (chosen) {
                 case 1:
                     shell1.grantReward();
@@ -126,5 +131,10 @@ public class ShellGame extends AbstractMinigame {
 
         bindings.addMouseBind((x, y, pointer) -> isWithinArea(x, y), (p) -> onClick());
         return bindings;
+    }
+
+    @Override
+    public String getOption() {
+        return CardCrawlGame.languagePack.getEventString(getModID() + "ShellGame").OPTIONS[0];
     }
 }

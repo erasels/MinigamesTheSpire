@@ -2,6 +2,8 @@ package Minigames.events;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
+import Minigames.games.shellgame.Shell;
+import Minigames.games.shellgame.ShellGame;
 import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
@@ -24,7 +26,7 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
 
         minigames = new AbstractMinigame[3];
         minigames[0] = new TestMinigame();
-        minigames[1] = new BeatPress();
+        minigames[1] = new ShellGame();
 
         imageEventText.setDialogOption(minigames[0].getOption());
         imageEventText.setDialogOption(minigames[1].getOption());
