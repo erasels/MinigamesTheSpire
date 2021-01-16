@@ -73,11 +73,8 @@ public class ShellGame extends AbstractMinigame {
     public void initialize() {
         super.initialize();
 
-        /*
-        These should probably be just a part of the Shell object.  That way they move
-         when the shells move.  At the end, after clicking, the shell can just slide up and reveal
-         the reward underneath.
-         */
+
+        //TODO - Rare Relic, Rare Card, and specifically Regret (worst curse)
         AbstractRelic rewardRelic = AbstractDungeon.returnRandomRelic(AbstractDungeon.returnRandomRelicTier());
         AbstractCard rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
         AbstractCard nastyCurse = CardLibrary.getCurse();
