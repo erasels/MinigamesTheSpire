@@ -9,7 +9,7 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import static Minigames.Minigames.makeID;
 
-public class SlimePopperMinigameEvent extends AbstractMinigameEvent {
+public class TestSlimePopperEvent extends AbstractMinigameEvent {
     public static final String ID = makeID("SlimePopper");
     private static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(ID);
     private static final String NAME = eventStrings.NAME;
@@ -17,7 +17,7 @@ public class SlimePopperMinigameEvent extends AbstractMinigameEvent {
     private static final String[] OPTIONS = eventStrings.OPTIONS;
 
 
-    public SlimePopperMinigameEvent() {
+    public TestSlimePopperEvent() {
         super(NAME, DESCRIPTIONS[0], null);
 
         imageEventText.setDialogOption(OPTIONS[0]);
