@@ -2,6 +2,7 @@ package Minigames.games.shellgame;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
@@ -32,8 +33,14 @@ public class ShellGame extends AbstractMinigame {
     public void initialize() {
         super.initialize();
         AbstractRelic rewardRelic = AbstractDungeon.returnRandomRelic(AbstractDungeon.returnRandomRelicTier());
+        rewardRelic.currentX = rewardRelic.targetX = 100;
+        rewardRelic.currentY = rewardRelic.targetY = 0;
         AbstractCard rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
+        rewardCard.current_x = rewardCard.target_x = 200;
+        rewardCard.current_y = rewardCard.target_y = 0;
         AbstractCard nastyCurse = CardLibrary.getCurse();
+        nastyCurse.current_x = nastyCurse.target_x = 300;
+        nastyCurse.current_y = nastyCurse.target_y = 0;
         shell1 = new Shell(100, 100, rewardCard);
         shell2 = new Shell(200, 100, rewardRelic);
         shell3 = new Shell(300, 100, nastyCurse);
@@ -53,6 +60,13 @@ public class ShellGame extends AbstractMinigame {
                     phase = 3;
                 }
         }
+    }
+
+    @Override
+    public void render(SpriteBatch sb) {
+        shell1.render(sb);
+        shell2.render(sb);
+        shell3.render(sb);
     }
 
     @Override
