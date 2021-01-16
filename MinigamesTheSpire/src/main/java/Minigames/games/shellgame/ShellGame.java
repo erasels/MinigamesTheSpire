@@ -133,17 +133,23 @@ public class ShellGame extends AbstractMinigame {
                 switch (chosen) {
                     case 1:
                         shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
+                        shell1.startMoveTimer = 0.5F;
+                        shell1.moveTimer = 0F;
                         break;
                     case 2:
                         shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
+                        shell2.startMoveTimer = 0.5F;
+                        shell2.moveTimer = 0F;
                         break;
                     case 3:
                         shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
+                        shell3.startMoveTimer = 0.5F;
+                        shell3.moveTimer = 0F;
                         break;
                 }
 
                 phase = 4;
-                timer = .25F;
+                timer = 1F;
         }
     }
 
