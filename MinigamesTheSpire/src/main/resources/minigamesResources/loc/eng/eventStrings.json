@@ -15,15 +15,6 @@
     ],
     "OPTIONS": [
       "Start"
-      ]
-  },
-  "minigames:BlackjackTest": {
-    "NAME": "Blackjack",
-    "DESCRIPTIONS": [
-      "#b@REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE@"
-    ],
-    "OPTIONS": [
-      "Begin"
     ]
   },
   "${ModID}:ActOneArcade": {
@@ -65,14 +56,54 @@
   "${ModID}:gremlinFlip": {
     "NAME": "Gremlin Flip",
     "DESCRIPTIONS": [
-      "Gremlin Flip tasks the player with flipping cards to gain #ygold and avoid #rGremlin #rNobs. NL NL The first tile flipped gives the player that much #ygold on the first card, and each subsequent card that is greater than #b1 multiplies the total by the number on the card. For subsequent tiles that are flipped that have the number #b1, #b1 is added to the player's gold. Flipping a #rGremlin #rNob causes the player to spill all #ygold and #plose the minigame. NL NL Numbers next to the Nob denote how many Nobs are on that row, and numbers in the top right denote the sum of the numbers in the row. NL Press left-click to flip a tile. NL Press right-click to mark a tile.",
-      "With your sharp wits and keen eyes, you managed to avoid the #rGremlin #rNob and leave with some hidden goodies! NL NL #yResults! NL NL Clear reward: #b%1$s #ygold NL NL Gold earned: #b%2$s #ygold",
-      "Sadly, you got caught by a #rGremlin #rNob! NL NL While you managed to get away, all of your collected #ygold spilled from your pockets and onto the ground as you ran to safety. NL NL You leave empty handed, and disappointed."
+      "Gremlin Flip tasks the player with flipping cards to gain #ygold and avoid #rGremlin #rNobs. NL NL The first tile flipped gives the player that much #ygold on the first card, and each subsequent card that is greater than #b1 multiplies the total by the number on the card. For subsequent tiles that are flipped that have the number #b1, #b1 is added to the player's score. Flipping a #rGremlin #rNob causes the player to spill all #ygold and #plose the minigame. NL NL Numbers next to the Nob denote how many Nobs are on that row, and numbers in the top right denote the sum of the numbers in the row. NL Press left-click to flip a tile. NL Press right-click to mark a tile.",
+      "With your sharp wits and keen eyes, you managed to avoid the #rGremlin #rNob! NL  NL After a while, the cabinet begins to rattle, spewing out a plethora of #yshiny gold coins. NL NL Upon bringing them to the #bMerchant, he states that he's never seen coins in such condition before, and proposes that you trade some for his wares.",
+      "Sadly, you got caught by a #rGremlin #rNob! NL NL While you managed to get away, all of your collected #ygold spilled from your pockets and onto the ground as you ran to safety. NL NL You leave empty handed, and disappointed.",
+      "You won #b%1$s #ygold playing #rGremlin #rFlip. NL (Score : #b%2$s ) NL (Difficulty: #b%3$s )",
+      "You trade some #ygold for the #bMerchant's wares, and continue with your journey. NL You keep the unspent #ygold in your %1$s.",
+      "You politely decline the #bMerchant's offer, and continue with your journey. NL You keep the unspent #ygold in your %1$s.",
+      "You exchange your #ygold for the ~ancient~ ~capsule~ and unseal its contents. NL NL You feel #bdifferent, and you feel #genergized. NL NL You keep the unspent #ygold in your %1$s."
     ],
     "OPTIONS": [
       "Begin",
-      "Obtain #b%1$s #ygold",
+      "Continue...?",
+      "Leave",
+      "[Give #b%1$s gold] Obtain a random #gcommon relic.",
+      "[Give #b%1$s gold] Obtain a random #buncommon relic.",
+      "[Give #b%1$s gold] Obtain a random #prare relic.",
+      "[Give #b%1$s gold] Obtain an ancient capsule?",
+      "[Cash Out] Obtain #b%1$s #ygold.",
+      "#rwallet",
+      "#gsatchel",
+      "#binternal #bvariables",
+      "#ppurse",
+      "[Locked] Requires #b%1$s #ygold."
+    ]
+  },
+  "${ModID}:MastermindMinigame": {
+    "NAME": "Mastermind",
+    "DESCRIPTIONS": [
+      "The goal of Mastermind is to crack the secret code consisting of 4 marbles in 6 possible colors. NL NL You have 8 guesses and after each guess you get hints about the code: black hints mean that marbles have the correct colors and are in the correct spots, while white hints mean that marbles have the correct colors, but are in incorrect spots. NL NL Good luck!",
+      "Congratulations! NL NL After cracking the code you decided to collect the marbles into a bag. You think they can prove useful in the future combats.",
+      "Too bad... NL NL Better luck next time!"
+    ],
+    "OPTIONS": [
+      "[Mastermind] Crack the code!",
+      "Start",
+      "Obtain #yBag #yof #yMarbles",
       "Leave"
+    ]
+  },
+  "${ModID}:Blackjack": {
+    "NAME": "Blackjack",
+    "DESCRIPTIONS": [
+      "In Blackjack, you compete against the dealer to try to assemble the hand of poker cards with the highest value without going over 21. NL NL Different cards are worth different values: NL #y2 #y- #y10: worth the same as their number. NL #yJack, #yQueen, #yKing: worth 10. NL #yAce: Worth either 1 or 11, depending on which is better for your hand. NL NL You and the dealer both start with 2 cards, but you can only see 1 of the dealer's cards.",
+      "During your turn, you can choose to either #yHit or #yStand. If you #yHit, you add another random card to your hand, but if that causes your total hand value to go over 21, you go #rbust and #rlose! If you're satisfied with your hand's current total value, you can choose to #yStand, at which point the dealer begins their turn. NL NL The dealer will continue to hit until their total hand value is 17 or more. If the dealer doesn't go bust, whoever has the higher total hand value #gwins! NL NL Winning pays out 3x the amount of your bet."
+    ],
+    "OPTIONS": [
+      "[Continue]",
+      "[Begin]",
+      "[Blackjack] Bet some gold and earn 3x your bet if you win!"
     ]
   }
 }

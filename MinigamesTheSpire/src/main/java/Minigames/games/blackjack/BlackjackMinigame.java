@@ -8,15 +8,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
+import com.megacrit.cardcrawl.relics.Ectoplasm;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class BlackjackMinigame extends AbstractMinigame {
+    protected static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(Minigames.makeID("Blackjack"));
     protected static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(Minigames.makeID("BlackjackText"));
     protected String[] TEXT = uiStrings.TEXT;
+    protected String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
+    protected String[] OPTIONS = eventStrings.OPTIONS;
+    private GenericEventDialog event;
+    private int pages = 0;
+    private static final int TOTAL_PAGES = 2;
 
     private Player player;
     private Dealer dealer;
@@ -37,8 +46,8 @@ public class BlackjackMinigame extends AbstractMinigame {
     public static final int LEAVE = 4;
 
     public static final int BUST_THRESHOLD = 21;
-    public static final int MIN_BET = 50;
-    public static final int MAX_BET = 100;
+    public static final int MIN_BET = 15;
+    public static final int MAX_BET = 50;
     private static final int payOutMultiplier = 3;
     private static final int MAX_PLAYS = 3;
     public int numPlays = 0;
@@ -61,6 +70,7 @@ public class BlackjackMinigame extends AbstractMinigame {
         createNewDeck();
         bet = 0;
         phase = BETTING;
+        hasPostgameScreen = false;
     }
 
     @Override
@@ -255,5 +265,32 @@ public class BlackjackMinigame extends AbstractMinigame {
             return true;
         }
         return false;
+    }
+
+    public void setupInstructionScreen(GenericEventDialog event) {
+        this.event = event;
+        event.updateBodyText(DESCRIPTIONS[0]);
+        event.setDialogOption(OPTIONS[0]);
+        event.loadImage("images/events/matchAndKeep.jpg");
+        pages++;
+    }
+    public boolean instructionsButtonPressed(int buttonIndex) {
+        if (pages < TOTAL_PAGES) {
+            event.updateBodyText(DESCRIPTIONS[1]);
+            event.clearAllDialogs();
+            event.setDialogOption(OPTIONS[1]);
+            pages++;
+            return false;
+        }
+        return true;
+    }
+
+    public String getOption() {
+        return OPTIONS[2];
+    }
+
+    @Override
+    public boolean canSpawn() {
+        return !AbstractDungeon.player.hasRelic(Ectoplasm.ID) && AbstractDungeon.player.gold >= MIN_BET;
     }
 }
