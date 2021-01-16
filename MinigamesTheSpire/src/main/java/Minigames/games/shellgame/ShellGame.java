@@ -67,20 +67,14 @@ public class ShellGame extends AbstractMinigame {
     public void initialize() {
         super.initialize();
 
-        /**
+        /*
         These should probably be just a part of the Shell object.  That way they move
          when the shells move.  At the end, after clicking, the shell can just slide up and reveal
          the reward underneath.
-         **/
+         */
         AbstractRelic rewardRelic = AbstractDungeon.returnRandomRelic(AbstractDungeon.returnRandomRelicTier());
-        rewardRelic.currentX = rewardRelic.targetX = 100;
-        rewardRelic.currentY = rewardRelic.targetY = 0;
         AbstractCard rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
-        rewardCard.current_x = rewardCard.target_x = 200;
-        rewardCard.current_y = rewardCard.target_y = 0;
         AbstractCard nastyCurse = CardLibrary.getCurse();
-        nastyCurse.current_x = nastyCurse.target_x = 300;
-        nastyCurse.current_y = nastyCurse.target_y = 0;
 
         //yMid + some offset to get them to start above at the beginning
         shell1 = new Shell(xpos1, yMid, rewardCard);
@@ -107,16 +101,6 @@ public class ShellGame extends AbstractMinigame {
                     chosen = 3;
                     phase = 3;
                 }
-        }
-    }
-
-
-    private void updateShellWhyIsPhaseProtected(Shell shell) {
-        if (phase == 0) {
-            shell.targetY = 0;
-        }
-        if (phase == 0 && shell.y == shell.targetY) {
-            phase = 1;
         }
     }
 

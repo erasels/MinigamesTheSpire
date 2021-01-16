@@ -35,7 +35,7 @@ public abstract class AbstractMinigame implements TextReceiver {
 
     protected float time = 0;
 
-    protected int phase = -2;
+    public int phase = -2;
     //-2: Minigame area fading in.
     //-1: Displaying controls.
     //0 and up: Whatever you want. Use a switch statement, just stay at 0, doesn't really matter.
