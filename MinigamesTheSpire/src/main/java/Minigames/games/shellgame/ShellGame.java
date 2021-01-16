@@ -4,6 +4,7 @@ import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.tempCards.Shiv;
@@ -11,6 +12,7 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
+import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
@@ -461,6 +463,10 @@ public class ShellGame extends AbstractMinigame {
 
 
     public void render(SpriteBatch sb) {
+
+        FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(timer), Settings.HEIGHT / 2F, Settings.WIDTH / 2F, Color.RED.cpy());
+        FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(phase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (50 * Settings.scale), Color.RED.cpy());
+        FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(subPhase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (100 * Settings.scale), Color.RED.cpy());
 
         //Shell render order is important and is reset with every swap.
         //The shell rotating in the foreground is rendered above the rest.
