@@ -22,7 +22,7 @@ public class Shell {
     private float y;
     private AbstractCard heldCard;
     private AbstractRelic heldRelic;
-    private Hitbox hb;
+    public Hitbox hb;
 
     public Shell(float x, float y, AbstractCard held) {
         this.x = x;
