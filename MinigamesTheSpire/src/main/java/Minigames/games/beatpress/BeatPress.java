@@ -17,6 +17,7 @@ import Minigames.util.QueuedSound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
@@ -50,14 +51,18 @@ public class BeatPress extends AbstractMinigame {
     private static final ArrayList<BeatPattern> heckPatterns = new ArrayList<>();
 
     static {
-        basicPatterns.add(new BeatPattern("??1.6 ??1.6"));
-        basicPatterns.add(new BeatPattern("??1.6 =_0.8 !_0.8"));
+        basicPatterns.add(new BeatPattern("?R1.6 !=1.6"));
+        basicPatterns.add(new BeatPattern("?B1.6 =R0.8 !B0.8"));
         basicPatterns.add(new BeatPattern("??2.4 =R0.8"));
         basicPatterns.add(new BeatPattern("=_0.8 =_0.8 =?1.6"));
         basicPatterns.add(new BeatPattern("!?0.8 ==0.8 ??0.8 ==0.8"));
 
-        mediumPatterns.add(new BeatPattern("!?1.066667 !?1.066667 !?1.066667"));
+        //mediumPatterns.add(new BeatPattern("!?1.066667 !?1.066667 !?1.066667"));
+        mediumPatterns.add(new BeatPattern("?B1.2 !B1.2 !B0.8"));
         mediumPatterns.add(new BeatPattern("??1.6 ?_0.4 =_0.4 =_0.8"));
+
+        heckPatterns.add(new BeatPattern("??0.4 !S0.8 !=0.8 !=0.8 !S0.4"));
+        heckPatterns.add(new BeatPattern("=B0.4 !S0.8 =B0.4 !S0.8 =B0.4 =B0.4"));
     }
 
     private Texture title;
@@ -135,7 +140,8 @@ public class BeatPress extends AbstractMinigame {
         super.initialize();
 
         Ball.initialize();
-        generateBalls();
+        //6 "patterns". One "pattern" is 2 random beatpatterns = 12 total beatpatterns.
+        generateBalls(6, 0.3f, 0.05f, 4);
 
         title = ImageMaster.loadImage(makeGamePath("beatpress/title.png"));
         input = ImageMaster.loadImage(makeGamePath("beatpress/input.png"));
@@ -359,13 +365,59 @@ public class BeatPress extends AbstractMinigame {
         }
     }
 
-    private void generateBalls() {
-        float targetTime = 0; //For the first ball, this should be when it first makes a sound.
-        //After that, targetTime is adjusted based on when that ball will land, and used exclusively as the "hit" time of the next ball.
-        Ball firstBall = new Ball(this, Ball.BallType.ROLL, targetTime + Ball.getDuration(Ball.BallType.ROLL), false);
-        balls.add(firstBall);
+    private void generateBalls(int length, float mediumRate, float heckRate, int patternCount) {
+        float time = 0; //For the first ball, this should be when it first makes a sound.
+        int completePatterns = 0;
 
-        targetTime = firstBall.hitTime;
+        mediumRate += heckRate;
+
+        float type;
+
+        BeatPattern[] patterns = new BeatPattern[patternCount * 2];
+        int patternIndex = 0;
+        boolean patternsDecided = false;
+
+        while (completePatterns < length)
+        {
+            if (!patternsDecided)
+            {
+                type = MathUtils.random();
+
+                if (type < heckRate)
+                {
+                    patterns[patternIndex] = heckPatterns.get(MathUtils.random(heckPatterns.size() - 1));
+                }
+                else if (type < mediumRate)
+                {
+                    patterns[patternIndex] = mediumPatterns.get(MathUtils.random(mediumPatterns.size() - 1));
+                }
+                else
+                {
+                    patterns[patternIndex] = basicPatterns.get(MathUtils.random(basicPatterns.size() - 1));
+                }
+                patterns[patternIndex].reset();
+            }
+
+            time = patterns[patternIndex].addBalls(this, time, balls, allBalls);
+
+            ++patternIndex;
+            if (patternIndex >= patterns.length)
+                patternsDecided = true;
+
+            if (patternIndex % 2 == 0)
+            {
+                ++completePatterns;
+
+                if (patternsDecided)
+                    patternIndex = MathUtils.random(patternCount - 1) * 2;
+            }
+        }
+
+        //After that, targetTime is adjusted based on when that ball will land, and used exclusively as the "hit" time of the next ball.
+        //Ball firstBall = new Ball(this, Ball.BallType.ROLL, targetTime + Ball.getDuration(Ball.BallType.ROLL), false);
+        //balls.add(firstBall);
+
+        /*targetTime = firstBall.hitTime;
 
         for (int i = 0; i < 100; ++i) {
             targetTime += 0.8f;
@@ -386,7 +438,7 @@ public class BeatPress extends AbstractMinigame {
             }
         }
 
-        allBalls.addAll(balls);
+        allBalls.addAll(balls);*/
     }
 
     private void calculateRating() {

@@ -57,12 +57,12 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
                 }
                 break;
             case 2:
-                if (minigames[chosenMinigame].instructionsButtonPressed(buttonPressed)) {
+                if (minigames[chosenMinigame].instructionsButtonPressed(buttonPressed, this.imageEventText)) {
                     startGame(minigames[chosenMinigame]);
                 }
                 break;
             case 3:
-                if (minigames[chosenMinigame].postgameButtonPressed(buttonPressed)) {
+                if (minigames[chosenMinigame].postgameButtonPressed(buttonPressed, this.imageEventText)) {
                     endOfEvent();
                 }
                 break;

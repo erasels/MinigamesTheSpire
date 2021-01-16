@@ -8,6 +8,15 @@
       "Begin"
     ]
   },
+  "${ModID}:SlimePopper": {
+    "NAME": "Test Slime Popper",
+    "DESCRIPTIONS": [
+      "Test Slime Popper"
+    ],
+    "OPTIONS": [
+      "Start"
+      ]
+  },
   "minigames:BlackjackTest": {
     "NAME": "Blackjack",
     "DESCRIPTIONS": [
@@ -56,14 +65,28 @@
   "${ModID}:gremlinFlip": {
     "NAME": "Gremlin Flip",
     "DESCRIPTIONS": [
-      "Gremlin Flip tasks the player with flipping cards to gain #ygold and avoid #rGremlin #rNobs. NL NL The first tile flipped gives the player that much #ygold on the first card, and each subsequent card that is greater than #b1 multiplies the total by the number on the card. For subsequent tiles that are flipped that have the number #b1, #b1 is added to the player's gold. Flipping a #rGremlin #rNob causes the player to spill all #ygold and #plose the minigame. NL NL Numbers next to the Nob denote how many Nobs are on that row, and numbers in the top right denote the sum of the numbers in the row. NL Press left-click to flip a tile. NL Press right-click to mark a tile.",
-      "With your sharp wits and keen eyes, you managed to avoid the #rGremlin #rNob and leave with some hidden goodies! NL NL #yResults! NL NL Clear reward: #b%1$s #ygold NL NL Gold earned: #b%2$s #ygold",
-      "Sadly, you got caught by a #rGremlin #rNob! NL NL While you managed to get away, all of your collected #ygold spilled from your pockets and onto the ground as you ran to safety. NL NL You leave empty handed, and disappointed."
+      "Gremlin Flip tasks the player with flipping cards to gain #ygold and avoid #rGremlin #rNobs. NL NL The first tile flipped gives the player that much #ygold on the first card, and each subsequent card that is greater than #b1 multiplies the total by the number on the card. For subsequent tiles that are flipped that have the number #b1, #b1 is added to the player's score. Flipping a #rGremlin #rNob causes the player to spill all #ygold and #plose the minigame. NL NL Numbers next to the Nob denote how many Nobs are on that row, and numbers in the top right denote the sum of the numbers in the row. NL Press left-click to flip a tile. NL Press right-click to mark a tile.",
+      "With your sharp wits and keen eyes, you managed to avoid the #rGremlin #rNob! NL  NL After a while, the cabinet begins to rattle, spewing out a plethora of #yshiny gold coins. NL NL Upon bringing them to the #bMerchant, he states that he's never seen coins in such condition before, and proposes that you trade some for his wares.",
+      "Sadly, you got caught by a #rGremlin #rNob! NL NL While you managed to get away, all of your collected #ygold spilled from your pockets and onto the ground as you ran to safety. NL NL You leave empty handed, and disappointed.",
+      "You won #b%1$s #ygold playing #rGremlin #rFlip. NL (Score : #b%2$s ) NL (Difficulty: #b%3$s )",
+      "You trade some #ygold for the #bMerchant's wares, and continue with your journey. NL You keep the unspent #ygold in your %1$s.",
+      "You politely decline the #bMerchant's offer, and continue with your journey. NL You keep the unspent #ygold in your %1$s.",
+      "You exchange your #ygold for the ~ancient~ ~capsule~ and unseal its contents. NL NL You feel #bdifferent, and you feel #genergized. NL NL You keep the unspent #ygold in your %1$s."
     ],
     "OPTIONS": [
       "Begin",
-      "Obtain #b%1$s #ygold",
-      "Leave"
+      "Continue...?",
+      "Leave",
+      "[Give #b%1$s gold] Obtain a random #gcommon relic.",
+      "[Give #b%1$s gold] Obtain a random #buncommon relic.",
+      "[Give #b%1$s gold] Obtain a random #prare relic.",
+      "[Give #b%1$s gold] Obtain an ancient capsule?",
+      "[Cash Out] Obtain #b%1$s #ygold.",
+      "#rwallet",
+      "#gsatchel",
+      "#binternal #bvariables",
+      "#ppurse",
+      "[Locked] Requires #b%1$s #ygold."
     ]
   }
 }
