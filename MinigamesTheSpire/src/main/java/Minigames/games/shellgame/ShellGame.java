@@ -148,6 +148,7 @@ public class ShellGame extends AbstractMinigame {
                     switch (subPhase) {
                         case 0: {
                             shell1.currentPhase = Shell.animPhase.REWARDINTRO;
+                            shell1.moveTimer = shell1.startMoveTimer = 1F;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 1;
                             break;
@@ -155,12 +156,14 @@ public class ShellGame extends AbstractMinigame {
                         case 1: {
                             //Shell 3 second, since the right one needs to animate first or it will be covered by the middle's anim
                             shell3.currentPhase = Shell.animPhase.REWARDINTRO;
+                            shell3.moveTimer = shell3.startMoveTimer = 1F;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 2;
                             break;
                         }
                         case 2: {
                             shell2.currentPhase = Shell.animPhase.REWARDINTRO;
+                            shell2.moveTimer = shell2.startMoveTimer = 1F;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 0;
                             phase = 1;

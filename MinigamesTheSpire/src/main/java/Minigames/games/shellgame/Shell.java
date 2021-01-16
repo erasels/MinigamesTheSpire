@@ -56,7 +56,7 @@ public class Shell {
     public float relicTransparency;
     public float targetRelicTransparency;
 
-    public animPhase currentPhase = animPhase.REWARDINTRO;
+    public animPhase currentPhase = animPhase.NONE;
 
     public Shell(float x, float y, AbstractCard held) {
         this.x = x;
@@ -65,6 +65,7 @@ public class Shell {
         this.heldCard = held;
         heldCard.current_x = heldCard.target_x = Settings.WIDTH / 2F;
         heldCard.current_y = heldCard.target_y = Settings.HEIGHT / 2F;
+        heldCard.drawScale = heldCard.targetDrawScale = 1.33F;
         heldCard.targetTransparency = heldCard.transparency = 0F;
     }
 
@@ -75,6 +76,7 @@ public class Shell {
         this.heldRelic = held;
         heldRelic.currentX = heldRelic.targetX = Settings.WIDTH / 2F;
         heldRelic.currentY = heldRelic.targetY = Settings.HEIGHT / 2F;
+        relicDrawScale = targetRelicDrawScale = 1.5F;
         relicTransparency = targetRelicTransparency = 0F;
     }
 
@@ -92,6 +94,7 @@ public class Shell {
             heldCard.render(sb);
         }
         if (heldRelic != null) {
+            sb.setColor(1F, 1F, 1F, relicTransparency);
             sb.draw(heldRelic.img, heldRelic.currentX, heldRelic.currentY, 64 * relicDrawScale, 64 * relicDrawScale);
         }
 
@@ -103,12 +106,6 @@ public class Shell {
 
     public void update(float elapsed) {
         hb.update();
-        if (heldCard != null) {
-            heldCard.update();
-        }
-        if (heldRelic != null) {
-            heldRelic.update();
-        }
         if (relicDrawScale != targetRelicDrawScale) {
             relicDrawScale = MathHelper.cardScaleLerpSnap(relicDrawScale, targetRelicDrawScale);
         }
@@ -126,10 +123,19 @@ public class Shell {
         }
         switch (currentPhase) {
             case REWARDINTRO: {
+                moveTimer -= elapsed;
                 if (heldCard != null) {
-
+                    if (moveTimer == startMoveTimer) {
+                        heldCard.targetTransparency = 1F;
+                    } else if (moveTimer < 0.5F) {
+                        heldCard.current_x = heldCard.target_x = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
+                    }
                 } else if (heldRelic != null) {
-
+                    if (moveTimer == startMoveTimer) {
+                        targetRelicTransparency = 1F;
+                    } else if (moveTimer < 0.5F) {
+                        heldRelic.currentX = heldRelic.targetX = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
+                    }
                 }
                 break;
             }
@@ -185,7 +191,7 @@ public class Shell {
                 if (moveTimerY < startMoveTimerY) {
                     moveTimerY += Gdx.graphics.getDeltaTime();
                     shellOffsetY = MathUtils.lerp(0F, ShellGame.offscreenShellHeight, moveTimerY / startMoveTimerY);
-                   // alpha = MathUtils.lerp(targetAlpha, startAlpha, moveTimerY / startMoveTimerY);
+                    // alpha = MathUtils.lerp(targetAlpha, startAlpha, moveTimerY / startMoveTimerY);
                 }
                 break;
             }
@@ -195,6 +201,7 @@ public class Shell {
 
 
     public enum animPhase {
+        NONE,
         REWARDINTRO,
         SHELLINTRO,
         SWITCHEROO,
