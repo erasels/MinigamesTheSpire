@@ -12,6 +12,7 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import java.security.SecureRandom;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static Minigames.Minigames.logger;
 import static Minigames.Minigames.makeGamePath;
 import static Minigames.games.mastermind.Marble.*;
 import static Minigames.games.mastermind.Marble.BOX_SIZE;
@@ -138,9 +139,21 @@ public class MastermindMinigame extends AbstractMinigame {
     }
 
     public void checkTheAnswer() {
+        Marble[][] marbles = marbleBoard.getMarbles();
+
+        boolean allEmpty = true;
+        for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
+            if (marbles[activeRow][i].getValue() != EMPTY) {
+                allEmpty = false;
+            }
+        }
+        if (allEmpty) {
+            logger.warn("[Mastermind] - not checking the answer, because it's fully empty.");
+            return;
+        }
+
         int numberOfBlack = 0;
         int numberOfBlackAndWhite = 0;
-        Marble[][] marbles = marbleBoard.getMarbles();
         for (int i = 0; i < NUMBER_OF_COLUMNS; i++) {
             if (marbles[activeRow][i].getValue() == answer[i]) {
                 numberOfBlack++;
