@@ -357,7 +357,11 @@ public class ShellGame extends AbstractMinigame {
 
 
     public void decideSwap(){
+        //Shuffle the arraylist.  The first index always gets picked to swap.
         Collections.shuffle(shellsToRender, AbstractDungeon.cardRng.random);
+
+        //Random bool to decide who is the other shell to get swapped with - index 1 or index 2.
+        //3rd parameter is the Shell that is not moving this swap.
         if (AbstractDungeon.cardRng.randomBoolean()){
             setShellTarget(shellsToRender.get(0), shellsToRender.get(1), shellsToRender.get(2));
         } else {
@@ -367,6 +371,9 @@ public class ShellGame extends AbstractMinigame {
     }
 
     public static void receiveSwapComplete(){
+        //Listener for when a shell swap has concluded.  Uses listenForSwap to prevent
+        //two Shells from triggering this method twice on the same swap.  Whoever finishes first
+        // (likely on the same frame) triggers receiveSwapComplete, and the second one gets blocked.
         if (listenForSwap) {
             if (currentSwaps < totalSwaps) {
                 listenForSwap = false;
@@ -378,13 +385,16 @@ public class ShellGame extends AbstractMinigame {
     }
 
     public void setShellTarget(Shell s1, Shell s2, Shell unmoved) {
+        //Render order is cleared and recreated at the end.
         shellsToRender.clear();
 
         listenForSwap = true;
 
+        //Set each shell's Target X to the other's current X.
         s1.targetX = s2.x;
         s2.targetX = s1.x;
 
+        //Set a bunch of startup variables for the anim
         s1.startX = s1.x;
         s2.startX = s2.x;
 
@@ -406,15 +416,14 @@ public class ShellGame extends AbstractMinigame {
         s1.moveTimerY = 0;
         s2.moveTimerY = 0;
 
-
         s1.startMoveTimer = baseSpeed / timeModifier;
         s2.startMoveTimer = baseSpeed / timeModifier;
 
         s1.startMoveTimerY = baseSpeed / timeModifier / 2;
         s2.startMoveTimerY = baseSpeed / timeModifier / 2;
 
-        //Whichever shell is moving left becomes the one rotating left into the backgruond
-        //the shell moving right rotates right into the foreground
+        //Whichever shell is moving left becomes the one rotating into the background
+        //the shell moving right rotates into the foreground
         if (s1.targetX < s2.targetX){
             s1.targetY = yBackgroundSwap;
             s1.targetScale = scaleBackgroundSwap;
@@ -438,6 +447,9 @@ public class ShellGame extends AbstractMinigame {
 
     public void render(SpriteBatch sb) {
 
+        //Shell render order is important and is reset with every swap.
+        //The shell rotating in the foreground is rendered above the rest.
+        //The shell rotating in the background is rendered behind the rest.
         for (Shell s : shellsToRender){
             s.render(sb);
         }
