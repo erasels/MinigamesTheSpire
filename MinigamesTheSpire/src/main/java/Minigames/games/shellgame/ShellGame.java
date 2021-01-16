@@ -42,6 +42,7 @@ public class ShellGame extends AbstractMinigame {
     private int chosen = -1;
 
     private static float timeModifier = 1F;
+    private static float debugTimeModifier = .25F;
 
     private static float xpos1 = Settings.WIDTH * 0.4F;
     private static float xpos2 = Settings.WIDTH * 0.5F;
@@ -91,6 +92,10 @@ public class ShellGame extends AbstractMinigame {
         shellsToRender.add(shell3);
 
         timeToBeginNextSwap = 1F;
+
+        timer = 1F;
+        phase = 0;
+        subPhase = 0;
     }
 
     private void onClick() {
@@ -129,7 +134,7 @@ public class ShellGame extends AbstractMinigame {
 
     @Override
     public void update(float elapsed) {
-        timer -= Gdx.graphics.getDeltaTime() * timeModifier;
+        timer -= elapsed * timeModifier * debugTimeModifier;
         switch (phase){
             case 0:{
                 /**
