@@ -2,42 +2,34 @@ package Minigames.games.gremlinFlip.tiles;
 
 import Minigames.games.gremlinFlip.gremlinFlip;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import static Minigames.Minigames.makeGamePath;
 
 public class GameTile extends AbstractTile {
 
-    private int shading;
     protected boolean isEnemy;
     protected int goldAmount;
     protected boolean flipped = false;
     protected boolean flagged = false;
-
-    protected Texture flippedTexture;
-    protected Texture flaggedTexture;
-
-    public static final Logger logger = LogManager.getLogger(GameTile.class.getName());
-
+    protected TextureAtlas.AtlasRegion flippedTexture;
+    protected TextureAtlas.AtlasRegion flaggedTexture;
 
     public GameTile(int x, int y) {
         super(x, y);
-        this.tileTexture = new Texture(makeGamePath("gremlinflip/tile.png"));
-        this.flaggedTexture = new Texture(makeGamePath("gremlinflip/nob_flag.png"));
+        tileTexture = gremlinFlip.atlas.findRegion("tile");
+        flaggedTexture = gremlinFlip.atlas.findRegion("nob_flag");
     }
 
     public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE.cpy());
-        if ((flipped && flippedTexture != null) || Settings.isDebug) { sb.draw(this.flippedTexture, this.x, this.y, this.flippedTexture.getWidth() / 2.0F, this.flippedTexture.getHeight() / 2.0F, this.flippedTexture.getWidth(), this.flippedTexture.getHeight(), Settings.scale, Settings.scale, 0.0F, 0, 0, this.flippedTexture.getWidth(), this.flippedTexture.getHeight(), false, false);
-        } else { sb.draw(this.tileTexture, this.x, this.y, this.tileTexture.getWidth() / 2.0F, this.tileTexture.getHeight() / 2.0F, this.tileTexture.getWidth(), this.tileTexture.getHeight(), Settings.scale, Settings.scale, 0.0F, 0, 0, this.tileTexture.getWidth(), this.tileTexture.getHeight(), false, false); }
-        if (flagged) { sb.draw(this.flaggedTexture, this.x, this.y, this.flaggedTexture.getWidth() / 2.0F, this.flaggedTexture.getHeight() / 2.0F, this.flaggedTexture.getWidth(), this.flaggedTexture.getHeight(), Settings.scale, Settings.scale, 0.0F, 0, 0, this.flaggedTexture.getWidth(), this.flaggedTexture.getHeight(), false, false); }
+        if ((flipped && flippedTexture != null) || Settings.isDebug) { sb.draw((TextureRegion) flippedTexture, x, y, flippedTexture.packedWidth /2F, flippedTexture.packedHeight /2F, flippedTexture.packedWidth, flippedTexture.packedHeight, Settings.scale, Settings.scale, 0.0F);
+        } else { sb.draw((TextureRegion) tileTexture, x, y, tileTexture.packedWidth /2F, tileTexture.packedHeight /2F, tileTexture.packedWidth, tileTexture.packedHeight, Settings.scale, Settings.scale, 0.0F); }
+        if (flagged) { sb.draw((TextureRegion) flaggedTexture, x, y, flaggedTexture.packedWidth /2F, flaggedTexture.packedHeight /2F, flaggedTexture.packedWidth, flaggedTexture.packedHeight, Settings.scale, Settings.scale, 0.0F); }
     }
 
     public void update() {
@@ -79,15 +71,15 @@ public class GameTile extends AbstractTile {
     }
     public void setEnemy() {
         isEnemy = true;
-        this.flippedTexture = new Texture(makeGamePath("gremlinflip/nobbed.png"));
+        flippedTexture = gremlinFlip.atlas.findRegion("nobbed");
     }
     public void setGoldAmount(int goldAmount) {
         this.goldAmount = goldAmount;
-        this.flippedTexture = new Texture(makeGamePath("gremlinflip/" + String.valueOf(goldAmount)) + ".png");
+        flippedTexture = gremlinFlip.atlas.findRegion(String.valueOf(goldAmount));
     }
-    public boolean isFlipped() { return flipped; }
+    public boolean isNoGoldSet(){ return goldAmount == 0; }
     public boolean isEnemy() { return isEnemy; }
-
+    public boolean isFlipped() { return flipped; }
     private void playSfx() {
         int roll = MathUtils.random(2);
         if (roll == 0) { CardCrawlGame.sound.play("VO_GREMLINNOB_1A");

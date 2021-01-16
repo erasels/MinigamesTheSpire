@@ -2,7 +2,6 @@ package Minigames;
 
 import Minigames.events.TestBlackjackEvent;
 import Minigames.events.TestMinigameEvent;
-import Minigames.events.gremlinFlipEvent;
 import Minigames.games.beatpress.BeatPress;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
@@ -48,8 +47,6 @@ public class Minigames implements
         BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
 
         BaseMod.addEvent(TestBlackjackEvent.ID, TestBlackjackEvent.class);
-
-        BaseMod.addEvent(gremlinFlipEvent.ID, gremlinFlipEvent.class);
 
     }
 
