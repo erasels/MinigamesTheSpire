@@ -42,7 +42,7 @@ public class gremlinFlip extends AbstractMinigame {
     private static final String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
     private static final String[] OPTIONS = eventStrings.OPTIONS;
 
-    public static final String ASSET_PATH = "minigamesResources/img/games/gremlinFlip/gremlinflip.atlas";
+    public static final String ASSET_PATH = "minigamesResources/img/games/gremlinflip/gremlinFlip.atlas";
     public static final AssetManager assetManager = new AssetManager();
     public static TextureAtlas atlas;
 
