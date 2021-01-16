@@ -23,7 +23,7 @@ public class BeatPattern {
     }
 
     public float addBalls(AbstractMinigame parent, float time, PriorityQueue<Ball> balls, ArrayList<Ball> allBalls) {
-        reset();
+        //reset();
 
         boolean lastRight = true;
         Ball.BallType lastType = Ball.BallType.ROLL;
@@ -47,7 +47,7 @@ public class BeatPattern {
         return time;
     }
 
-    private void reset() {
+    public void reset() {
         fixedSide = null;
         fixedBall = null;
     }

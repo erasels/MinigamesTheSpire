@@ -12,6 +12,7 @@ import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
+import com.megacrit.cardcrawl.relics.Ectoplasm;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -286,5 +287,10 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     public String getOption() {
         return OPTIONS[2];
+    }
+
+    @Override
+    public boolean canSpawn() {
+        return !AbstractDungeon.player.hasRelic(Ectoplasm.ID) && AbstractDungeon.player.gold >= MIN_BET;
     }
 }

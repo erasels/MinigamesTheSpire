@@ -3,9 +3,10 @@ package Minigames.events;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
 import Minigames.games.blackjack.BlackjackMinigame;
+import Minigames.games.gremlinFlip.gremlinFlip;
+import Minigames.games.mastermind.MastermindMinigame;
 import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.localization.EventStrings;
 
 import static Minigames.Minigames.makeID;
@@ -23,12 +24,19 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     public TestMinigameEvent() {
         super(NAME, DESCRIPTIONS[0], null);
 
-        minigames = new AbstractMinigame[3];
-        minigames[0] = new BlackjackMinigame();
+
+        minigames = new AbstractMinigame[5];
+        minigames[0] = new TestMinigame();
         minigames[1] = new BeatPress();
+        minigames[2] = new gremlinFlip();
+        minigames[3] = new MastermindMinigame();
+        minigames[4] = new BlackjackMinigame();
 
         imageEventText.setDialogOption(minigames[0].getOption());
         imageEventText.setDialogOption(minigames[1].getOption());
+        imageEventText.setDialogOption(minigames[2].getOption());
+        imageEventText.setDialogOption(minigames[3].getOption());
+        imageEventText.setDialogOption(minigames[4].getOption());
     }
 
     @Override
@@ -54,17 +62,17 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
                 }
                 break;
             case 2:
-                if (minigames[chosenMinigame].instructionsButtonPressed(buttonPressed)) {
+                if (minigames[chosenMinigame].instructionsButtonPressed(buttonPressed, this.imageEventText)) {
                     startGame(minigames[chosenMinigame]);
                 }
                 break;
             case 3:
-                if (minigames[chosenMinigame].postgameButtonPressed(buttonPressed)) {
+                if (minigames[chosenMinigame].postgameButtonPressed(buttonPressed, this.imageEventText)) {
                     endOfEvent();
                 }
                 break;
-            case 4:
-
+            default:
+                openMap();
                 break;
         }
     }
