@@ -75,6 +75,7 @@ public class Shell {
         this.heldRelic = held;
         heldRelic.currentX = heldRelic.targetX = Settings.WIDTH / 2F;
         heldRelic.currentY = heldRelic.targetY = Settings.HEIGHT / 2F;
+        relicTransparency = targetRelicTransparency = 0F;
     }
 
     public void grantReward() {
@@ -110,6 +111,9 @@ public class Shell {
         }
         if (relicDrawScale != targetRelicDrawScale) {
             relicDrawScale = MathHelper.cardScaleLerpSnap(relicDrawScale, targetRelicDrawScale);
+        }
+        if (relicTransparency != targetRelicTransparency) {
+            relicTransparency = MathHelper.cardScaleLerpSnap(relicTransparency, targetRelicTransparency);
         }
         if (currentPhase != animPhase.REWARDINTRO) {
             if (this.heldCard != null) {
