@@ -176,18 +176,24 @@ public class ShellGame extends AbstractMinigame {
                     switch(subPhase){
                         case 0:{
                             shell1.currentPhase = Shell.animPhase.SHELLINTRO;
+                            shell1.moveTimerY = 0F;
+                            shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = .25F;  //Wait time before showing next Shell
                             subPhase = 1;
                             break;
                         }
                         case 1:{
                             shell2.currentPhase = Shell.animPhase.SHELLINTRO;
+                            shell2.moveTimerY = 0F;
+                            shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = .25F;  //Wait time before showing next Shell
                             subPhase = 2;
                             break;
                         }
                         case 2:{
                             shell3.currentPhase = Shell.animPhase.SHELLINTRO;
+                            shell3.moveTimerY = 0F;
+                            shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
                             timer = 1F;  //Wait time before starting the Swaps
                             subPhase = 0;
                             phase = 2;
@@ -271,11 +277,15 @@ public class ShellGame extends AbstractMinigame {
                             switch (subPhase){
                                 case 0:{
                                     shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    shell2.moveTimerY = 0F;
+                                    shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }
                                 case 1:{
                                     shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    shell3.moveTimerY = 0F;
+                                    shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }
@@ -286,11 +296,15 @@ public class ShellGame extends AbstractMinigame {
                             switch (subPhase){
                                 case 0:{
                                     shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    shell1.moveTimerY = 0F;
+                                    shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }
                                 case 1:{
                                     shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    shell3.moveTimerY = 0F;
+                                    shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }
@@ -301,11 +315,15 @@ public class ShellGame extends AbstractMinigame {
                             switch (subPhase){
                                 case 0:{
                                     shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    shell1.moveTimerY = 0F;
+                                    shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }
                                 case 1:{
                                     shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
+                                    shell2.moveTimerY = 0F;
+                                    shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }

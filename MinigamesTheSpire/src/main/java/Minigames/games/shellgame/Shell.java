@@ -38,6 +38,9 @@ public class Shell {
     public float startX;
     public float startY;
 
+    public float shellOffsetX;
+    public float shellOffsetY;
+
     public float moveTimer;
     public float startMoveTimer;
 
@@ -74,7 +77,7 @@ public class Shell {
 
     public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE.cpy());
-        sb.draw(shellTex, x, y, shellTex.getWidth() * scale, shellTex.getHeight() * scale);
+        sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY, shellTex.getWidth() * scale, shellTex.getHeight() * scale);
 
 
         if (heldCard != null) {
@@ -87,11 +90,13 @@ public class Shell {
         switch (currentPhase)
         {
             case REWARDINTRO:{
-
                 break;
             }
             case SHELLINTRO:{
-
+                if (moveTimerY < startMoveTimerY) {
+                    moveTimerY += Gdx.graphics.getDeltaTime();
+                    shellOffsetY = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
+                }
                 break;
             }
             case SWITCHEROO:{
@@ -132,7 +137,10 @@ public class Shell {
                 break;
             }
             case SHELLOUTRO:{
-
+                if (moveTimerY < startMoveTimerY) {
+                    moveTimerY += Gdx.graphics.getDeltaTime();
+                    shellOffsetY = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
+                }
                 break;
             }
         }
