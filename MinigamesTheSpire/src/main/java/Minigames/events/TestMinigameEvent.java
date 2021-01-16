@@ -4,6 +4,7 @@ import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
 import Minigames.games.gremlinFlip.gremlinFlip;
 import Minigames.games.test.TestMinigame;
+import Minigames.games.mastermind.MastermindMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.localization.EventStrings;
@@ -23,14 +24,16 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     public TestMinigameEvent() {
         super(NAME, DESCRIPTIONS[0], null);
 
-        minigames = new AbstractMinigame[3];
+        minigames = new AbstractMinigame[4];
         minigames[0] = new TestMinigame();
         minigames[1] = new BeatPress();
         minigames[2] = new gremlinFlip();
+        minigames[3] = new MastermindMinigame();
 
         imageEventText.setDialogOption(minigames[0].getOption());
         imageEventText.setDialogOption(minigames[1].getOption());
         imageEventText.setDialogOption(minigames[2].getOption());
+        imageEventText.setDialogOption(minigames[3].getOption());
     }
 
     @Override
