@@ -19,7 +19,7 @@ public class ShellGame extends AbstractMinigame {
     Then we do phase 1, which is the shuffling part. You watch them shuffle
     and then once they're done shuffling, we make it clear you can click,
     and then that's phase 2. On phase 2, when you click,
-    pull up the corresponding shell, and grant the reward in a pretty fashion,
+    pull up the corresponding shell (that's phase 3), and grant the reward in a pretty fashion,
     like how Gremlin Match puts the cards in your deck from the screen. Boom!
      */
 
@@ -72,6 +72,28 @@ public class ShellGame extends AbstractMinigame {
     private void updateShellWhyIsPhaseProtected(Shell shell) {
         if (phase == 0) {
             shell.targetY = 0;
+        }
+        if (phase == 3) {
+            switch (chosen) {
+                case 1:
+                    shell1.targetY = 100;
+                    if (shell1.y == shell1.targetY) {
+                        phase = 4;
+                    }
+                    break;
+                case 2:
+                    shell2.targetY = 100;
+                    if (shell2.y == shell2.targetY) {
+                        phase = 4;
+                    }
+                    break;
+                case 3:
+                    shell3.targetY = 100;
+                    if (shell3.y == shell3.targetY) {
+                        phase = 4;
+                    }
+                    break;
+            }
         }
     }
 
