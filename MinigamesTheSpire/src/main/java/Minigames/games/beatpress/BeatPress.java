@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 import java.util.ArrayList;
@@ -43,6 +44,21 @@ public class BeatPress extends AbstractMinigame {
     public static final String sfxOof = makeID("sfxOof");
     public static final String sfxPress = makeID("sfxPress");
     public static final String sfxPressReady = makeID("sfxPressReady");
+
+    private static final ArrayList<BeatPattern> basicPatterns = new ArrayList<>();
+    private static final ArrayList<BeatPattern> mediumPatterns = new ArrayList<>();
+    private static final ArrayList<BeatPattern> heckPatterns = new ArrayList<>();
+
+    static {
+        basicPatterns.add(new BeatPattern("??1.6 ??1.6"));
+        basicPatterns.add(new BeatPattern("??1.6 =_0.8 !_0.8"));
+        basicPatterns.add(new BeatPattern("??2.4 =R0.8"));
+        basicPatterns.add(new BeatPattern("=_0.8 =_0.8 =?1.6"));
+        basicPatterns.add(new BeatPattern("!?0.8 ==0.8 ??0.8 ==0.8"));
+
+        mediumPatterns.add(new BeatPattern("!?1.066667 !?1.066667 !?1.066667"));
+        mediumPatterns.add(new BeatPattern("??1.6 ?_0.4 =_0.4 =_0.8"));
+    }
 
     private Texture title;
     private Texture input;
@@ -95,6 +111,23 @@ public class BeatPress extends AbstractMinigame {
         PERFECT,
         NOT_BAD,
         OUCH
+    }
+
+    public BeatPress() {
+        super();
+
+        hasInstructionScreen = false;
+    }
+
+    @Override
+    public String getOption() {
+        return "I'll add localization later.";
+    }
+
+    @Override
+    public void setupPostgameScreen(GenericEventDialog event) {
+        event.updateBodyText("How'd you do?");
+        event.setDialogOption("There will probably be rewards.");
     }
 
     @Override
