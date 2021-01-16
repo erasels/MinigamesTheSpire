@@ -127,7 +127,7 @@ public class ShellGame extends AbstractMinigame {
 
     @Override
     public void update(float elapsed) {
-        timer -= Gdx.graphics.getDeltaTime() * timeModifier;
+        timer -= elapsed * timeModifier;
         switch (phase){
             case 0:{
                 /**
