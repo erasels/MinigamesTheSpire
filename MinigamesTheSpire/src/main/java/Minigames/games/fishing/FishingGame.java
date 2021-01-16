@@ -9,10 +9,14 @@ import Minigames.games.input.bindings.BindingGroup;
 import Minigames.games.input.bindings.MouseHoldObject;
 import Minigames.util.HelperClass;
 import Minigames.util.TextureLoader;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.FontHelper;
 
 import static Minigames.Minigames.makeID;
 
@@ -25,6 +29,8 @@ public class FishingGame extends AbstractMinigame {
 
     private int score;
     public float waitTimer = WAITTIME;
+
+    public static GlyphLayout layout = new GlyphLayout();
 
     //SOUNDS
     public static final String sBob = makeID("sound_bob");
@@ -125,5 +131,13 @@ public class FishingGame extends AbstractMinigame {
         //bindings.bindDirectional(() -> this.gamePhase.);
 
         return bindings;
+    }
+
+    public static void displayTimer(SpriteBatch sb, String msg, float y, Color color) {
+        String tmp = msg.replaceAll("\\d", "0");
+        layout.setText(FontHelper.SCP_cardEnergyFont, tmp);
+        float baseBox = layout.width;
+        layout.setText(FontHelper.SCP_cardEnergyFont, msg);
+        FontHelper.renderFont(sb, FontHelper.SCP_cardEnergyFont, msg, (Settings.WIDTH / 2.0F) - baseBox / 2.0F, y + layout.height / 2.0F, color);
     }
 }

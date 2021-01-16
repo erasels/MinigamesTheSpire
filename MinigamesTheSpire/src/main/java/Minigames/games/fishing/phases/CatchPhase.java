@@ -9,12 +9,15 @@ import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class CatchPhase extends AbstractGamePhase {
-    private static final float MINIMUM_BOUNCE_THRESHOLD = 8f;
+    public static final float GAME_TIME = 40f; //40 seconds before fish escapes
+    private static final float MINIMUM_BOUNCE_THRESHOLD = 10f;
     private static final float GRAVITY_ACCEL = 200f, PULL_ACCEL = 190f;
     private static final float TERMINAL_VELOCITY = -1000f;
     private static final float BOUNCE_COEFFICIENT = -0.55f;
@@ -30,9 +33,10 @@ public class CatchPhase extends AbstractGamePhase {
     private static Color notCatchingColor = new Color(0.75f, 0.65f, 0.65f, 0.75f);
     private static Color catchingColor = new Color(0.75f, 0.85f, 0.75f, 1f);
 
+    private float gameTime = GAME_TIME;
     private float spinnerAngle, speed, pos, maxPos;
-
     private float bobTimer, reelTimer;
+
     protected AbstractFish fish;
 
     public CatchPhase(FishingGame parent, AbstractGamePhase next) {
@@ -40,7 +44,7 @@ public class CatchPhase extends AbstractGamePhase {
         maxPos = bbh - (cbh / 2f) - 100f;
         pos = 0;
         fish = parent.fish;
-        fish.scaleBehaviorY(maxPos + 100f);
+        fish.scaleBehavior(GAME_TIME, maxPos + 100f);
     }
 
     @Override
@@ -55,6 +59,9 @@ public class CatchPhase extends AbstractGamePhase {
     public void update() {
         if (!isDone && !waiting) {
             float dt = HelperClass.getTime();
+
+            gameTime -= dt;
+
             // apply gravity, assuming negative velocity implies going down
             speed = Math.max(TERMINAL_VELOCITY, speed - GRAVITY_ACCEL * dt);
             pos += speed * dt;
@@ -74,7 +81,7 @@ public class CatchPhase extends AbstractGamePhase {
 
             boolean fishBeingCaught = fish.isWithinY(pos, pos + cbh);
             fish.update(fishBeingCaught);
-            isDone = fish.isCaught(); //or timer ran out
+            isDone = fish.isCaught() || gameTime <= 0;
             if (!isDone) {
                 float gt = HelperClass.getTime();
                 bobTimer -= gt;
@@ -103,6 +110,10 @@ public class CatchPhase extends AbstractGamePhase {
     @Override
     public void render(SpriteBatch sb) {
         float blBound = (-(AbstractMinigame.SIZE / 2f));
+
+        //Render game time
+        FishingGame.displayTimer(sb, "Time left: " + HelperClass.get2DecString(gameTime), Settings.HEIGHT *0.85f, Color.GOLDENROD);
+
         //Render fishing bar
         parent.drawTexture(sb, imgBar, blBound + (bbw / 2f), 0, 0, bbw, bbh, false, false);
 
@@ -120,11 +131,11 @@ public class CatchPhase extends AbstractGamePhase {
         int height = (int) ((fish.hp / fish.mHp) * (bbh - FBAR_GROUND_OFFSET));
         parent.drawTexture(sb, ImageMaster.WHITE_SQUARE_IMG, blBound + bbw - 16f, blBound + (AbstractMinigame.SIZE - bbh) + (bbh / 2f) + ((height - (bbh - FBAR_GROUND_OFFSET)) / 2f) - 8f, 0, 10, (NumberUtils.max(height - 8, 0)), false, false);
 
-
+        //Render Fish
         boolean catching = fish.isWithinY(pos, pos + cbh);
         Color fC = catching ? catchingColor : notCatchingColor;
         sb.setColor(fC);
-        parent.drawTexture(sb, imgFish, blBound + (bbw / 2f) + (fbw / 2f) - 20f, blBound + (AbstractMinigame.SIZE - bbh) + (fbh / 2f) + fish.y - FBAR_GROUND_OFFSET, 0, fbw, fbh, catching, false);
+        parent.drawTexture(sb, imgFish, blBound + (bbw / 2f) + (fbw / 2f) - 20f + (catching? getFishShake() : 0), blBound + (AbstractMinigame.SIZE - bbh) + (fbh / 2f) + fish.y - FBAR_GROUND_OFFSET, 0, fbw, fbh, catching, false);
         sb.setColor(Color.WHITE);
 
         //Render Crank
@@ -150,6 +161,22 @@ public class CatchPhase extends AbstractGamePhase {
                 CardCrawlGame.sound.play(fishBeingCaught ? FishingGame.sLongReel : FishingGame.sShortReel);
                 reelTimer = fishBeingCaught ? FishingGame.timeLReel : FishingGame.timeSReel;
             }
+        }
+    }
+
+    private static final float FISH_SHAKE_TIME = 0.15f;
+    private float fishShakeTimer = FISH_SHAKE_TIME;
+    private boolean switchFishShake = false;
+    private float getFishShake() {
+        fishShakeTimer -= HelperClass.getTime();
+        if(fishShakeTimer <= 0) {
+            fishShakeTimer = FISH_SHAKE_TIME;
+            switchFishShake = !switchFishShake;
+        }
+        if(switchFishShake) {
+            return Interpolation.linear.apply(12f, -12f, 1 - fishShakeTimer/FISH_SHAKE_TIME);
+        } else {
+            return Interpolation.linear.apply(-12f, 12f, 1 - fishShakeTimer/FISH_SHAKE_TIME);
         }
     }
 
