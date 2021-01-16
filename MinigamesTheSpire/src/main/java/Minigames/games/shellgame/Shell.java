@@ -106,12 +106,6 @@ public class Shell {
 
     public void update(float elapsed) {
         hb.update();
-        if (relicDrawScale != targetRelicDrawScale) {
-            relicDrawScale = MathHelper.cardScaleLerpSnap(relicDrawScale, targetRelicDrawScale);
-        }
-        if (relicTransparency != targetRelicTransparency) {
-            relicTransparency = MathHelper.cardScaleLerpSnap(relicTransparency, targetRelicTransparency);
-        }
         if (currentPhase != animPhase.REWARDINTRO && currentPhase != animPhase.NONE) {
             if (this.heldCard != null) {
                 this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
@@ -128,12 +122,16 @@ public class Shell {
                     if (moveTimer == startMoveTimer) {
                         heldCard.targetTransparency = 1F;
                     } else if (moveTimer < 0.5F) {
+                        heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(1.33F, 0.6F, moveTimer / 0.5F);
+                        heldCard.transparency = heldCard.targetTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
                         heldCard.current_x = heldCard.target_x = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
                     }
                 } else if (heldRelic != null) {
                     if (moveTimer == startMoveTimer) {
                         targetRelicTransparency = 1F;
                     } else if (moveTimer < 0.5F) {
+                        targetRelicDrawScale = relicDrawScale = MathUtils.lerp(1.5F, 1, moveTimer / 0.5F);
+                        targetRelicTransparency = relicTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
                         heldRelic.currentX = heldRelic.targetX = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
                     }
                 }
