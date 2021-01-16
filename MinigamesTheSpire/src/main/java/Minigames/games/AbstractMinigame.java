@@ -257,6 +257,11 @@ public abstract class AbstractMinigame implements TextReceiver {
         //Return true here to start the game.
         return true;
     }
+    public boolean instructionsButtonPressed(int buttonIndex, GenericEventDialog event) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages of instructions.
+        //Return true here to start the game.
+        return instructionsButtonPressed(buttonIndex);
+    }
 
     public boolean hasPostgameScreen = true;
     public void setupPostgameScreen(GenericEventDialog event) {
@@ -267,6 +272,11 @@ public abstract class AbstractMinigame implements TextReceiver {
         //If you wanna do fancy stuff, you can track pages in your event and have multiple pages.
         //Return true here to go to ending of event.
         return true;
+    }
+    public boolean postgameButtonPressed(int buttonIndex, GenericEventDialog event) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages.
+        //Return true here to go to ending of event.
+        return postgameButtonPressed(buttonIndex);
     }
 
 
