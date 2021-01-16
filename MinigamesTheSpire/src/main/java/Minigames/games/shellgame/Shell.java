@@ -117,6 +117,7 @@ public class Shell {
             sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY - (shellTex.getHeight() / 2), shellTex.getWidth() * scale, shellTex.getHeight() * scale);
         }
 
+        hb.render(sb);
     }
 
     public void update(float elapsed) {
