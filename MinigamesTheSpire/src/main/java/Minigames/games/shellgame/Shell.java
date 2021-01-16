@@ -60,7 +60,7 @@ public class Shell {
         this.parent = parent;
         this.x = x;
         this.y = y;
-        this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
+        this.hb = new Hitbox(x - (shellTex.getWidth() / 2F), y - (shellTex.getHeight() / 2F), shellTex.getWidth(), shellTex.getHeight());
         this.heldCard = held;
         heldCard.current_x = heldCard.target_x = Settings.WIDTH / 2F;
         heldCard.current_y = heldCard.target_y = Settings.HEIGHT / 2F;
@@ -76,7 +76,7 @@ public class Shell {
         this.parent = parent;
         this.x = x;
         this.y = y;
-        this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
+        this.hb = new Hitbox(x - (shellTex.getWidth() / 2F), y - (shellTex.getHeight() / 2F), shellTex.getWidth(), shellTex.getHeight());
         this.heldRelic = held;
         heldRelic.currentX = heldRelic.targetX = Settings.WIDTH / 2F;
         heldRelic.currentY = heldRelic.targetY = Settings.HEIGHT / 2F;
@@ -270,7 +270,7 @@ public class Shell {
                 break;
             }
         }
-
+        hb.translate(this.x - (hb.width / 2), this.y - (hb.height / 2));
     }
 
 
