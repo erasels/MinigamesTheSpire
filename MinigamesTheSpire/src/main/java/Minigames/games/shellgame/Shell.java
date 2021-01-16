@@ -84,6 +84,7 @@ public class Shell {
     }
 
     public void update() {
+        hb.update();
         if (this.heldCard != null) {
             this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
             this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
