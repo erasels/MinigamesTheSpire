@@ -134,7 +134,7 @@ public class ShellGame extends AbstractMinigame {
         switch (phase){
             case 0:{
                 /**
-                 Phase 1: Show each Reward animating in and getting into its proper position.
+                 Phase 0: Show each Reward animating in and getting into its proper position.
                  Subphase 0: Left Reward
                  Subphase 1: Right Reward
                  Subphsae 2: Center Reward
