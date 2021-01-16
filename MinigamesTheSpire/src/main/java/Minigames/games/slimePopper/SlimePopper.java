@@ -192,13 +192,11 @@ public class SlimePopper extends AbstractMinigame {
             isDone = true;
             AbstractRoom room = AbstractDungeon.getCurrRoom();
             room.rewards.clear();
-            if (popCount >= 5) {
-                room.addGoldToRewards(75);
-            }
+            room.addGoldToRewards(5 * popCount);
             if (popCount >= 10) {
                 room.addPotionToRewards(AbstractDungeon.returnRandomPotion());
             }
-            if (popCount >= 15) {
+            if (popCount >= 20) {
                 AbstractRelic r = AbstractDungeon.returnRandomScreenlessRelic(AbstractDungeon.returnRandomRelicTier());
                 room.addRelicToRewards(r);
             }
