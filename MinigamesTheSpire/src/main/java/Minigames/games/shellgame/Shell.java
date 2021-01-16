@@ -89,9 +89,11 @@ public class Shell {
     public void grantReward() {
         if (this.heldCard != null) {
             if (this.heldCard.type == AbstractCard.CardType.CURSE) ShellGame.gotCurse = true;
-            AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.heldCard.makeCopy(), (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
+            AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.heldCard.makeCopy(), this.heldCard.current_x, this.heldCard.current_y));
+            this.heldCard = null;
         } else if (this.heldRelic != null) {
-            AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0F, Settings.HEIGHT / 2.0F, heldRelic.makeCopy());
+            AbstractDungeon.getCurrRoom().spawnRelicAndObtain(heldRelic.currentX + ((64 * Settings.scale) / 2), heldRelic.currentY + ((64 * Settings.scale) / 2), heldRelic.makeCopy());
+            this.heldRelic = null;
         }
     }
 
