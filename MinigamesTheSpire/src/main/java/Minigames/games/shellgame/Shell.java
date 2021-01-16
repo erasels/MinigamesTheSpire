@@ -112,7 +112,7 @@ public class Shell {
         if (relicTransparency != targetRelicTransparency) {
             relicTransparency = MathHelper.cardScaleLerpSnap(relicTransparency, targetRelicTransparency);
         }
-        if (currentPhase != animPhase.REWARDINTRO) {
+        if (currentPhase != animPhase.REWARDINTRO && currentPhase != animPhase.NONE) {
             if (this.heldCard != null) {
                 this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
                 this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
