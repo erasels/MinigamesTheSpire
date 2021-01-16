@@ -2,6 +2,7 @@ package Minigames.events;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
+import Minigames.games.gremlinFlip.gremlinFlip;
 import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
@@ -25,9 +26,11 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
         minigames = new AbstractMinigame[3];
         minigames[0] = new TestMinigame();
         minigames[1] = new BeatPress();
+        minigames[2] = new gremlinFlip();
 
         imageEventText.setDialogOption(minigames[0].getOption());
         imageEventText.setDialogOption(minigames[1].getOption());
+        imageEventText.setDialogOption(minigames[2].getOption());
     }
 
     @Override
