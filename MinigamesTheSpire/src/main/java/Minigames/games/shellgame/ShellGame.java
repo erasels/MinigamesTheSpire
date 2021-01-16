@@ -3,11 +3,9 @@ package Minigames.games.shellgame;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.tempCards.Shiv;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -132,30 +130,30 @@ public class ShellGame extends AbstractMinigame {
     @Override
     public void update(float elapsed) {
         timer -= elapsed * timeModifier * debugTimeModifier;
-        switch (phase){
-            case 0:{
+        switch (phase) {
+            case 0: {
                 /**
                  Phase 0: Show each Reward animating in and getting into its proper position.
                  Subphase 0: Left Reward
                  Subphase 1: Right Reward
                  Subphsae 2: Center Reward
                  */
-                if (timer <= 0F){
-                    switch(subPhase){
-                        case 0:{
+                if (timer <= 0F) {
+                    switch (subPhase) {
+                        case 0: {
                             shell1.currentPhase = Shell.animPhase.REWARDINTRO;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 1;
                             break;
                         }
-                        case 1:{
+                        case 1: {
                             //Shell 3 second, since the right one needs to animate first or it will be covered by the middle's anim
                             shell3.currentPhase = Shell.animPhase.REWARDINTRO;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 2;
                             break;
                         }
-                        case 2:{
+                        case 2: {
                             shell2.currentPhase = Shell.animPhase.REWARDINTRO;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 0;
@@ -166,16 +164,16 @@ public class ShellGame extends AbstractMinigame {
                 }
                 break;
             }
-            case 1:{
+            case 1: {
                 /**
                  Phase 1: Show each Shell animating from the top, covering the reward
                  Subphase 0: Left Reward
                  Subphase 1: Center Reward
                  Subphsae 2: Right Reward
                  **/
-                if (timer <= 0F){
-                    switch(subPhase){
-                        case 0:{
+                if (timer <= 0F) {
+                    switch (subPhase) {
+                        case 0: {
                             shell1.currentPhase = Shell.animPhase.SHELLINTRO;
                             shell1.moveTimerY = 0F;
                             shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
@@ -183,7 +181,7 @@ public class ShellGame extends AbstractMinigame {
                             subPhase = 1;
                             break;
                         }
-                        case 1:{
+                        case 1: {
                             shell2.currentPhase = Shell.animPhase.SHELLINTRO;
                             shell2.moveTimerY = 0F;
                             shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
@@ -191,7 +189,7 @@ public class ShellGame extends AbstractMinigame {
                             subPhase = 2;
                             break;
                         }
-                        case 2:{
+                        case 2: {
                             shell3.currentPhase = Shell.animPhase.SHELLINTRO;
                             shell3.moveTimerY = 0F;
                             shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to drop in
@@ -204,7 +202,7 @@ public class ShellGame extends AbstractMinigame {
                 }
                 break;
             }
-            case 2:{
+            case 2: {
                 /**
                  Phase 2: Animate the swaps.  Controlled mostly in decideSwap() and linked
                  functions within.
@@ -234,7 +232,7 @@ public class ShellGame extends AbstractMinigame {
                 }
                 break;
             }
-            case 3:{
+            case 3: {
                 /**
                  Phase 3: Wait for interactivity.  When a Shell is selected,
                  animate it up and offscreen.  Controlled in the onClick method.
@@ -242,7 +240,7 @@ public class ShellGame extends AbstractMinigame {
 
                 break;
             }
-            case 4:{
+            case 4: {
                 /**
                  Phase 4: Grant the Reward.
                  **/
@@ -266,7 +264,8 @@ public class ShellGame extends AbstractMinigame {
                     timer = 1F;
                 }
                 break;
-            }case 5:{
+            }
+            case 5: {
                 /**
                  Phase 5: Reveal the other rewards.
                  Subphase 0: Reveal First reward not chosen.
@@ -275,15 +274,15 @@ public class ShellGame extends AbstractMinigame {
                 if (timer <= 0F) {
                     switch (chosen) {
                         case 1: {
-                            switch (subPhase){
-                                case 0:{
+                            switch (subPhase) {
+                                case 0: {
                                     shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
                                     shell2.moveTimerY = 0F;
                                     shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }
-                                case 1:{
+                                case 1: {
                                     shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
                                     shell3.moveTimerY = 0F;
                                     shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
@@ -294,15 +293,15 @@ public class ShellGame extends AbstractMinigame {
                             break;
                         }
                         case 2: {
-                            switch (subPhase){
-                                case 0:{
+                            switch (subPhase) {
+                                case 0: {
                                     shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
                                     shell1.moveTimerY = 0F;
                                     shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }
-                                case 1:{
+                                case 1: {
                                     shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
                                     shell3.moveTimerY = 0F;
                                     shell3.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
@@ -313,15 +312,15 @@ public class ShellGame extends AbstractMinigame {
                             break;
                         }
                         case 3: {
-                            switch (subPhase){
-                                case 0:{
+                            switch (subPhase) {
+                                case 0: {
                                     shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
                                     shell1.moveTimerY = 0F;
                                     shell1.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
                                     phase5Settings();
                                     break;
                                 }
-                                case 1:{
+                                case 1: {
                                     shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
                                     shell2.moveTimerY = 0F;
                                     shell2.startMoveTimerY = 0.5F;  //Time it takes for the Shell to fly out
@@ -335,7 +334,8 @@ public class ShellGame extends AbstractMinigame {
 
                 }
                 break;
-            }case 6: {
+            }
+            case 6: {
                 /**
                  Phase 6: End the game.
                  **/
@@ -351,7 +351,7 @@ public class ShellGame extends AbstractMinigame {
         shell3.update();
     }
 
-    public void phase5Settings(){
+    public void phase5Settings() {
         if (subPhase == 0) {
             subPhase = 1;
             timer = 0.25F;
@@ -375,13 +375,13 @@ public class ShellGame extends AbstractMinigame {
     }
 
 
-    public void decideSwap(){
+    public void decideSwap() {
         //Shuffle the arraylist.  The first index always gets picked to swap.
         Collections.shuffle(shellsToRender, AbstractDungeon.cardRng.random);
 
         //Random bool to decide who is the other shell to get swapped with - index 1 or index 2.
         //3rd parameter is the Shell that is not moving this swap.
-        if (AbstractDungeon.cardRng.randomBoolean()){
+        if (AbstractDungeon.cardRng.randomBoolean()) {
             setShellTarget(shellsToRender.get(0), shellsToRender.get(1), shellsToRender.get(2));
         } else {
             setShellTarget(shellsToRender.get(0), shellsToRender.get(2), shellsToRender.get(1));
@@ -389,7 +389,7 @@ public class ShellGame extends AbstractMinigame {
 
     }
 
-    public static void receiveSwapComplete(){
+    public static void receiveSwapComplete() {
         //Listener for when a shell swap has concluded.  Uses listenForSwap to prevent
         //two Shells from triggering this method twice on the same swap.  Whoever finishes first
         // (likely on the same frame) triggers receiveSwapComplete, and the second one gets blocked.
@@ -443,7 +443,7 @@ public class ShellGame extends AbstractMinigame {
 
         //Whichever shell is moving left becomes the one rotating into the background
         //the shell moving right rotates into the foreground
-        if (s1.targetX < s2.targetX){
+        if (s1.targetX < s2.targetX) {
             s1.targetY = yBackgroundSwap;
             s1.targetScale = scaleBackgroundSwap;
             s2.targetY = yForegroundSwap;
@@ -473,7 +473,7 @@ public class ShellGame extends AbstractMinigame {
         //Shell render order is important and is reset with every swap.
         //The shell rotating in the foreground is rendered above the rest.
         //The shell rotating in the background is rendered behind the rest.
-        for (Shell s : shellsToRender){
+        for (Shell s : shellsToRender) {
             s.render(sb);
         }
     }

@@ -10,6 +10,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
+import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
@@ -23,8 +24,8 @@ public class Shell {
     public float targetX;
     public float y;
     public float targetY;
-    private AbstractCard heldCard;
-    private AbstractRelic heldRelic;
+    public AbstractCard heldCard;
+    public AbstractRelic heldRelic;
     public Hitbox hb;
 
     public boolean isMoving;
@@ -46,6 +47,9 @@ public class Shell {
     public float moveTimerY;
     public float startMoveTimerY;
 
+    public float relicDrawScale;
+    public float targetRelicDrawScale;
+
     public animPhase currentPhase = animPhase.REWARDINTRO;
 
     public Shell(float x, float y, AbstractCard held) {
@@ -53,6 +57,9 @@ public class Shell {
         this.y = y;
         this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
         this.heldCard = held;
+        heldCard.current_x = heldCard.target_x = Settings.WIDTH / 2F;
+        heldCard.current_y = heldCard.target_y = Settings.HEIGHT / 2F;
+        heldCard.targetTransparency = heldCard.transparency = 0F;
     }
 
     public Shell(float x, float y, AbstractRelic held) {
@@ -60,6 +67,8 @@ public class Shell {
         this.y = y;
         this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
         this.heldRelic = held;
+        heldRelic.currentX = heldRelic.targetX = Settings.WIDTH / 2F;
+        heldRelic.currentY = heldRelic.targetY = Settings.HEIGHT / 2F;
     }
 
     public void grantReward() {
@@ -76,7 +85,7 @@ public class Shell {
             heldCard.render(sb);
         }
         if (heldRelic != null) {
-            heldRelic.render(sb);
+            sb.draw(heldRelic.img, heldRelic.currentX, heldRelic.currentY, 64 * relicDrawScale, 64 * relicDrawScale);
         }
 
         sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY, shellTex.getWidth() * scale, shellTex.getHeight() * scale);
@@ -85,16 +94,45 @@ public class Shell {
 
     public void update() {
         hb.update();
-        if (this.heldCard != null) {
-            this.heldCard.drawScale = this.heldCard.targetDrawScale = 0.66F;
-            this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
-            this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
-        } else if (this.heldRelic != null) {
-            this.heldRelic.currentX = this.heldRelic.targetX = x + (shellTex.getWidth() / 2F);
-            this.heldRelic.currentY = this.heldRelic.targetY = y + (shellTex.getHeight() / 2F);
+        if (heldCard != null) {
+            heldCard.update();
+        }
+        if (heldRelic != null) {
+            heldRelic.update();
+        }
+        if (relicDrawScale != targetRelicDrawScale) {
+            relicDrawScale = MathHelper.cardScaleLerpSnap(relicDrawScale, targetRelicDrawScale);
+        }
+        if (currentPhase != animPhase.REWARDINTRO) {
+            if (this.heldCard != null) {
+                this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
+                this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
+            } else if (this.heldRelic != null) {
+                this.heldRelic.currentX = this.heldRelic.targetX = x + (shellTex.getWidth() / 2F);
+                this.heldRelic.currentY = this.heldRelic.targetY = y + (shellTex.getHeight() / 2F);
+            }
         }
         switch (currentPhase) {
             case REWARDINTRO: {
+                if (this.heldCard != null) {
+                    this.heldCard.targetDrawScale = 1.3F;
+                    this.heldCard.targetTransparency = 100;
+                } else if (this.heldRelic != null) {
+                    this.targetRelicDrawScale = 1.5F;
+                }
+
+                if (heldCard != null) {
+                    if (heldCard.drawScale == heldCard.targetDrawScale && heldCard.transparency == heldCard.targetTransparency) {
+                        heldCard.targetDrawScale = 0.6F;
+                        heldCard.targetTransparency = 0.6F;
+                        heldCard.target_x = x + shellTex.getWidth() / 2F;
+                    }
+                } else if (heldRelic != null) {
+                    if (relicDrawScale == targetRelicDrawScale) {
+                        targetRelicDrawScale = 1F;
+                        heldRelic.targetX = x + shellTex.getWidth() / 2F;
+                    }
+                }
                 break;
             }
             case SHELLINTRO: {
