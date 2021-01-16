@@ -117,7 +117,6 @@ public class Shell {
         }
         switch (currentPhase) {
             case REWARDINTRO: {
-                moveTimer -= elapsed;
                 if (heldCard != null) {
                     if (moveTimer == startMoveTimer) {
                         heldCard.targetTransparency = 1F;
@@ -135,6 +134,7 @@ public class Shell {
                         heldRelic.currentX = heldRelic.targetX = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
                     }
                 }
+                moveTimer -= elapsed;
                 break;
             }
             case SHELLINTRO: {
