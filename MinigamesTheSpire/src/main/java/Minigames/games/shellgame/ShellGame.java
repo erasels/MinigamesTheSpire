@@ -59,8 +59,8 @@ public class ShellGame extends AbstractMinigame {
     public static float cardScalePeak = 1.33F;
     public static float cardScaleCup = .35F;
 
-    public static float relicScaleStart = .6F;
-    public static float relicScalePeak = 1.33F;
+    public static float relicScaleStart = 1F;
+    public static float relicScalePeak = 3F;
     public static float relicScaleCup = .35F;
 
     private int subPhase = 0;
@@ -105,7 +105,7 @@ public class ShellGame extends AbstractMinigame {
 
         shell1.heldCard.current_x = shell1.heldCard.target_x = xpos2;
         // shell2.heldCard.current_x = shell1.heldCard.target_x = xpos2;
-        shell3.heldCard.current_x = shell1.heldCard.target_x = xpos2;
+        shell3.heldCard.current_x = shell3.heldCard.target_x = xpos2;
 
         shellsToRender.add(shell1);
         shellsToRender.add(shell2);
@@ -168,7 +168,7 @@ public class ShellGame extends AbstractMinigame {
                             shell1.currentPhase = Shell.animPhase.REWARDINTRO;
                             shell1.moveTimer = 0F;
                             shell1.startMoveTimer = .5F;
-                            shell3.targetX = xpos1;
+                            shell1.targetX = xpos1;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 1;
                             break;
@@ -187,7 +187,7 @@ public class ShellGame extends AbstractMinigame {
                             shell2.currentPhase = Shell.animPhase.REWARDINTRO;
                             shell2.moveTimer = 0F;
                             shell2.startMoveTimer = .5F;
-                            shell3.targetX = xpos2;
+                            shell2.targetX = xpos2;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 0;
                             phase = 1;
