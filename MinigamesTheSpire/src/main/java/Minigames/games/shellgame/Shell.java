@@ -16,7 +16,7 @@ public class Shell {
         RELIC
     }
 
-    static Texture shellTex = TextureLoader.getTexture(makeGamePath("shells/shell.png"));
+    static Texture shellTex = TextureLoader.getTexture(makeGamePath("shells/lagavulinshell.png"));
 
     private float x;
     private float y;
@@ -27,12 +27,14 @@ public class Shell {
     public Shell(float x, float y, AbstractCard held) {
         this.x = x;
         this.y = y;
+        this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
         this.heldCard = held;
     }
 
     public Shell(float x, float y, AbstractRelic held) {
         this.x = x;
         this.y = y;
+        this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
         this.heldRelic = held;
     }
 
