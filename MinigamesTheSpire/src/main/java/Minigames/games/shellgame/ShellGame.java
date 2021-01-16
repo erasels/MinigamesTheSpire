@@ -66,14 +66,14 @@ public class ShellGame extends AbstractMinigame {
 
     private int subPhase = 0;
 
-    private static int totalSwaps = 10;
+    private static int totalSwaps = 15;
     private static int currentSwaps = 0;
 
     public static float baseSpeed = .75F;
 
     private static boolean listenForSwap = false;
 
-    private static float sppedIncreasePerSwap = 0.25F;
+    private static float sppedIncreasePerSwap = 0.2F;
 
     public static float timeToBeginNextSwap;
 
