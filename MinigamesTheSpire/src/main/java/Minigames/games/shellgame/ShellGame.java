@@ -42,15 +42,15 @@ public class ShellGame extends AbstractMinigame {
     private static float timeModifier = 1F;
     private static float debugTimeModifier = .25F;
 
-    private static float xpos1 = SIZE * 0.4F;
-    private static float xpos2 = SIZE * 0.5F;
-    private static float xpos3 = SIZE * 0.6F;
+    private static float xpos1 = Settings.WIDTH * 0.4F;
+    private static float xpos2 = Settings.WIDTH * 0.5F;
+    private static float xpos3 = Settings.WIDTH * 0.6F;
 
     public static float offscreenShellHeight = 200F;
 
-    public static float yBackgroundSwap = SIZE * 0.55F;
-    public static float yForegroundSwap = SIZE * 0.45F;
-    public static float yMid = SIZE * 0.5F;
+    public static float yBackgroundSwap = Settings.HEIGHT * 0.55F;
+    public static float yForegroundSwap = Settings.HEIGHT * 0.45F;
+    public static float yMid = Settings.HEIGHT * 0.5F;
 
     public static float scaleForegroundSwap = 1.25F;
     public static float scaleBackgroundSwap = 0.75F;
@@ -83,9 +83,9 @@ public class ShellGame extends AbstractMinigame {
         AbstractCard nastyCurse = CardLibrary.getCurse();
 
         //yMid + some offset to get them to start above at the beginning
-        shell1 = new Shell(xpos1, yMid, rewardCard);
-        shell2 = new Shell(xpos2, yMid, rewardRelic);
-        shell3 = new Shell(xpos3, yMid, nastyCurse);
+        shell1 = new Shell(this, xpos1, yMid, rewardCard);
+        shell2 = new Shell(this, xpos2, yMid, rewardRelic);
+        shell3 = new Shell(this, xpos3, yMid, nastyCurse);
 
         shellsToRender.add(shell1);
         shellsToRender.add(shell2);
