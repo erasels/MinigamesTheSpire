@@ -86,20 +86,21 @@ public class Shell {
         if (heldRelic != null) {
             heldRelic.render(sb);
         }
-    }    public void update() {
-        switch (currentPhase)
-        {
-            case REWARDINTRO:{
+    }
+
+    public void update() {
+        switch (currentPhase) {
+            case REWARDINTRO: {
                 break;
             }
-            case SHELLINTRO:{
+            case SHELLINTRO: {
                 if (moveTimerY < startMoveTimerY) {
                     moveTimerY += Gdx.graphics.getDeltaTime();
                     shellOffsetY = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
                 }
                 break;
             }
-            case SWITCHEROO:{
+            case SWITCHEROO: {
                 if (isMoving) {
                     moveTimer += Gdx.graphics.getDeltaTime();
                     moveTimerY += Gdx.graphics.getDeltaTime();
@@ -132,11 +133,11 @@ public class Shell {
                 }
                 break;
             }
-            case WAITINGFORPLAYER:{
+            case WAITINGFORPLAYER: {
 
                 break;
             }
-            case SHELLOUTRO:{
+            case SHELLOUTRO: {
                 if (moveTimerY < startMoveTimerY) {
                     moveTimerY += Gdx.graphics.getDeltaTime();
                     shellOffsetY = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
@@ -146,7 +147,6 @@ public class Shell {
         }
 
     }
-
 
 
     public enum animPhase {
