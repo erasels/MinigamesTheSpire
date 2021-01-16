@@ -6,18 +6,26 @@ import Minigames.games.input.bindings.MouseHoldObject;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.localization.EventStrings;
+import com.megacrit.cardcrawl.localization.UIStrings;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.BagOfMarbles;
 
-import java.security.SecureRandom;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static Minigames.Minigames.logger;
-import static Minigames.Minigames.makeGamePath;
+import static Minigames.Minigames.*;
 import static Minigames.games.mastermind.Marble.*;
 import static Minigames.games.mastermind.Marble.BOX_SIZE;
 
 public class MastermindMinigame extends AbstractMinigame {
+
+    private final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(makeID("MastermindMinigame"));
 
     public static final int NUMBER_OF_ROWS = 8;
     public static final int NUMBER_OF_COLUMNS = 4;
@@ -33,6 +41,8 @@ public class MastermindMinigame extends AbstractMinigame {
     //background
     private static final int BG_SIZE = 648;
     private Texture background;
+
+    private boolean won = false;
 
     public MastermindMinigame() {
         super();
@@ -178,13 +188,40 @@ public class MastermindMinigame extends AbstractMinigame {
         activeRow++;
         marbleBoard.resetTextures();
         if (numberOfBlack == NUMBER_OF_COLUMNS) {
-            System.out.println("VICTORY LOGIC");
+            won = true;
+            phase = 1;
             return;
         }
         if (activeRow == NUMBER_OF_ROWS) {
-            System.out.println("LOSE LOGIC");
+            phase = 1;
             activeRow = 0;
             return;
         }
+    }
+
+    public String getOption() {
+        return eventStrings.OPTIONS[0];
+    }
+
+    public void setupInstructionScreen(GenericEventDialog event) {
+        event.updateBodyText(eventStrings.DESCRIPTIONS[0]);
+        event.setDialogOption(eventStrings.OPTIONS[1]);
+    }
+
+    public void setupPostgameScreen(GenericEventDialog event) {
+        if (won) {
+            event.updateBodyText(eventStrings.DESCRIPTIONS[1]);
+            event.setDialogOption(eventStrings.OPTIONS[2]);
+        } else {
+            event.updateBodyText(eventStrings.DESCRIPTIONS[2]);
+            event.setDialogOption(eventStrings.OPTIONS[3]);
+        }
+    }
+
+    public boolean postgameButtonPressed(int buttonIndex) {
+        if (won) {
+            AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2f, Settings.HEIGHT / 2f, new BagOfMarbles());
+        }
+        return true;
     }
 }
