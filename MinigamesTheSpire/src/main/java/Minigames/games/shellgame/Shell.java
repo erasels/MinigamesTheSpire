@@ -44,6 +44,10 @@ public class Shell {
     public float moveTimerY;
     public float startMoveTimerY;
 
+    public static float UP_DISTANCE_Y = 100F;
+
+    public float upDist = UP_DISTANCE_Y;
+
     public Shell(float x, float y, AbstractCard held) {
         this.x = x;
         this.y = y;
