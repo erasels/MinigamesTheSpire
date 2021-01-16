@@ -1,5 +1,6 @@
 package Minigames.games.shellgame;
 
+import Minigames.games.AbstractMinigame;
 import Minigames.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -19,6 +20,8 @@ import static Minigames.Minigames.makeGamePath;
 public class Shell {
 
     static Texture shellTex = TextureLoader.getTexture(makeGamePath("shells/lagavulinshell.png"));
+
+    private AbstractMinigame parent;
 
     public float x;
     public float targetX;
@@ -58,7 +61,8 @@ public class Shell {
 
     public animPhase currentPhase = animPhase.NONE;
 
-    public Shell(float x, float y, AbstractCard held) {
+    public Shell(AbstractMinigame parent, float x, float y, AbstractCard held) {
+        this.parent = parent;
         this.x = x;
         this.y = y;
         this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
@@ -69,7 +73,8 @@ public class Shell {
         heldCard.targetTransparency = heldCard.transparency = 1F;
     }
 
-    public Shell(float x, float y, AbstractRelic held) {
+    public Shell(AbstractMinigame parent, float x, float y, AbstractRelic held) {
+        this.parent = parent;
         this.x = x;
         this.y = y;
         this.hb = new Hitbox(x, y, shellTex.getWidth(), shellTex.getHeight());
