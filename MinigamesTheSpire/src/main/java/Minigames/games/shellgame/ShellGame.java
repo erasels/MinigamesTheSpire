@@ -103,13 +103,10 @@ public class ShellGame extends AbstractMinigame {
             case 3:
                 if (shell1.hb.hovered) {
                     chosen = 1;
-                    phase = 3;
                 } else if (shell2.hb.hovered) {
                     chosen = 2;
-                    phase = 3;
                 } else if (shell3.hb.hovered) {
                     chosen = 3;
-                    phase = 3;
                 }
 
                 switch (chosen) {
