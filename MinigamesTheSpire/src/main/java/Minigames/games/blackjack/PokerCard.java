@@ -17,7 +17,7 @@ public class PokerCard {
     public static final int ROYAL_VALUE = 10;
     public static final int ACE_HIGH_VALUE = 11;
     public static final int ACE_LOW_VALUE = 1;
-    public static final Texture cardBack = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/cardBack_blue4.png"));
+    public static final Texture cardBack = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/cardBack_blue2.png"));
 
     private int value;
     private Suite suite;
