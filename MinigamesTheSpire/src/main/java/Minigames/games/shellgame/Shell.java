@@ -1,5 +1,6 @@
 package Minigames.games.shellgame;
 
+import Minigames.events.AbstractMinigameEvent;
 import Minigames.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -114,25 +115,7 @@ public class Shell {
         }
         switch (currentPhase) {
             case REWARDINTRO: {
-                if (this.heldCard != null) {
-                    this.heldCard.targetDrawScale = 1.3F;
-                    this.heldCard.targetTransparency = 100;
-                } else if (this.heldRelic != null) {
-                    this.targetRelicDrawScale = 1.5F;
-                }
 
-                if (heldCard != null) {
-                    if (heldCard.drawScale == heldCard.targetDrawScale && heldCard.transparency == heldCard.targetTransparency) {
-                        heldCard.targetDrawScale = 0.6F;
-                        heldCard.targetTransparency = 0.6F;
-                        heldCard.target_x = x + shellTex.getWidth() / 2F;
-                    }
-                } else if (heldRelic != null) {
-                    if (relicDrawScale == targetRelicDrawScale) {
-                        targetRelicDrawScale = 1F;
-                        heldRelic.targetX = x + shellTex.getWidth() / 2F;
-                    }
-                }
                 break;
             }
             case SHELLINTRO: {

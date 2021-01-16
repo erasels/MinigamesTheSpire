@@ -66,7 +66,7 @@ public class ShellGame extends AbstractMinigame {
 
     public static float timeToBeginNextSwap;
 
-    private float timer = 1F;
+    float timer = 1F;
 
     private ArrayList<Shell> shellsToRender = new ArrayList<>();
 
