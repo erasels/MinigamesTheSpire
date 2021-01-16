@@ -57,12 +57,12 @@ public class ShellGame extends AbstractMinigame {
     public static float cardScaleStart = 0.05F;
     public static float cardScalePeak = 1.15F;
     public static float cardScaleNorm = 1F;
-    public static float cardScaleCup = .25F;
+    public static float cardScaleCup = .3F;
 
     public static float relicScaleStart = 0.05F;
     public static float relicScalePeak = 13F;
     public static float relicScaleNorm = 11F;
-    public static float relicScaleCup = 4F;
+    public static float relicScaleCup = 3F;
 
     private int subPhase = 0;
 
@@ -133,18 +133,18 @@ public class ShellGame extends AbstractMinigame {
                 switch (chosen) {
                     case 1:
                         shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
-                        shell1.startMoveTimer = 0.5F;
-                        shell1.moveTimer = 0F;
+                        shell1.startMoveTimerY = 0.5F;
+                        shell1.moveTimerY = 0F;
                         break;
                     case 2:
                         shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
-                        shell2.startMoveTimer = 0.5F;
-                        shell2.moveTimer = 0F;
+                        shell2.startMoveTimerY = 0.5F;
+                        shell2.moveTimerY = 0F;
                         break;
                     case 3:
                         shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
-                        shell3.startMoveTimer = 0.5F;
-                        shell3.moveTimer = 0F;
+                        shell3.startMoveTimerY = 0.5F;
+                        shell3.moveTimerY = 0F;
                         break;
                 }
 
