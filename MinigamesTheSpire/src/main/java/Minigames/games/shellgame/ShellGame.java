@@ -69,10 +69,19 @@ public class ShellGame extends AbstractMinigame {
         shell3.render(sb);
     }
 
+    private void updateShellWhyIsPhaseProtected(Shell shell) {
+        if (phase == 0) {
+            shell.targetY = 0;
+        }
+    }
+
     @Override
     public void update(float elapsed) {
+        updateShellWhyIsPhaseProtected(shell1);
         shell1.update(elapsed);
+        updateShellWhyIsPhaseProtected(shell2);
         shell2.update(elapsed);
+        updateShellWhyIsPhaseProtected(shell3);
         shell3.update(elapsed);
     }
 

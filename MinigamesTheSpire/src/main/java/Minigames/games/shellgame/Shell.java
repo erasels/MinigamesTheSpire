@@ -5,21 +5,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.helpers.Hitbox;
+import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import static Minigames.Minigames.makeGamePath;
 
 public class Shell {
 
-    private enum RewardType {
-        CARD,
-        RELIC
-    }
-
     static Texture shellTex = TextureLoader.getTexture(makeGamePath("shells/lagavulinshell.png"));
 
-    private float x;
-    private float y;
+    public float x;
+    public float targetX;
+    public float y;
+    public float targetY;
     private AbstractCard heldCard;
     private AbstractRelic heldRelic;
     public Hitbox hb;
@@ -50,5 +48,11 @@ public class Shell {
 
     public void update(float elapsedRealTime) {
         //Here is where the moving stuff will be happen
+        if (x != targetX) {
+            this.x = MathHelper.cardLerpSnap(x, targetX);
+        }
+        if (y != targetY) {
+            this.y = MathHelper.cardLerpSnap(y, targetY);
+        }
     }
 }
