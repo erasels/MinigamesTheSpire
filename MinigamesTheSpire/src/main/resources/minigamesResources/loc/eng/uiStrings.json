@@ -12,5 +12,20 @@
     "TEXT": [
       "Do nothing ya chump."
     ]
+  },
+  "${ModID}:BlackjackText": {
+    "TEXT": [
+      "Bet ",
+      " gold.",
+      "Hit",
+      "Stand",
+      "Leave",
+      "You win! ",
+      "You lose! ",
+      "You tied! ",
+      "Your total hand value: ",
+      "Dealer's total hand value: ",
+      "Play Again"
+    ]
   }
 }

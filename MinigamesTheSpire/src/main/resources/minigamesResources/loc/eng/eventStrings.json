@@ -15,6 +15,15 @@
     ],
     "OPTIONS": [
       "Start"
+      ]
+  },
+  "minigames:BlackjackTest": {
+    "NAME": "Blackjack",
+    "DESCRIPTIONS": [
+      "#b@REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE@"
+    ],
+    "OPTIONS": [
+      "Begin"
     ]
   },
   "${ModID}:ActOneArcade": {
@@ -51,6 +60,19 @@
       "Second minigame",
       "Third minigame",
       "Continue on with your adventure."
+    ]
+  },
+  "${ModID}:gremlinFlip": {
+    "NAME": "Gremlin Flip",
+    "DESCRIPTIONS": [
+      "Gremlin Flip tasks the player with flipping cards to gain #ygold and avoid #rGremlin #rNobs. NL NL The first tile flipped gives the player that much #ygold on the first card, and each subsequent card that is greater than #b1 multiplies the total by the number on the card. For subsequent tiles that are flipped that have the number #b1, #b1 is added to the player's gold. Flipping a #rGremlin #rNob causes the player to spill all #ygold and #plose the minigame. NL NL Numbers next to the Nob denote how many Nobs are on that row, and numbers in the top right denote the sum of the numbers in the row. NL Press left-click to flip a tile. NL Press right-click to mark a tile.",
+      "With your sharp wits and keen eyes, you managed to avoid the #rGremlin #rNob and leave with some hidden goodies! NL NL #yResults! NL NL Clear reward: #b%1$s #ygold NL NL Gold earned: #b%2$s #ygold",
+      "Sadly, you got caught by a #rGremlin #rNob! NL NL While you managed to get away, all of your collected #ygold spilled from your pockets and onto the ground as you ran to safety. NL NL You leave empty handed, and disappointed."
+    ],
+    "OPTIONS": [
+      "Begin",
+      "Obtain #b%1$s #ygold",
+      "Leave"
     ]
   }
 }
