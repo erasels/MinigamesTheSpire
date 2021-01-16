@@ -150,7 +150,8 @@ public class ShellGame extends AbstractMinigame {
     @Override
     public void update(float elapsed) {
         super.update(elapsed);
-        timer -= elapsed * timeModifier;
+        if (phase != 3)
+            timer -= elapsed * timeModifier;
         switch (phase) {
             case 0: {
                 /**
@@ -251,7 +252,7 @@ public class ShellGame extends AbstractMinigame {
                     }
                     if (currentSwaps >= totalSwaps) {
                         //TODO - enable interaction!  Show interactivity somehow
-                        phase = 4;
+                        phase = 3;
                         shell1.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
                         shell2.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
                         shell3.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
