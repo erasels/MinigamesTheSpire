@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import static Minigames.games.mastermind.Marble.BOX_SIZE;
 import static Minigames.games.mastermind.Marble.MARGIN;
-import static Minigames.games.mastermind.MastermindMinigame.POSSIBLE_COLORS;
+import static Minigames.games.mastermind.MastermindMinigame.NUMBER_OF_POSSIBLE_COLORS;
 import static Minigames.games.mastermind.MastermindMinigame.isClicked;
 
 public class MarbleControllers {
@@ -21,9 +21,9 @@ public class MarbleControllers {
     public MarbleControllers(MastermindMinigame parent) {
         this.parent = parent;
 
-        marbles = new Marble[POSSIBLE_COLORS];
-        for (int i = 0; i < POSSIBLE_COLORS; i++) {
-            marbles[i] = new Marble(parent, -AbstractMinigame.SIZE / 2 + i * BOX_SIZE + MARGIN, -AbstractMinigame.SIZE / 2 + MARGIN, i + 1, null);
+        marbles = new Marble[NUMBER_OF_POSSIBLE_COLORS];
+        for (int i = 0; i < NUMBER_OF_POSSIBLE_COLORS; i++) {
+            marbles[i] = new Marble(parent, -AbstractMinigame.SIZE / 2 + i * BOX_SIZE + MARGIN, -AbstractMinigame.SIZE / 2 + MARGIN, i + 1, false, null);
         }
 
         activeMarble = null;
@@ -31,26 +31,25 @@ public class MarbleControllers {
     }
 
     public void render(SpriteBatch sb) {
-        for (int i = 0; i < POSSIBLE_COLORS; i++) {
+        for (int i = 0; i < NUMBER_OF_POSSIBLE_COLORS; i++) {
             marbles[i].render(sb);
         }
     }
 
     public void dispose() {
-        for (int i = 0; i < POSSIBLE_COLORS; i++) {
+        for (int i = 0; i < NUMBER_OF_POSSIBLE_COLORS; i++) {
             marbles[i].dispose();
         }
     }
 
     public void update(float elapsed) {
-        for (int i = 0; i < POSSIBLE_COLORS; i++) {
+        for (int i = 0; i < NUMBER_OF_POSSIBLE_COLORS; i++) {
             marbles[i].update(elapsed);
         }
     }
 
     public void doActionOnPress(Vector2 vector2) {
-        for (int i = 0; i < POSSIBLE_COLORS; i++) {
-            System.out.println(i + " " + isClicked(marbles[i].hb, vector2));
+        for (int i = 0; i < NUMBER_OF_POSSIBLE_COLORS; i++) {
             if (isClicked(marbles[i].hb, vector2)) {
                 activeMarble = marbles[i];
                 startingVector = new Vector2(vector2);
@@ -66,7 +65,7 @@ public class MarbleControllers {
 
     public void doActionOnRelease(Vector2 vector2) {
         if (activeMarble != null) {
-            parent.getMarbleBoard().updateState(activeMarble, vector2);
+            parent.getMarbleBoard().updateValue(activeMarble, vector2);
             activeMarble.dragPosition = null;
         }
         activeMarble = null;
