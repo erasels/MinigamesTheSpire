@@ -1,6 +1,5 @@
 package Minigames;
 
-import Minigames.events.TestBlackjackEvent;
 import Minigames.events.TestMinigameEvent;
 import Minigames.games.beatpress.BeatPress;
 import Minigames.util.TextureLoader;
@@ -45,8 +44,6 @@ public class Minigames implements
         BaseMod.registerModBadge(TextureLoader.getTexture(makeImgPath("modBadge.png")), "Minigames The Spire", "erasels", "A mod, boyo.", settingsPanel);
 
         BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
-
-        BaseMod.addEvent(TestBlackjackEvent.ID, TestBlackjackEvent.class);
 
     }
 
