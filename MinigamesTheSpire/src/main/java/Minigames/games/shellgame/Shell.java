@@ -66,7 +66,7 @@ public class Shell {
         heldCard.current_x = heldCard.target_x = Settings.WIDTH / 2F;
         heldCard.current_y = heldCard.target_y = Settings.HEIGHT / 2F;
         heldCard.drawScale = heldCard.targetDrawScale = 1.33F;
-        heldCard.targetTransparency = heldCard.transparency = 0F;
+        heldCard.targetTransparency = heldCard.transparency = 1F;
     }
 
     public Shell(float x, float y, AbstractRelic held) {
@@ -94,7 +94,7 @@ public class Shell {
             heldCard.render(sb);
         }
         if (heldRelic != null) {
-            sb.setColor(1F, 1F, 1F, relicTransparency);
+            sb.setColor(1F, 1F, 1F, 1F);
             sb.draw(heldRelic.img, heldRelic.currentX, heldRelic.currentY, 64 * relicDrawScale, 64 * relicDrawScale);
         }
 
@@ -106,7 +106,14 @@ public class Shell {
 
     public void update(float elapsed) {
         hb.update();
-        if (currentPhase != animPhase.REWARDINTRO && currentPhase != animPhase.NONE) {
+        if (heldCard != null){
+            heldCard.update();
+        }
+        if (heldRelic != null){
+            heldRelic.update();
+        }
+        /*
+        if (currentPhase != animPhase.REWARDINTRO && currentPhase != animPhase.REWARDMOVETOSPACE && currentPhase != animPhase.NONE) {
             if (this.heldCard != null) {
                 this.heldCard.current_x = this.heldCard.target_x = x + (shellTex.getWidth() / 2F);
                 this.heldCard.current_y = this.heldCard.target_y = y + (shellTex.getHeight() / 2F);
@@ -115,26 +122,39 @@ public class Shell {
                 this.heldRelic.currentY = this.heldRelic.targetY = y + (shellTex.getHeight() / 2F);
             }
         }
+        */
         switch (currentPhase) {
             case REWARDINTRO: {
+                moveTimer += elapsed;
                 if (heldCard != null) {
-                    if (moveTimer == startMoveTimer) {
-                        heldCard.targetTransparency = 1F;
-                    } else if (moveTimer < 0.5F) {
-                        heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(1.33F, 0.6F, moveTimer / 0.5F);
-                        heldCard.transparency = heldCard.targetTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
-                        heldCard.current_x = heldCard.target_x = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
+                    heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScaleStart, ShellGame.cardScalePeak, moveTimer / startMoveTimer);
+                     heldCard.transparency = heldCard.targetTransparency = MathUtils.lerp(0F, 2F, moveTimer / startMoveTimer);
+                    if (moveTimer >= startMoveTimer) {
+                        heldCard.drawScale = ShellGame.cardScalePeak;
+                        startMoveTimer = 0.3F;
+                        moveTimer = 0F;
+                        currentPhase = animPhase.REWARDMOVETOSPACE;
+                        heldCard.transparency = heldCard.targetTransparency = 1F;
                     }
                 } else if (heldRelic != null) {
-                    if (moveTimer == startMoveTimer) {
-                        targetRelicTransparency = 1F;
-                    } else if (moveTimer < 0.5F) {
-                        targetRelicDrawScale = relicDrawScale = MathUtils.lerp(1.5F, 1, moveTimer / 0.5F);
-                        targetRelicTransparency = relicTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
-                        heldRelic.currentX = heldRelic.targetX = MathUtils.lerp(Settings.WIDTH / 2F, this.x + shellTex.getWidth() / 2F, moveTimer / 0.5F);
-                    }
+
                 }
-                moveTimer -= elapsed;
+                break;
+            }
+            case REWARDMOVETOSPACE: {
+                moveTimer += elapsed;
+                if (heldCard != null) {
+                    heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScalePeak, ShellGame.cardScaleCup, moveTimer / startMoveTimer);
+                    // heldCard.transparency = heldCard.targetTransparency = MathUtils.lerp(1F, 0.6F, moveTimer / 0.5F);
+                    x = MathUtils.lerp(x, targetX, moveTimer / startMoveTimer);
+                    heldCard.current_x = heldCard.target_x = x;
+                    if (moveTimer >= startMoveTimer) {
+                        heldCard.drawScale = ShellGame.cardScaleCup;
+                        heldCard.current_x = heldCard.target_x = targetX;
+                    }
+                } else if (heldRelic != null) {
+
+                }
                 break;
             }
             case SHELLINTRO: {
@@ -201,6 +221,7 @@ public class Shell {
     public enum animPhase {
         NONE,
         REWARDINTRO,
+        REWARDMOVETOSPACE,
         SHELLINTRO,
         SWITCHEROO,
         WAITINGFORPLAYER,

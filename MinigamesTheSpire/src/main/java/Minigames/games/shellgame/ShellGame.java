@@ -55,6 +55,14 @@ public class ShellGame extends AbstractMinigame {
     public static float scaleForegroundSwap = 1.25F;
     public static float scaleBackgroundSwap = 0.75F;
 
+    public static float cardScaleStart = .6F;
+    public static float cardScalePeak = 1.33F;
+    public static float cardScaleCup = .35F;
+
+    public static float relicScaleStart = .6F;
+    public static float relicScalePeak = 1.33F;
+    public static float relicScaleCup = .35F;
+
     private int subPhase = 0;
 
     private static int totalSwaps = 10;
@@ -83,9 +91,21 @@ public class ShellGame extends AbstractMinigame {
         AbstractCard nastyCurse = CardLibrary.getCurse();
 
         //yMid + some offset to get them to start above at the beginning
-        shell1 = new Shell(xpos1, yMid, rewardCard);
+        shell1 = new Shell(xpos2, yMid, rewardCard);
         shell2 = new Shell(xpos2, yMid, rewardRelic);
-        shell3 = new Shell(xpos3, yMid, nastyCurse);
+        shell3 = new Shell(xpos2, yMid, nastyCurse);
+
+        shell1.heldCard.drawScale = cardScaleStart;
+        shell2.heldRelic.scale = relicScaleStart;
+        shell3.heldCard.drawScale = cardScaleStart;
+
+        shell1.heldCard.targetTransparency = shell1.heldCard.transparency = 0F;
+        //shell1.heldCard.targetTransparency = shell1.heldCard.transparency = 0F;
+        shell3.heldCard.targetTransparency = shell3.heldCard.transparency = 0F;
+
+        shell1.heldCard.current_x = shell1.heldCard.target_x = xpos2;
+        // shell2.heldCard.current_x = shell1.heldCard.target_x = xpos2;
+        shell3.heldCard.current_x = shell1.heldCard.target_x = xpos2;
 
         shellsToRender.add(shell1);
         shellsToRender.add(shell2);
@@ -116,15 +136,12 @@ public class ShellGame extends AbstractMinigame {
                 switch (chosen) {
                     case 1:
                         shell1.currentPhase = Shell.animPhase.SHELLOUTRO;
-                        shell1.targetY = 100;
                         break;
                     case 2:
                         shell2.currentPhase = Shell.animPhase.SHELLOUTRO;
-                        shell2.targetY = 100;
                         break;
                     case 3:
                         shell3.currentPhase = Shell.animPhase.SHELLOUTRO;
-                        shell3.targetY = 100;
                         break;
                 }
 
@@ -149,7 +166,9 @@ public class ShellGame extends AbstractMinigame {
                     switch (subPhase) {
                         case 0: {
                             shell1.currentPhase = Shell.animPhase.REWARDINTRO;
-                            shell1.moveTimer = shell1.startMoveTimer = 1F;
+                            shell1.moveTimer = 0F;
+                            shell1.startMoveTimer = .5F;
+                            shell3.targetX = xpos1;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 1;
                             break;
@@ -157,14 +176,18 @@ public class ShellGame extends AbstractMinigame {
                         case 1: {
                             //Shell 3 second, since the right one needs to animate first or it will be covered by the middle's anim
                             shell3.currentPhase = Shell.animPhase.REWARDINTRO;
-                            shell3.moveTimer = shell3.startMoveTimer = 1F;
+                            shell3.moveTimer = 0F;
+                            shell3.startMoveTimer = .5F;
+                            shell3.targetX = xpos3;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 2;
                             break;
                         }
                         case 2: {
                             shell2.currentPhase = Shell.animPhase.REWARDINTRO;
-                            shell2.moveTimer = shell2.startMoveTimer = 1F;
+                            shell2.moveTimer = 0F;
+                            shell2.startMoveTimer = .5F;
+                            shell3.targetX = xpos2;
                             timer = 1F;  //Wait time for next Reward to animate in and get into place
                             subPhase = 0;
                             phase = 1;
