@@ -88,6 +88,7 @@ public class Shell {
 
     public void grantReward() {
         if (this.heldCard != null) {
+            if (this.heldCard.type == AbstractCard.CardType.CURSE) ShellGame.gotCurse = true;
             AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.heldCard.makeCopy(), (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
         } else if (this.heldRelic != null) {
             AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0F, Settings.HEIGHT / 2.0F, heldRelic.makeCopy());
@@ -97,12 +98,12 @@ public class Shell {
     public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE.cpy());
         if (heldCard != null) {
-            if (currentPhase != animPhase.SWITCHEROO && currentPhase != animPhase.NONE) {
+            if (currentPhase != animPhase.SWITCHEROO && currentPhase != animPhase.NONE && currentPhase != animPhase.WAITINGFORPLAYER) {
                 heldCard.render(sb);
             }
         }
         if (heldRelic != null) {
-            if (currentPhase != animPhase.SWITCHEROO && currentPhase != animPhase.NONE) {
+            if (currentPhase != animPhase.SWITCHEROO && currentPhase != animPhase.NONE && currentPhase != animPhase.WAITINGFORPLAYER) {
                 sb.setColor(1F, 1F, 1F, 1F);
                 sb.draw(heldRelic.img, heldRelic.currentX - (64 * heldRelic.scale / 2), heldRelic.currentY - (64 * heldRelic.scale / 2), 64 * heldRelic.scale, 64 * heldRelic.scale);
 

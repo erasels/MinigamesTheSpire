@@ -1,11 +1,15 @@
 package Minigames.games.shellgame;
 
+import Minigames.events.ShellGameEvent;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.curses.Injury;
+import com.megacrit.cardcrawl.cards.curses.Normality;
+import com.megacrit.cardcrawl.cards.curses.Regret;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -45,10 +49,10 @@ public class ShellGame extends AbstractMinigame {
     private static float xpos2 = Settings.WIDTH * 0.5F;
     private static float xpos3 = Settings.WIDTH * 0.6F;
 
-    public static float offscreenShellHeight = 200F;
+    public static float offscreenShellHeight = 195F;
 
-    public static float yBackgroundSwap = Settings.HEIGHT * 0.55F;
-    public static float yForegroundSwap = Settings.HEIGHT * 0.45F;
+    public static float yBackgroundSwap = Settings.HEIGHT * 0.575F;
+    public static float yForegroundSwap = Settings.HEIGHT * 0.425F;
     public static float yMid = Settings.HEIGHT * 0.5F;
 
     public static float scaleForegroundSwap = 1.25F;
@@ -66,7 +70,7 @@ public class ShellGame extends AbstractMinigame {
 
     private int subPhase = 0;
 
-    private static int totalSwaps = 15;
+    private static int totalSwaps = 20;
     private static int currentSwaps = 0;
 
     public static float baseSpeed = .75F;
@@ -81,15 +85,46 @@ public class ShellGame extends AbstractMinigame {
 
     private ArrayList<Shell> shellsToRender = new ArrayList<>();
 
+    public static int difficultyMode = 0;
+
+    public static boolean gotCurse = false;
+
     @Override
     public void initialize() {
         super.initialize();
 
+        AbstractRelic rewardRelic = null;
+        AbstractCard rewardCard = null;
+        AbstractCard nastyCurse = null;
 
-        //TODO - Rare Relic, Rare Card, and specifically Regret (worst curse)
-        AbstractRelic rewardRelic = AbstractDungeon.returnRandomRelic(AbstractDungeon.returnRandomRelicTier());
-        AbstractCard rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
-        AbstractCard nastyCurse = CardLibrary.getCurse();
+        gotCurse = false;
+
+        switch (difficultyMode){
+            case 0:{
+                rewardRelic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.COMMON);
+                rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.COMMON);
+                nastyCurse = new Injury();
+                totalSwaps = 10;
+                sppedIncreasePerSwap = 0.2F;
+                break;
+            }
+            case 1:{
+                rewardRelic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.UNCOMMON);
+                rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.UNCOMMON);
+                nastyCurse = new Regret();
+                totalSwaps = 15;
+                sppedIncreasePerSwap = 0.2F;
+                break;
+            }
+            case 2:{
+                rewardRelic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.RARE);
+                rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
+                nastyCurse = new Normality();
+                totalSwaps = 20;
+                sppedIncreasePerSwap = 0.2F;
+                break;
+            }
+        }
 
         //yMid + some offset to get them to start above at the beginning
         shell1 = new Shell(this, xpos2, yMid, rewardCard);
@@ -152,6 +187,8 @@ public class ShellGame extends AbstractMinigame {
                 timer = 1F;
         }
     }
+
+
 
     @Override
     public void update(float elapsed) {
@@ -257,7 +294,6 @@ public class ShellGame extends AbstractMinigame {
                         subPhase = 1;
                     }
                     if (currentSwaps >= totalSwaps) {
-                        //TODO - enable interaction!  Show interactivity somehow
                         phase = 3;
                         shell1.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
                         shell2.currentPhase = Shell.animPhase.WAITINGFORPLAYER;
@@ -380,7 +416,7 @@ public class ShellGame extends AbstractMinigame {
                  Phase 6: End the game.
                  **/
                 if (timer <= 0F) {
-                    //TODO - End the game.  It's all over.
+                    isDone = true;
                 }
 
             }
@@ -397,7 +433,7 @@ public class ShellGame extends AbstractMinigame {
             timer = 0.25F;
         } else {
             phase = 6;
-            timer = 1F;
+            timer = 2F;
         }
     }
 
@@ -507,9 +543,10 @@ public class ShellGame extends AbstractMinigame {
     public void render(SpriteBatch sb) {
         super.render(sb);
 
-        FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(timer), Settings.HEIGHT / 2F, Settings.WIDTH / 2F, Color.RED.cpy());
-        FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(phase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (50 * Settings.scale), Color.RED.cpy());
-        FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(subPhase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (100 * Settings.scale), Color.RED.cpy());
+        //Debugging text renders
+       // FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(timer), Settings.HEIGHT / 2F, Settings.WIDTH / 2F, Color.RED.cpy());
+        //FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(phase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (50 * Settings.scale), Color.RED.cpy());
+       // FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(subPhase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (100 * Settings.scale), Color.RED.cpy());
 
         //Shell render order is important and is reset with every swap.
         //The shell rotating in the foreground is rendered above the rest.
