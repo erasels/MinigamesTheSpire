@@ -111,18 +111,20 @@ public class Shell {
 
         sb.setColor(1F, 1F, 1F, alpha);
 
-        sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY, shellTex.getWidth() * scale, shellTex.getHeight() * scale);
+        sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY - (shellTex.getHeight() / 2), shellTex.getWidth() * scale, shellTex.getHeight() * scale);
 
     }
 
     public void update(float elapsed) {
         hb.update();
+        /*
         if (heldCard != null) {
             heldCard.update();
         }
         if (heldRelic != null) {
             heldRelic.update();
         }
+        */
         /*
         if (currentPhase != animPhase.REWARDINTRO && currentPhase != animPhase.REWARDMOVETOSPACE && currentPhase != animPhase.NONE) {
             if (this.heldCard != null) {

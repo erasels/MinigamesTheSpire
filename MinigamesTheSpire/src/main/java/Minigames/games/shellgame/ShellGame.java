@@ -60,9 +60,9 @@ public class ShellGame extends AbstractMinigame {
     public static float cardScaleCup = .35F;
 
     public static float relicScaleStart = 0.05F;
-    public static float relicScalePeak = 15F;
-    public static float relicScaleNorm = 13F;
-    public static float relicScaleCup = 8F;
+    public static float relicScalePeak = 13F;
+    public static float relicScaleNorm = 11F;
+    public static float relicScaleCup = 5F;
 
     private int subPhase = 0;
 
