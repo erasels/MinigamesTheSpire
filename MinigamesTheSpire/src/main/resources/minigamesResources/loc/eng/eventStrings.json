@@ -134,8 +134,8 @@
       "[Leave]",
     ]
   },
-  "minigames:SlidePuzzle": {
-    "NAME": "[Solve a Slide Puzzle] Get #grewards!",
+  "${ModID}:SlidePuzzle": {
+    "NAME": "#y[Solve #ya #ySlide #yPuzzle] Get #grewards!",
     "DESCRIPTIONS": [
       "Can you solve the puzzle? Put as many pieces into the correct spot as you can within the time limit! The more you solve, the more you win!",
       "Uh oh! Time ran out! You'll just have to make do with the prizes you were able to get.",
@@ -152,12 +152,12 @@
       " #yGold",
       " a #b",
       " an #b",
-      "common",
-      "uncommon",
-      "rare",
-      "potion",
-      "card",
-      "relic",
+      "Common",
+      "Uncommon",
+      "Rare",
+      "Potion",
+      "Card",
+      "Relic",
       "."
     ]
   }
