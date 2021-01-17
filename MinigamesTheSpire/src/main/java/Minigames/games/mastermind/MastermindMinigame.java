@@ -224,4 +224,6 @@ public class MastermindMinigame extends AbstractMinigame {
         }
         return true;
     }
+
+    public AbstractMinigame makeCopy(){ return new MastermindMinigame(); }
 }

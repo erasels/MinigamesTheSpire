@@ -3,6 +3,7 @@ package Minigames.games.blackjack;
 import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.mastermind.MastermindMinigame;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -293,4 +294,7 @@ public class BlackjackMinigame extends AbstractMinigame {
     public boolean canSpawn() {
         return (!AbstractDungeon.player.hasRelic(Ectoplasm.ID)) && AbstractDungeon.player.gold >= MIN_BET;
     }
+
+    public AbstractMinigame makeCopy(){ return new BlackjackMinigame(); }
+
 }

@@ -2,6 +2,7 @@ package Minigames.games.test;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.mastermind.MastermindMinigame;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -299,4 +300,6 @@ public class TestMinigame extends AbstractMinigame {
             t.dispose();
         }
     }
+
+    public AbstractMinigame makeCopy(){ return new TestMinigame(); }
 }
