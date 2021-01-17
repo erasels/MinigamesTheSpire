@@ -75,6 +75,15 @@
       "[Gremlin Flip] Flip tiles and avoid #rGremlin #rNobs!"
     ]
   },
+  "${ModID}:BeatPress": {
+    "NAME": "Beat Press",
+    "DESCRIPTIONS": [
+      "Press whatever button you want! Just make sure you time it right."
+    ],
+    "OPTIONS": [
+      "Start"
+    ]
+  },
   "${ModID}:MastermindMinigame": {
     "NAME": "Mastermind",
     "DESCRIPTIONS": [
@@ -110,9 +119,9 @@
       "[Begin] Catch the Fish!",
       "[Leave] Your job here is done."
 	  ]
-	  },
+  },
   "minigames:ShellGame": {
-    "NAME": "Three Shell Monte",
+    "NAME": "[Three Shell Monte] Follow the #yprize as it shuffles around!",
     "DESCRIPTIONS": [
       "\"Step right up! #bThree shells, two rewards, one #pgnarly #pCurse! NL NL Keep your eyes on the #yprize or you'll pick your #pdemise! NL NL #bOne try, no do-overs. Are you ready? Let's start!\"",
       "\"Looks like you won a #pCurse! NL That's not good. NL Oh well! Better luck next time!\"",
@@ -122,7 +131,7 @@
       "#g[Easy] #gCommon Rewards or #rCursed - #rInjury.",
       "#b[Medium] #bUncommon Rewards or #rCursed - #rRegret.",
       "#y[Hard] #yRare Rewards or #rCursed - #rNormality.",
-      "[Leave]"
+      "[Leave]",
     ]
   }
 }
