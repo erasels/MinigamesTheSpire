@@ -2,6 +2,7 @@ package Minigames.games.gremlinFlip.tiles;
 
 import Minigames.games.gremlinFlip.gremlinFlip;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.megacrit.cardcrawl.core.Settings;
@@ -21,9 +22,15 @@ public class InfoTile extends AbstractTile {
 
     public void render(SpriteBatch sb){
         sb.setColor(Color.WHITE.cpy());
-        sb.draw((TextureRegion) tileTexture, x, y, tileTexture.packedWidth /2F, tileTexture.packedHeight /2F, tileTexture.packedWidth, tileTexture.packedHeight, Settings.scale, Settings.scale, 0.0F);
-        FontHelper.renderFont(sb, FontHelper.buttonLabelFont, String.valueOf(nobCount), this.x + ((136F / 2f) * Settings.scale), this.y + (34F * Settings.scale), sb.getColor());
-        FontHelper.renderFont(sb, FontHelper.buttonLabelFont, String.valueOf(goldCount), this.x + ((128F / 2f) * Settings.scale), this.y + (78F * Settings.scale), sb.getColor());
+        sb.draw((TextureRegion) tileTexture, x, y, 0, 0, tileTexture.packedWidth, tileTexture.packedHeight, Settings.scale, Settings.scale, 0.0F);
+
+        String msg = String.valueOf(nobCount);
+        BitmapFont font = FontHelper.buttonLabelFont;
+        float xOffset = FontHelper.getSmartWidth(font, msg, 9999f, 0f);
+        FontHelper.renderFont(sb, font, msg, this.x - xOffset + (100F * Settings.scale), this.y + (28F * Settings.scale), sb.getColor());
+        msg = String.valueOf(goldCount);
+        xOffset = FontHelper.getSmartWidth(font, msg, 9999f, 0f);
+        FontHelper.renderFont(sb, font, msg, this.x - xOffset + (100F * Settings.scale), this.y + (76F * Settings.scale), sb.getColor());
     }
 
     public void getInfoHorizontal(ArrayList<AbstractTile> tiles, int startingIndex){

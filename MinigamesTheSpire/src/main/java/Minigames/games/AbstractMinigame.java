@@ -209,9 +209,9 @@ public abstract class AbstractMinigame implements TextReceiver {
     {
         float maxSize = 0.8f * Math.min(Settings.WIDTH, Settings.HEIGHT); //Settings.HEIGHT will pretty much always be smaller but maybe someone fucked with something, who knows
 
-        float ratio = ((int)(maxSize / SIZE * 2)) / 2.0f; //round to lower 0.5f
+        float ratio = ((int)(maxSize / SIZE * 4)) / 4.0f; //round to lower 0.25f
 
-        if (ratio < 0.5f)
+        if (ratio < 0.25f) //wtf
         {
             ratio = maxSize / SIZE;
         }
@@ -321,4 +321,13 @@ public abstract class AbstractMinigame implements TextReceiver {
     public boolean canSpawn() {
         return true;
     }
+
+    // TODO: Figure out actNum behaviour - and switch if necessary
+
+    // Determines if a minigame can spawn in the event ActOneArcade
+    public boolean canSpawnInActOneEvent(){ return true; }
+    // Determines if a minigame can spawn in the event ActTwoArcade
+    public boolean canSpawnInActTwoEvent(){ return true; }
+    // Determines if a minigame can spawn in the event ActTwoArcade
+    public boolean canSpawnInActThreeEvent(){ return true; }
 }

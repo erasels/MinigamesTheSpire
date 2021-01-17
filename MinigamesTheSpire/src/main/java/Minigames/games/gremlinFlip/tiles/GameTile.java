@@ -27,9 +27,9 @@ public class GameTile extends AbstractTile {
 
     public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE.cpy());
-        if ((flipped && flippedTexture != null) || Settings.isDebug) { sb.draw((TextureRegion) flippedTexture, x, y, flippedTexture.packedWidth /2F, flippedTexture.packedHeight /2F, flippedTexture.packedWidth, flippedTexture.packedHeight, Settings.scale, Settings.scale, 0.0F);
-        } else { sb.draw((TextureRegion) tileTexture, x, y, tileTexture.packedWidth /2F, tileTexture.packedHeight /2F, tileTexture.packedWidth, tileTexture.packedHeight, Settings.scale, Settings.scale, 0.0F); }
-        if (flagged) { sb.draw((TextureRegion) flaggedTexture, x, y, flaggedTexture.packedWidth /2F, flaggedTexture.packedHeight /2F, flaggedTexture.packedWidth, flaggedTexture.packedHeight, Settings.scale, Settings.scale, 0.0F); }
+        if ((flipped && flippedTexture != null) || Settings.isDebug) { sb.draw((TextureRegion) flippedTexture, x, y, 0, 0, flippedTexture.packedWidth, flippedTexture.packedHeight, Settings.scale, Settings.scale, 0.0F);
+        } else { sb.draw((TextureRegion) tileTexture, x, y, 0, 0, tileTexture.packedWidth, tileTexture.packedHeight, Settings.scale, Settings.scale, 0.0F); }
+        if (flagged) { sb.draw((TextureRegion) flaggedTexture, x, y, 0, 0, flaggedTexture.packedWidth, flaggedTexture.packedHeight, Settings.scale, Settings.scale, 0.0F); }
     }
 
     public void update() {

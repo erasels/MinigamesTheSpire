@@ -1,8 +1,16 @@
 package Minigames;
 
 import Minigames.events.ShellGameEvent;
+import Minigames.events.ActOneArcade;
+import Minigames.events.ActThreeArcade;
+import Minigames.events.ActTwoArcade;
 import Minigames.events.TestMinigameEvent;
+import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
+import Minigames.games.blackjack.BlackjackMinigame;
+import Minigames.games.gremlinFlip.gremlinFlip;
+import Minigames.games.mastermind.MastermindMinigame;
+import Minigames.games.slimePopper.SlimePopper;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
 import basemod.ModPanel;
@@ -18,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @SpireInitializer
 public class Minigames implements
@@ -28,6 +37,7 @@ public class Minigames implements
     private static SpireConfig modConfig = null;
 
     public static final Logger logger = LogManager.getLogger(Minigames.class.getName());
+    public static final ArrayList<AbstractMinigame> srcMinigameList = new ArrayList<>();
 
     public static void initialize() {
         BaseMod.subscribe(new Minigames());
@@ -41,10 +51,14 @@ public class Minigames implements
         //UIStrings UIStrings = CardCrawlGame.languagePack.getUIString(makeID("OptionsMenu"));
         //String[] TEXT = UIStrings.TEXT;
         settingsPanel = new ModPanel();
+        addMinigames();
 
         BaseMod.registerModBadge(TextureLoader.getTexture(makeImgPath("modBadge.png")), "Minigames The Spire", "erasels", "A mod, boyo.", settingsPanel);
 
         BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
+        BaseMod.addEvent(ActOneArcade.ID, ActOneArcade.class);
+        BaseMod.addEvent(ActTwoArcade.ID, ActTwoArcade.class);
+        BaseMod.addEvent(ActThreeArcade.ID, ActThreeArcade.class);
 
         BaseMod.addEvent(ShellGameEvent.ID, ShellGameEvent.class);
 
@@ -116,5 +130,14 @@ public class Minigames implements
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addMinigames(){
+        // Add your Minigame here!
+        srcMinigameList.add(new BeatPress());
+        srcMinigameList.add(new BlackjackMinigame());
+        srcMinigameList.add(new gremlinFlip());
+        srcMinigameList.add(new MastermindMinigame());
+        srcMinigameList.add(new SlimePopper());
     }
 }
