@@ -21,6 +21,7 @@ public class CatchPhase extends AbstractGamePhase {
     private static final float TERMINAL_VELOCITY = -1000f;
     private static final float BOUNCE_COEFFICIENT = -0.55f;
     private static final float FBAR_GROUND_OFFSET = 12f;
+    private static final float INFORMATION_SOUND_TIME_OFFSET = 0.5f;
 
     private static Texture imgBar;
     private static int bbw = 152, bbh = 600;
@@ -91,7 +92,7 @@ public class CatchPhase extends AbstractGamePhase {
                 reelTimer -= gt;
                 if (bobTimer <= 0) {
                     CardCrawlGame.sound.play(fishBeingCaught ? FishingGame.sHit : FishingGame.sBob);
-                    bobTimer = fishBeingCaught ? FishingGame.timeHit : FishingGame.timeBob;
+                    bobTimer = (fishBeingCaught ? FishingGame.timeHit : FishingGame.timeBob) + INFORMATION_SOUND_TIME_OFFSET;
                 }
             } else {
                 //Reduce wait time because there is no next game phase
