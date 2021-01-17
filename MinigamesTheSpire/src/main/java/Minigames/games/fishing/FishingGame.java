@@ -10,12 +10,17 @@ import Minigames.games.input.bindings.MouseHoldObject;
 import Minigames.util.HelperClass;
 import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.localization.EventStrings;
+import com.megacrit.cardcrawl.localization.UIStrings;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import static Minigames.Minigames.makeID;
 
@@ -26,8 +31,10 @@ public class FishingGame extends AbstractMinigame {
     public AbstractFish fish;
     public boolean fishCaught;
 
-    private int score;
     public float waitTimer = WAITTIME;
+
+    public static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(Minigames.makeID("FishingText"));
+    public static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(Minigames.makeID("Fishing"));
 
     //SOUNDS
     public static final String sBob = makeID("sound_bob");
@@ -42,6 +49,8 @@ public class FishingGame extends AbstractMinigame {
 
     public FishingGame() {
         super();
+        hasInstructionScreen = true;
+        hasPostgameScreen = false;
     }
 
     @Override
@@ -56,7 +65,15 @@ public class FishingGame extends AbstractMinigame {
         gamePhase.initialize();
 
         fishCaught = false;
-        score = 0;
+    }
+
+    @Override
+    public String getOption() { return eventStrings.NAME; }
+
+    @Override
+    public void setupInstructionScreen(GenericEventDialog event) {
+        event.updateBodyText(eventStrings.DESCRIPTIONS[0]);
+        event.setDialogOption(eventStrings.OPTIONS[0]);
     }
 
     private void doAction(Vector2 vec) {
@@ -79,17 +96,15 @@ public class FishingGame extends AbstractMinigame {
                 //Do some transition effect, victory screen, idk
                 if(fishCaught) {
                     CardCrawlGame.sound.play(sReward, 1f);
-                    AbstractDungeon.getCurrRoom().rewards.clear();
-                    AbstractDungeon.getCurrRoom().rewards.addAll(fish.returnReward());
-                    AbstractDungeon.combatRewardScreen.open();
+
+                    AbstractDungeon.getCurrRoom().rewards = fish.returnReward();
+                    AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
+                    AbstractDungeon.combatRewardScreen.open(uiStrings.TEXT_DICT.get("WIN"));
                 } else {
                     CardCrawlGame.sound.play("ENEMY_TURN", 1f);
                 }
                 phase = 2;
-                break;
-            case 2:
                 isDone = true;
-                break;
         }
     }
 
@@ -121,7 +136,7 @@ public class FishingGame extends AbstractMinigame {
     protected BindingGroup getBindings() {
         BindingGroup bindings = new BindingGroup();
 
-        bindings.addMouseBind((x, y, pointer) -> this.isWithinArea(x, y) && pointer == 0, this::doAction, new MouseHoldObject((x, y) -> doAction(new Vector2(x, y)), null));
+        bindings.addMouseBind((x, y, pointer) -> this.isWithinArea(x, y), this::doAction, new MouseHoldObject((x, y) -> doAction(new Vector2(x, y)), null));
         //Add more bindings which basically do the same thing, maybe space?
 
         //DEBUG Bindings
@@ -130,9 +145,13 @@ public class FishingGame extends AbstractMinigame {
         return bindings;
     }
 
+    private float standardFontWidth = -1;
     public void displayTimer(SpriteBatch sb, String msg, Color color) {
-        float fontHeight = FontHelper.getSmartHeight(FontHelper.SCP_cardEnergyFont, msg, 9999f, 0f);
-        float y = (Settings.HEIGHT/2f) + (AbstractMinigame.BG_SIZE * Settings.scale) + fontHeight;
-        FontHelper.renderFontCentered(sb, FontHelper.SCP_cardEnergyFont, msg, (Settings.WIDTH / 2.0F), y, color);
+        BitmapFont font = FontHelper.charTitleFont;
+        float fontHeight = FontHelper.getHeight(font);
+        if(standardFontWidth == -1) {
+            standardFontWidth = FontHelper.getSmartWidth(font, msg, 9999f, 0f);;
+        }
+        FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (standardFontWidth/2f), fontHeight + (20f * Settings.scale), color);
     }
 }

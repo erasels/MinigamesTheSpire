@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -33,9 +32,11 @@ public class CatchPhase extends AbstractGamePhase {
     private static Color notCatchingColor = new Color(0.75f, 0.65f, 0.65f, 0.75f);
     private static Color catchingColor = new Color(0.75f, 0.85f, 0.75f, 1f);
 
-    private float gameTime = GAME_TIME;
+    private float gameTime;
     private float spinnerAngle, speed, pos, maxPos;
     private float bobTimer, reelTimer;
+
+    private String timeString;
 
     protected AbstractFish fish;
 
@@ -45,6 +46,7 @@ public class CatchPhase extends AbstractGamePhase {
         pos = 0;
         fish = parent.fish;
         fish.scaleBehavior(GAME_TIME, maxPos + 100f);
+        gameTime = GAME_TIME;
     }
 
     @Override
@@ -53,6 +55,8 @@ public class CatchPhase extends AbstractGamePhase {
         imgCatcher = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishCatcher.png"));
         imgFish = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Fish.png"));
         imgCrank = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Crank.png"));
+
+        timeString = FishingGame.uiStrings.TEXT_DICT.get("TIME");
     }
 
     @Override
@@ -112,7 +116,19 @@ public class CatchPhase extends AbstractGamePhase {
         float blBound = (-(AbstractMinigame.SIZE / 2f));
 
         //Render game time
-        FishingGame.displayTimer(sb, "Time left: " + HelperClass.get2DecString(gameTime), Color.SKY);
+        if(!isDone && !waiting) {
+            //System.out.printf("isdone = %b, waiting = %b, waitTimer = %f, gameTime = %f", isDone, waiting, parent.waitTimer, gameTime);
+            Color col;
+            if (gameTime > GAME_TIME * 0.66f) {
+                col = Color.SKY;
+            } else if (gameTime > GAME_TIME * 0.33f) {
+                col = Color.ORANGE;
+            } else {
+                col = Color.RED;
+            }
+            parent.displayTimer(sb, timeString + HelperClass.get2DecString(gameTime), col);
+        }
+
 
         //Render fishing bar
         parent.drawTexture(sb, imgBar, blBound + (bbw / 2f), 0, 0, bbw, bbh, false, false);

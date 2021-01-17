@@ -27,5 +27,11 @@
       "Dealer's total hand value: ",
       "Play Again"
     ]
+  },
+  "${ModID}:FishingText": {
+    "TEXT_DICT": {
+      "TIME": "Time left: ",
+      "WIN": "You caught this!"
+    }
   }
 }

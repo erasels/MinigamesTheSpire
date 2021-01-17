@@ -7,6 +7,7 @@ import Minigames.events.TestMinigameEvent;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
 import Minigames.games.blackjack.BlackjackMinigame;
+import Minigames.games.fishing.FishingGame;
 import Minigames.games.gremlinFlip.gremlinFlip;
 import Minigames.games.mastermind.MastermindMinigame;
 import Minigames.games.slimePopper.SlimePopper;
@@ -144,5 +145,6 @@ public class Minigames implements
         srcMinigameList.add(new gremlinFlip());
         srcMinigameList.add(new MastermindMinigame());
         srcMinigameList.add(new SlimePopper());
+        srcMinigameList.add(new FishingGame());
     }
 }

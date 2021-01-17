@@ -14,14 +14,6 @@ public class TestFish extends AbstractFish {
     }
 
     @Override
-    public void update(boolean inArea) {
-        super.update(inArea);
-        if(inArea) {
-            //System.out.println(hp);
-        }
-    }
-
-    @Override
     public ArrayList<RewardItem> returnReward() {
         return new ArrayList<>(Arrays.asList(new RewardItem(75)));
     }
