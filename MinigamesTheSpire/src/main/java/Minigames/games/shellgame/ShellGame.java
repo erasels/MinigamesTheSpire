@@ -19,6 +19,7 @@ import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -80,6 +81,8 @@ public class ShellGame extends AbstractMinigame {
     private static final float baseSpeed = .75F;
 
     private int subPhase = 0;
+
+    private static swapType lastSwap;
 
     private static int totalSwaps = 0;
     private static int currentSwaps = 0;
@@ -177,16 +180,16 @@ public class ShellGame extends AbstractMinigame {
                 rewardRelic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.UNCOMMON);
                 rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.UNCOMMON);
                 nastyCurse = new Regret();
-                totalSwaps = 15;
-                sppedIncreasePerSwap = 0.2F;
+                totalSwaps = 17;
+                sppedIncreasePerSwap = 0.21F;
                 break;
             }
             case 2: {
                 rewardRelic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.RARE);
                 rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
                 nastyCurse = new Normality();
-                totalSwaps = 20;
-                sppedIncreasePerSwap = 0.2F;
+                totalSwaps = 25;
+                sppedIncreasePerSwap = 0.22F;
                 break;
             }
         }
@@ -221,6 +224,8 @@ public class ShellGame extends AbstractMinigame {
         gotCurse = false;
         listenForSwap = false;
         currentSwaps = 0;
+
+        lastSwap = swapType.NONE;
     }
 
 
@@ -528,17 +533,29 @@ public class ShellGame extends AbstractMinigame {
     }
 
     public void decideSwap() {
-        //Shuffle the arraylist.  The first index always gets picked to swap.
-        Collections.shuffle(shellsToRender, AbstractDungeon.cardRng.random);
+        ArrayList<swapType> validswaps = new ArrayList<>();
+        if (lastSwap != swapType.FIRSTANDSECOND) validswaps.add(swapType.FIRSTANDSECOND);
+        if (lastSwap != swapType.FIRSTANDTHIRD) validswaps.add(swapType.FIRSTANDTHIRD);
+        if (lastSwap != swapType.SECONDANDTHIRD) validswaps.add(swapType.SECONDANDTHIRD);
 
-        //Random bool to decide who is the other shell to get swapped with - index 1 or index 2.
-        //3rd parameter is the Shell that is not moving this swap.
-        if (AbstractDungeon.cardRng.randomBoolean()) {
-            setShellTarget(shellsToRender.get(0), shellsToRender.get(1), shellsToRender.get(2));
-        } else {
-            setShellTarget(shellsToRender.get(0), shellsToRender.get(2), shellsToRender.get(1));
+        Collections.shuffle(validswaps);
+
+        lastSwap = validswaps.get(0);
+        //This is used to ensure no swap happens twice in a row, making the difficulty more consistent.  It's easy to follow the same swap happening repeatedly.
+        switch (validswaps.get(0)){
+            case FIRSTANDSECOND:{
+                setShellTarget(shell1, shell2, shell3);
+                break;
+            }
+            case SECONDANDTHIRD:{
+                setShellTarget(shell2, shell3, shell1);
+                break;
+            }
+            case FIRSTANDTHIRD:{
+                setShellTarget(shell1, shell3, shell2);
+                break;
+            }
         }
-
 
         CardCrawlGame.sound.playA("ATTACK_WHIFF_1", .3F * (timeModifier / 5F));
 
@@ -637,5 +654,15 @@ public class ShellGame extends AbstractMinigame {
 
     public AbstractMinigame makeCopy() {
         return new ShellGame();
+    }
+
+    public enum swapType {
+        NONE,
+        FIRSTANDTHIRD,
+        FIRSTANDSECOND,
+        SECONDANDTHIRD;
+
+        swapType() {
+        }
     }
 }
