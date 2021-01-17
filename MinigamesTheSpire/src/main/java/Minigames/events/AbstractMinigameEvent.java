@@ -3,6 +3,7 @@ package Minigames.events;
 import Minigames.games.AbstractMinigame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.AbstractImageEvent;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
 
@@ -16,6 +17,9 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
         {
             game.dispose(); //player quit in middle of a minigame, dispose the old one.
         }
+
+        //TODO - Decide if alt music should play for all minigames.  Is currently only playing in Shell Game.  Could also play only during minigame time.
+        //CardCrawlGame.music.playTempBgmInstantly("minigames:carnivalMusic", true);
     }
 
     protected void startGame(AbstractMinigame newGame)
@@ -55,6 +59,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
     }
 
     public void endOfEvent() {
+        CardCrawlGame.music.fadeOutTempBGM();
         this.imageEventText.clearAllDialogs();
 
         this.imageEventText.updateBodyText("hmmmm");

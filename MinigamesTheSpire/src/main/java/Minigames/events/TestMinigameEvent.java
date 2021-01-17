@@ -9,6 +9,8 @@ import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.EventStrings;
 
+import java.util.ArrayList;
+
 import static Minigames.Minigames.makeID;
 import static Minigames.Minigames.srcMinigameList;
 
@@ -19,12 +21,16 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     private static final String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
     private static final String[] OPTIONS = eventStrings.OPTIONS;
     private int chosenMinigame;
+    private ArrayList<AbstractMinigame> minigames = new ArrayList<>();
 
     public TestMinigameEvent() {
         super(NAME, DESCRIPTIONS[0], null);
 
         // add All Minigames, regardless of condition (Used for testing!)
-        for(AbstractMinigame m : srcMinigameList){ imageEventText.setDialogOption(m.getOption()); }
+        for(AbstractMinigame m : srcMinigameList){
+            minigames.add(m.makeCopy());
+            imageEventText.setDialogOption(m.getOption());
+        }
     }
 
     @Override
@@ -36,26 +42,26 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
             case 1:
                 //screen with choice
                 chosenMinigame = buttonPressed;
-                if (srcMinigameList.get(chosenMinigame).hasInstructionScreen)
+                if (minigames.get(chosenMinigame).hasInstructionScreen)
                 {
                     screenNum = 2;
 
                     this.imageEventText.clearAllDialogs();
 
-                    srcMinigameList.get(chosenMinigame).setupInstructionScreen(this.imageEventText);
+                    minigames.get(chosenMinigame).setupInstructionScreen(this.imageEventText);
                 }
                 else
                 {
-                    startGame(srcMinigameList.get(chosenMinigame));
+                    startGame(minigames.get(chosenMinigame));
                 }
                 break;
             case 2:
-                if (srcMinigameList.get(chosenMinigame).instructionsButtonPressed(buttonPressed, this.imageEventText)) {
-                    startGame(srcMinigameList.get(chosenMinigame));
+                if (minigames.get(chosenMinigame).instructionsButtonPressed(buttonPressed, this.imageEventText)) {
+                    startGame(minigames.get(chosenMinigame));
                 }
                 break;
             case 3:
-                if (srcMinigameList.get(chosenMinigame).postgameButtonPressed(buttonPressed, this.imageEventText)) {
+                if (minigames.get(chosenMinigame).postgameButtonPressed(buttonPressed, this.imageEventText)) {
                     endOfEvent();
                 }
                 break;
@@ -69,12 +75,12 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     public void finishGame() {
         super.finishGame();
 
-        if (srcMinigameList.get(chosenMinigame).hasPostgameScreen) {
+        if (minigames.get(chosenMinigame).hasPostgameScreen) {
             screenNum = 3;
 
             this.imageEventText.clearAllDialogs();
 
-            srcMinigameList.get(chosenMinigame).setupPostgameScreen(this.imageEventText);
+            minigames.get(chosenMinigame).setupPostgameScreen(this.imageEventText);
         }
         else
         {

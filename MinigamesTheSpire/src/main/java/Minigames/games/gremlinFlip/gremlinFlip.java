@@ -19,6 +19,7 @@ import Minigames.games.gremlinFlip.boards.*;
 import Minigames.games.gremlinFlip.tiles.AbstractTile;
 import Minigames.games.gremlinFlip.tiles.GameTile;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.mastermind.MastermindMinigame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -95,7 +96,7 @@ public class gremlinFlip extends AbstractMinigame {
     }
 
     @Override
-    public String getOption() { return NAME; }
+    public String getOption() { return OPTIONS[13]; }
 
     @Override
     public void setupInstructionScreen(GenericEventDialog event) {
@@ -288,4 +289,7 @@ public class gremlinFlip extends AbstractMinigame {
             default: return OPTIONS[8];
         }
     }
+
+    public AbstractMinigame makeCopy(){ return new gremlinFlip(); }
+
 }
