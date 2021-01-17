@@ -208,6 +208,9 @@ public abstract class AbstractMinigame implements TextReceiver {
 
     public float getMaxScale()
     {
+        return Settings.scale; // eh this is just simpler and will be more consistent.
+
+        /*
         float maxSize = 0.8f * Math.min(Settings.WIDTH, Settings.HEIGHT); //Settings.HEIGHT will pretty much always be smaller but maybe someone fucked with something, who knows
 
         float ratio = ((int)(maxSize / SIZE * 4)) / 4.0f; //round to lower 0.25f
@@ -217,7 +220,7 @@ public abstract class AbstractMinigame implements TextReceiver {
             ratio = maxSize / SIZE;
         }
 
-        return ratio;
+        return ratio;*/
     }
 
     public String getOption() {

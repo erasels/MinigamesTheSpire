@@ -81,6 +81,15 @@
       "[Gremlin Flip] Flip tiles and avoid #rGremlin #rNobs!"
     ]
   },
+  "${ModID}:BeatPress": {
+    "NAME": "Beat Press",
+    "DESCRIPTIONS": [
+      "Press whatever button you want! Just make sure you time it right."
+    ],
+    "OPTIONS": [
+      "Start"
+    ]
+  },
   "${ModID}:MastermindMinigame": {
     "NAME": "Mastermind",
     "DESCRIPTIONS": [
@@ -116,7 +125,7 @@
       "[Begin] Catch the Fish!",
       "[Leave] Your job here is done."
 	  ]
-	  },
+  },
   "minigames:ShellGame": {
     "NAME": "[Three Shell Monte] Follow the #yprize as it shuffles around!",
     "DESCRIPTIONS": [
