@@ -99,7 +99,8 @@ public abstract class AbstractFish {
                 new GoldFish(),
                 new PlatinumFish(),
                 new FossilFish(),
-                new CardFish()
+                new CardFish(),
+                new PotionFish()
                 ));
 
         fishies.removeIf(f -> !f.canSpawn());
