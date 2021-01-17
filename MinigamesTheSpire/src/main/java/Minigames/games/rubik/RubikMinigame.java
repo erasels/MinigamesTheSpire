@@ -12,7 +12,11 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.collision.Ray;
 import com.megacrit.cardcrawl.core.Settings;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RubikMinigame extends AbstractMinigame
 {
@@ -168,13 +172,74 @@ public class RubikMinigame extends AbstractMinigame
         return p;
     }
 
+    private Vector3 unproject(Vector3 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight)
+    {
+        float x = screenCoords.x;
+        float y = screenCoords.y;
+        x -= viewportX;
+        y -= viewportY;
+        screenCoords.x = 2.0F * x / viewportWidth - 1.0F;
+        screenCoords.y = 2.0F * y / viewportHeight - 1.0F;
+        screenCoords.z = 2.0F * screenCoords.z - 1.0F;
+        screenCoords.prj(camera.invProjectionView);
+        return screenCoords;
+    }
+
+    private Ray getPickRay(float x, float y)
+    {
+        Ray ray = new Ray();
+        float viewportX = -camera.viewportWidth / 2f;
+        float viewportY = -camera.viewportHeight / 2f;
+        float viewportWidth = camera.viewportWidth;
+        float viewportHeight = camera.viewportHeight;
+
+        unproject(ray.origin.set(x, y, 0f), viewportX, viewportY, viewportWidth, viewportHeight);
+        unproject(ray.direction.set(x, y, 1f), viewportX, viewportY, viewportWidth, viewportHeight);
+        ray.direction.sub(ray.origin).nor();
+
+        return ray;
+    }
+
     @Override
     protected BindingGroup getBindings()
     {
         BindingGroup bindings = new BindingGroup();
 
         bindings.addMouseBind(
-                (x, y, pointer) -> isWithinArea(x, y),
+                (x, y, pointer) -> {
+                        if (isWithinArea(x, y)) {
+                            if (pointer == 1) return true;
+                            if (pointer == 0) {
+                                x -= Settings.WIDTH / 2;
+                                y -= Settings.HEIGHT / 2;
+                                Ray ray = getPickRay(x, y);
+                                Renderable rend = new Renderable();
+                                Mesh mesh = instance.getRenderable(rend).meshPart.mesh;
+                                List<Vector3> triangles = new ArrayList<>();
+
+                                int vertexSize = mesh.getVertexSize() / 4;
+                                float[] verts = new float[mesh.getNumVertices() * vertexSize];
+                                short[] inds = new short[mesh.getNumIndices()];
+                                mesh.getVertices(verts);
+                                mesh.getIndices(inds);
+
+                                for (short i : inds) {
+                                    int j = i * vertexSize;
+                                    Vector3 v = new Vector3(verts[j], verts[j + 1], verts[j + 2]);
+                                    v.set(v.mul(rend.worldTransform));
+                                    triangles.add(v);
+                                }
+
+                                Vector3 intersect = new Vector3();
+                                if (Intersector.intersectRayTriangles(ray, triangles, intersect)) {
+                                    System.out.println("HIT " + intersect.toString());
+                                } else {
+                                    System.out.println("NO HIT");
+                                }
+                            }
+                        }
+                        return false;
+                    },
                 (p) -> lastMousePos = p.cpy(),
                 new MouseHoldObject(
                         (x, y) -> {
