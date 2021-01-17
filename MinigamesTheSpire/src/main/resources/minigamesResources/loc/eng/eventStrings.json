@@ -83,15 +83,15 @@
   "${ModID}:MastermindMinigame": {
     "NAME": "Mastermind",
     "DESCRIPTIONS": [
-      "The goal of Mastermind is to crack the secret code consisting of 4 marbles in 6 possible colors. NL NL You have 8 guesses and after each guess you get hints about the code: black hints mean that marbles have the correct colors and are in the correct spots, while white hints mean that marbles have the correct colors, but are in incorrect spots. NL NL Good luck!",
-      "Congratulations! NL NL After cracking the code you decided to collect the marbles into a bag. You think they can prove useful in the future combats.",
+      "The goal of Mastermind is to crack the secret code consisting of 4 icons with 6 possible symbols. NL NL You have 8 guesses and after each guess you get hints about the code: black hints mean that icons have the correct symbols and are in the correct places, while white hints mean that icons have the correct symbols, but are in incorrect places. NL NL Good luck!",
+      "Congratulations! NL NL After cracking the code, the secret stash opens and you find a treasure of great value inside it.",
       "Too bad... NL NL Better luck next time!"
     ],
     "OPTIONS": [
       "[Mastermind] Crack the code!",
-      "Start",
-      "Obtain #yBag #yof #yMarbles",
-      "Leave"
+      "[Start]",
+      "[Take the treasure] Obtain a random relic.",
+      "[Leave]"
     ]
   },
   "${ModID}:Blackjack": {
