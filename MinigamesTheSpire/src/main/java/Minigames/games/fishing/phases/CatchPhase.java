@@ -112,7 +112,7 @@ public class CatchPhase extends AbstractGamePhase {
         float blBound = (-(AbstractMinigame.SIZE / 2f));
 
         //Render game time
-        FishingGame.displayTimer(sb, "Time left: " + HelperClass.get2DecString(gameTime), Settings.HEIGHT *0.85f, Color.GOLDENROD);
+        FishingGame.displayTimer(sb, "Time left: " + HelperClass.get2DecString(gameTime), Color.SKY);
 
         //Render fishing bar
         parent.drawTexture(sb, imgBar, blBound + (bbw / 2f), 0, 0, bbw, bbh, false, false);
