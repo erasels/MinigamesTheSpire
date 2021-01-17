@@ -1,6 +1,7 @@
 package Minigames.games.fishing.fish;
 
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 
 import java.util.ArrayList;
@@ -27,5 +28,10 @@ public class CeramicFish extends AbstractFish{
     @Override
     public ArrayList<RewardItem> returnReward() {
         return new ArrayList<>(Arrays.asList(new RewardItem(new com.megacrit.cardcrawl.relics.CeramicFish())));
+    }
+
+    @Override
+    public boolean canSpawn() {
+        return !AbstractDungeon.player.hasRelic(com.megacrit.cardcrawl.relics.CeramicFish.ID);
     }
 }
