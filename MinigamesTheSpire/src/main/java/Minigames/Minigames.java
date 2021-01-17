@@ -1,6 +1,5 @@
 package Minigames;
 
-import Minigames.events.ShellGameEvent;
 import Minigames.events.ActOneArcade;
 import Minigames.events.ActThreeArcade;
 import Minigames.events.ActTwoArcade;
