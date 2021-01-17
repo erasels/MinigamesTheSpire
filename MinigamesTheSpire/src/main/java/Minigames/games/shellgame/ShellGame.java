@@ -1,6 +1,5 @@
 package Minigames.games.shellgame;
 
-import Minigames.events.ShellGameEvent;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.games.mastermind.MastermindMinigame;
