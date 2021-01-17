@@ -316,4 +316,18 @@ public abstract class AbstractMinigame implements TextReceiver {
         }
         return false;
     }
+
+    //for when we need minigames to have conditional spawning I guess
+    public boolean canSpawn() {
+        return true;
+    }
+
+    // TODO: Figure out actNum behaviour - and switch if necessary
+
+    // Determines if a minigame can spawn in the event ActOneArcade
+    public boolean canSpawnInActOneEvent(){ return true; }
+    // Determines if a minigame can spawn in the event ActTwoArcade
+    public boolean canSpawnInActTwoEvent(){ return true; }
+    // Determines if a minigame can spawn in the event ActTwoArcade
+    public boolean canSpawnInActThreeEvent(){ return true; }
 }
