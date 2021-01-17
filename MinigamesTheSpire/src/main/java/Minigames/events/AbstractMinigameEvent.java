@@ -20,6 +20,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
 
         //TODO - Decide if alt music should play for all minigames.  Is currently only playing in Shell Game.  Could also play only during minigame time.
         //CardCrawlGame.music.playTempBgmInstantly("minigames:carnivalMusic", true);
+        noCardsInRewards = true;
     }
 
     protected void startGame(AbstractMinigame newGame)
