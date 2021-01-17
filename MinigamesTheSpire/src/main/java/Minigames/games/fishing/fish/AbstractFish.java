@@ -24,7 +24,7 @@ public abstract class AbstractFish {
 
     public AbstractFish(float hp, ArrayList<Vector2> ogBehavior) {
         mHp = this.hp = hp;
-        originBehavior = ogBehavior;
+        originBehavior = new ArrayList<>(ogBehavior);
         currentBehavior = originBehavior.get(nextBehavior);
         y = initialY = 0;
     }
@@ -76,6 +76,10 @@ public abstract class AbstractFish {
         for(Vector2 vec : originBehavior) {
             vec.y *= maxPos;
         }
+    }
+
+    public boolean canSpawn() {
+        return true;
     }
 
     public static AbstractFish returnRandomFish() {
