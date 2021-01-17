@@ -9,6 +9,7 @@ import com.megacrit.cardcrawl.rewards.RewardItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public abstract class AbstractFish {
     //How long the player has to be catching the fish (percentage of total game time)
@@ -28,7 +29,7 @@ public abstract class AbstractFish {
     public AbstractFish(float hp, ArrayList<Vector2> ogBehavior, boolean shuffleWhenCycled) {
         mHp = this.hp = hp;
         this.shuffleWhenCycled = shuffleWhenCycled;
-        originBehavior = new ArrayList<>(ogBehavior);
+        originBehavior = ogBehavior.stream().map(Vector2::cpy).collect(Collectors.toCollection(ArrayList::new));
         currentBehavior = originBehavior.get(nextBehavior);
         y = initialY = 0;
     }
@@ -100,7 +101,7 @@ public abstract class AbstractFish {
 
         fishies.removeIf(f -> !f.canSpawn());
         AbstractFish f = HelperClass.getRandomItem(fishies, AbstractDungeon.miscRng);
-        
+
         return f;
     }
 }
