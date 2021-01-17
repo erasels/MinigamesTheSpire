@@ -15,14 +15,12 @@ import static Minigames.Minigames.makeAudioPath;
 public class PlayMusicGoodPatch {
     @SpirePostfixPatch
     public static SpireReturn<Music> Prefix(TempMusic __instance, String key) {
-        System.out.println("YOU ACTUALLY HIT THE PATCH GOOD JOB, PAST VEX! key: " + key);
         switch (key) {
             case "minigames:carnivalMusic": {
-                System.out.println("YES, IT LIKES THE KEY!");
                 return SpireReturn.Return(MainMusic.newMusic(makeAudioPath("carnivalMusic.mp3")));
             }
             default: {
-                System.out.println("NO, IT HATES THE KEY!");
+
                 return SpireReturn.Continue();
             }
         }
