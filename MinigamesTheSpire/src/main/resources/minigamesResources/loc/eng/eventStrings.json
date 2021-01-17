@@ -66,7 +66,7 @@
     ],
     "OPTIONS": [
       "Begin",
-      "Continue...?",
+      "Continue...",
       "Leave",
       "[Give #b%1$s gold] Obtain a random #gcommon relic.",
       "[Give #b%1$s gold] Obtain a random #buncommon relic.",
@@ -77,7 +77,8 @@
       "#gsatchel",
       "#binternal #bvariables",
       "#ppurse",
-      "[Locked] Requires #b%1$s #ygold."
+      "[Locked] Requires #b%1$s #ygold.",
+      "[Gremlin Flip] Flip tiles and avoid #rGremlin #rNobs!"
     ]
   },
   "${ModID}:MastermindMinigame": {
