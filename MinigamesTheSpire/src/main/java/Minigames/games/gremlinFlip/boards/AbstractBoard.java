@@ -26,10 +26,8 @@ public abstract class AbstractBoard {
     }
 
     public void init(){
-        int x = (int) ((Settings.HEIGHT / 1.875F) + this.renderOffset);
-        int y = (int) (Settings.HEIGHT / 1.5F);
-
-        int i = 0;
+        int x = (int) ((Settings.WIDTH / 2) - ((BOARD_WIDTH + 1) / 2F * renderOffset));
+        int y = (int) ((Settings.HEIGHT / 2) + ((BOARD_HEIGHT - 1) / 2F * renderOffset));
 
         for (int w = 0; w <= BOARD_WIDTH; w++) {
             for (int h = 0; h <= BOARD_HEIGHT; h++) {
