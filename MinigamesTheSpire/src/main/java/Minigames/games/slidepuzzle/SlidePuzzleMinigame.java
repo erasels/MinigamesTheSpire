@@ -1,5 +1,6 @@
 package Minigames.games.slidepuzzle;
 
+import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import basemod.ReflectionHacks;
@@ -20,12 +21,18 @@ import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.localization.EventStrings;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class SlidePuzzleMinigame extends AbstractMinigame {
+    //localization
+    public static final String ID = Minigames.makeID("SlidePuzzle");
+    public static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(ID);
+
     //board info
     public int BOARD_SIZE;
     public float RAW_TILE_SIZE;
@@ -82,6 +89,11 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         });
 
         return bindings;
+    }
+
+    @Override
+    public AbstractMinigame makeCopy() {
+        return new SlidePuzzleMinigame();
     }
 
     @Override
@@ -508,6 +520,25 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         retVal.x = AbstractDungeon.miscRng.random((Settings.WIDTH / 2.0f) - bgSize, (Settings.WIDTH / 2.0f) + bgSize);
         retVal.y = AbstractDungeon.miscRng.random((Settings.HEIGHT / 2.0f) - bgSize, (Settings.HEIGHT / 2.0f) + bgSize);
         return retVal;
+    }
+
+    @Override
+    public void setupInstructionScreen(GenericEventDialog event) {
+        event.updateBodyText(eventStrings.DESCRIPTIONS[0]);
+        event.setDialogOption(eventStrings.OPTIONS[0]);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        monsterBuffer.dispose();
+    }
+
+    @Override
+    public void setupPostgameScreen(GenericEventDialog event) {
+        event.updateBodyText(eventStrings.DESCRIPTIONS[1]);
+        event.setDialogOption(eventStrings.DESCRIPTIONS[1]);
     }
 
     private enum BoardType {
