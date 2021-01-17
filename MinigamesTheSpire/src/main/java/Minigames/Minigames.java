@@ -1,5 +1,6 @@
 package Minigames;
 
+import Minigames.events.ShellGameEvent;
 import Minigames.events.ActOneArcade;
 import Minigames.events.ActThreeArcade;
 import Minigames.events.ActTwoArcade;
@@ -58,6 +59,8 @@ public class Minigames implements
         BaseMod.addEvent(ActOneArcade.ID, ActOneArcade.class);
         BaseMod.addEvent(ActTwoArcade.ID, ActTwoArcade.class);
         BaseMod.addEvent(ActThreeArcade.ID, ActThreeArcade.class);
+
+        BaseMod.addEvent(ShellGameEvent.ID, ShellGameEvent.class);
 
     }
 
