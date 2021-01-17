@@ -1,30 +1,38 @@
 package Minigames.events;
 
 import Minigames.games.AbstractMinigame;
-import Minigames.games.beatpress.BeatPress;
-import Minigames.games.blackjack.BlackjackMinigame;
-import Minigames.games.gremlinFlip.gremlinFlip;
-import Minigames.games.mastermind.MastermindMinigame;
 import Minigames.games.test.TestMinigame;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.EventStrings;
 
+import java.util.ArrayList;
+
 import static Minigames.Minigames.makeID;
 import static Minigames.Minigames.srcMinigameList;
 
-public class TestMinigameEvent extends AbstractMinigameEvent {
-    public static final String ID = makeID("Test");
+public class ActOneArcade extends AbstractMinigameEvent {
+    public static final String ID = makeID(ActOneArcade.class.getSimpleName());
     private static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(ID);
     private static final String NAME = eventStrings.NAME;
     private static final String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
     private static final String[] OPTIONS = eventStrings.OPTIONS;
     private int chosenMinigame;
-
-    public TestMinigameEvent() {
+    private ArrayList<AbstractMinigame> minigames = new ArrayList<>();
+    public ActOneArcade() {
         super(NAME, DESCRIPTIONS[0], null);
 
-        // add All Minigames, regardless of condition (Used for testing!)
-        for(AbstractMinigame m : srcMinigameList){ imageEventText.setDialogOption(m.getOption()); }
+        // Add all minigames that fill the criteria
+        for(AbstractMinigame m : srcMinigameList){
+            if(m.canSpawnInActOneEvent() && m.canSpawn()){
+                minigames.add(m);
+                imageEventText.setDialogOption(m.getOption());
+            }
+        }
+        if(minigames.isEmpty()){
+            // as a failsafe -> add testminigame
+            minigames.add(new TestMinigame());
+            imageEventText.setDialogOption(minigames.get(0).getOption());
+        }
     }
 
     @Override
@@ -36,26 +44,26 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
             case 1:
                 //screen with choice
                 chosenMinigame = buttonPressed;
-                if (srcMinigameList.get(chosenMinigame).hasInstructionScreen)
+                if (minigames.get(chosenMinigame).hasInstructionScreen)
                 {
                     screenNum = 2;
 
                     this.imageEventText.clearAllDialogs();
 
-                    srcMinigameList.get(chosenMinigame).setupInstructionScreen(this.imageEventText);
+                    minigames.get(chosenMinigame).setupInstructionScreen(this.imageEventText);
                 }
                 else
                 {
-                    startGame(srcMinigameList.get(chosenMinigame));
+                    startGame(minigames.get(chosenMinigame));
                 }
                 break;
             case 2:
-                if (srcMinigameList.get(chosenMinigame).instructionsButtonPressed(buttonPressed, this.imageEventText)) {
-                    startGame(srcMinigameList.get(chosenMinigame));
+                if (minigames.get(chosenMinigame).instructionsButtonPressed(buttonPressed, this.imageEventText)) {
+                    startGame(minigames.get(chosenMinigame));
                 }
                 break;
             case 3:
-                if (srcMinigameList.get(chosenMinigame).postgameButtonPressed(buttonPressed, this.imageEventText)) {
+                if (minigames.get(chosenMinigame).postgameButtonPressed(buttonPressed, this.imageEventText)) {
                     endOfEvent();
                 }
                 break;
@@ -69,12 +77,11 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     public void finishGame() {
         super.finishGame();
 
-        if (srcMinigameList.get(chosenMinigame).hasPostgameScreen) {
+        if (minigames.get(chosenMinigame).hasPostgameScreen) {
             screenNum = 3;
 
             this.imageEventText.clearAllDialogs();
-
-            srcMinigameList.get(chosenMinigame).setupPostgameScreen(this.imageEventText);
+            minigames.get(chosenMinigame).setupPostgameScreen(this.imageEventText);
         }
         else
         {
