@@ -1,6 +1,5 @@
 package Minigames;
 
-import Minigames.events.ShellGameEvent;
 import Minigames.events.ActOneArcade;
 import Minigames.events.ActThreeArcade;
 import Minigames.events.ActTwoArcade;
@@ -11,6 +10,7 @@ import Minigames.games.blackjack.BlackjackMinigame;
 import Minigames.games.fishing.FishingGame;
 import Minigames.games.gremlinFlip.gremlinFlip;
 import Minigames.games.mastermind.MastermindMinigame;
+import Minigames.games.shellgame.ShellGame;
 import Minigames.games.slimePopper.SlimePopper;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
@@ -21,6 +21,9 @@ import basemod.interfaces.PostInitializeSubscriber;
 import basemod.interfaces.PostUpdateSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.dungeons.Exordium;
+import com.megacrit.cardcrawl.dungeons.TheBeyond;
+import com.megacrit.cardcrawl.dungeons.TheCity;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import org.apache.logging.log4j.LogManager;
@@ -57,11 +60,10 @@ public class Minigames implements
         BaseMod.registerModBadge(TextureLoader.getTexture(makeImgPath("modBadge.png")), "Minigames The Spire", "erasels", "A mod, boyo.", settingsPanel);
 
         BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
-        BaseMod.addEvent(ActOneArcade.ID, ActOneArcade.class);
-        BaseMod.addEvent(ActTwoArcade.ID, ActTwoArcade.class);
-        BaseMod.addEvent(ActThreeArcade.ID, ActThreeArcade.class);
+        BaseMod.addEvent(ActOneArcade.ID, ActOneArcade.class, Exordium.ID);
+        BaseMod.addEvent(ActTwoArcade.ID, ActTwoArcade.class, TheCity.ID);
+        BaseMod.addEvent(ActThreeArcade.ID, ActThreeArcade.class, TheBeyond.ID);
 
-        BaseMod.addEvent(ShellGameEvent.ID, ShellGameEvent.class);
 
     }
 
@@ -149,5 +151,6 @@ public class Minigames implements
         srcMinigameList.add(new MastermindMinigame());
         srcMinigameList.add(new SlimePopper());
         srcMinigameList.add(new FishingGame());
+        srcMinigameList.add(new ShellGame());
     }
 }

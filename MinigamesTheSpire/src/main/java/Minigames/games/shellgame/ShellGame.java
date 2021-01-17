@@ -1,6 +1,5 @@
 package Minigames.games.shellgame;
 
-import Minigames.events.ShellGameEvent;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.games.mastermind.MastermindMinigame;
@@ -14,14 +13,17 @@ import com.megacrit.cardcrawl.cards.curses.Regret;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import static Minigames.Minigames.getModID;
+import static Minigames.Minigames.makeID;
 
 public class ShellGame extends AbstractMinigame {
 
@@ -38,7 +40,13 @@ public class ShellGame extends AbstractMinigame {
     like how Gremlin Match puts the cards in your deck from the screen. Boom!
      */
 
-    public Shell shell1;
+    public static final String ID = makeID("ShellGame");
+    private static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(ID);
+    private static final String NAME = eventStrings.NAME;
+    private static final String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
+    private static final String[] OPTIONS = eventStrings.OPTIONS;
+
+    private Shell shell1;
     private Shell shell2;
     private Shell shell3;
 
@@ -46,49 +54,105 @@ public class ShellGame extends AbstractMinigame {
 
     private static float timeModifier = 1F;
 
-    private static float xpos1 = Settings.WIDTH * 0.4F;
-    private static float xpos2 = Settings.WIDTH * 0.5F;
-    private static float xpos3 = Settings.WIDTH * 0.6F;
+    private static final float xpos1 = Settings.WIDTH * 0.4F;
+    private static final float xpos2 = Settings.WIDTH * 0.5F;
+    private static final float xpos3 = Settings.WIDTH * 0.6F;
 
-    public static float offscreenShellHeight = 195F;
+    public static final float offscreenShellHeight = 195F;
 
-    public static float yBackgroundSwap = Settings.HEIGHT * 0.575F;
-    public static float yForegroundSwap = Settings.HEIGHT * 0.425F;
+    private static float yBackgroundSwap = Settings.HEIGHT * 0.575F;
+    private static float yForegroundSwap = Settings.HEIGHT * 0.425F;
     public static float yMid = Settings.HEIGHT * 0.5F;
 
-    public static float scaleForegroundSwap = 1.25F;
-    public static float scaleBackgroundSwap = 0.75F;
+    private static final float scaleForegroundSwap = 1.25F;
+    private static final float scaleBackgroundSwap = 0.75F;
 
-    public static float cardScaleStart = 0.05F;
-    public static float cardScalePeak = 1.15F;
-    public static float cardScaleNorm = 1F;
-    public static float cardScaleCup = .3F;
+    public static final float cardScaleStart = 0.05F;
+    public static final float cardScalePeak = 1.15F;
+    public static final float cardScaleNorm = 1F;
+    public static final float cardScaleCup = .3F;
 
-    public static float relicScaleStart = 0.05F;
-    public static float relicScalePeak = 13F;
-    public static float relicScaleNorm = 11F;
-    public static float relicScaleCup = 3F;
+    public static final float relicScaleStart = 0.05F;
+    public static final float relicScalePeak = 13F;
+    public static final float relicScaleNorm = 11F;
+    public static final float relicScaleCup = 3F;
+
+    private static final float baseSpeed = .75F;
 
     private int subPhase = 0;
 
-    private static int totalSwaps = 20;
+    private static int totalSwaps = 0;
     private static int currentSwaps = 0;
-
-    public static float baseSpeed = .75F;
 
     private static boolean listenForSwap = false;
 
     private static float sppedIncreasePerSwap = 0.2F;
 
-    public static float timeToBeginNextSwap;
+    private static float timeToBeginNextSwap;
 
-    float timer = 1F;
+    private float timer = 1F;
 
-    public ArrayList<Shell> shellsToRender = new ArrayList<>();
+    private ArrayList<Shell> shellsToRender = new ArrayList<>();
 
-    public static int difficultyMode = 0;
+    private static int difficultyMode = 0;
 
     public static boolean gotCurse = false;
+
+    @Override
+    public void setupInstructionScreen(GenericEventDialog event) {
+
+        event.updateBodyText(DESCRIPTIONS[0]);
+
+        event.setDialogOption(OPTIONS[0]);
+        event.setDialogOption(OPTIONS[1]);
+        event.setDialogOption(OPTIONS[2]);
+
+        event.loadImage("images/events/ballAndCup.jpg");
+        CardCrawlGame.music.playTempBgmInstantly("minigames:carnivalMusic", true);
+    }
+
+    @Override
+    public void setupPostgameScreen(GenericEventDialog event) {
+
+        for (Shell s : shellsToRender) {
+            s.heldCard = null;
+            s.heldRelic = null;
+        }
+
+        if (ShellGame.gotCurse) {
+            event.updateBodyText(DESCRIPTIONS[1]);
+            event.setDialogOption(OPTIONS[3]);
+        } else {
+            event.updateBodyText(DESCRIPTIONS[2]);
+            event.setDialogOption(OPTIONS[3]);
+        }
+    }
+
+    @Override
+    public boolean instructionsButtonPressed(int buttonIndex) {
+        switch (buttonIndex) {
+            case 0: {
+                ShellGame.difficultyMode = 0;
+                break;
+            }
+            case 1: {
+                ShellGame.difficultyMode = 1;
+                break;
+            }
+            case 2: {
+                ShellGame.difficultyMode = 2;
+                break;
+            }
+            default:
+                break;
+        }
+        return true;
+    }
+
+
+    public String getOption() {
+        return eventStrings.NAME;
+    }
 
     @Override
     public void initialize() {
@@ -100,8 +164,8 @@ public class ShellGame extends AbstractMinigame {
 
         gotCurse = false;
 
-        switch (difficultyMode){
-            case 0:{
+        switch (difficultyMode) {
+            case 0: {
                 rewardRelic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.COMMON);
                 rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.COMMON);
                 nastyCurse = new Injury();
@@ -109,7 +173,7 @@ public class ShellGame extends AbstractMinigame {
                 sppedIncreasePerSwap = 0.2F;
                 break;
             }
-            case 1:{
+            case 1: {
                 rewardRelic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.UNCOMMON);
                 rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.UNCOMMON);
                 nastyCurse = new Regret();
@@ -117,7 +181,7 @@ public class ShellGame extends AbstractMinigame {
                 sppedIncreasePerSwap = 0.2F;
                 break;
             }
-            case 2:{
+            case 2: {
                 rewardRelic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.RARE);
                 rewardCard = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
                 nastyCurse = new Normality();
@@ -153,7 +217,12 @@ public class ShellGame extends AbstractMinigame {
         shell1.shellOffsetY = offscreenShellHeight;
         shell2.shellOffsetY = offscreenShellHeight;
         shell3.shellOffsetY = offscreenShellHeight;
+
+        gotCurse = false;
+        listenForSwap = false;
+        currentSwaps = 0;
     }
+
 
     private void onClick() {
         switch (phase) {
@@ -191,7 +260,6 @@ public class ShellGame extends AbstractMinigame {
                 timer = 1F;
         }
     }
-
 
 
     @Override
@@ -459,12 +527,6 @@ public class ShellGame extends AbstractMinigame {
         return bindings;
     }
 
-    @Override
-    public String getOption() {
-        return CardCrawlGame.languagePack.getEventString(getModID() + "ShellGame").OPTIONS[0];
-    }
-
-
     public void decideSwap() {
         //Shuffle the arraylist.  The first index always gets picked to swap.
         Collections.shuffle(shellsToRender, AbstractDungeon.cardRng.random);
@@ -561,9 +623,9 @@ public class ShellGame extends AbstractMinigame {
         super.render(sb);
 
         //Debugging text renders
-       // FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(timer), Settings.HEIGHT / 2F, Settings.WIDTH / 2F, Color.RED.cpy());
+        // FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(timer), Settings.HEIGHT / 2F, Settings.WIDTH / 2F, Color.RED.cpy());
         //FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(phase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (50 * Settings.scale), Color.RED.cpy());
-       // FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(subPhase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (100 * Settings.scale), Color.RED.cpy());
+        // FontHelper.renderFontLeft(sb, FontHelper.menuBannerFont, String.valueOf(subPhase), Settings.HEIGHT / 2F, Settings.WIDTH / 2F - (100 * Settings.scale), Color.RED.cpy());
 
         //Shell render order is important and is reset with every swap.
         //The shell rotating in the foreground is rendered above the rest.
@@ -573,5 +635,7 @@ public class ShellGame extends AbstractMinigame {
         }
     }
 
-    public AbstractMinigame makeCopy(){ return new ShellGame(); }
+    public AbstractMinigame makeCopy() {
+        return new ShellGame();
+    }
 }
