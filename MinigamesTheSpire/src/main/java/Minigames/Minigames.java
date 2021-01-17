@@ -86,7 +86,6 @@ public class Minigames implements
         BaseMod.addAudio(makeID("cardPlace1"), makeGamePath("Blackjack/SFX/cardPlace1.ogg"));
         BaseMod.addAudio(makeID("cardPlace2"), makeGamePath("Blackjack/SFX/cardPlace2.ogg"));
         BaseMod.addAudio(makeID("cardPlace3"), makeGamePath("Blackjack/SFX/cardPlace3.ogg"));
-        BaseMod.addAudio(makeID("carnivalMusic"), makeAudioPath("carnivalMusic.mp3"));
     }
 
     private static String locPath() {
