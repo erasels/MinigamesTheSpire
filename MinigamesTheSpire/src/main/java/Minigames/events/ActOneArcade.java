@@ -24,7 +24,7 @@ public class ActOneArcade extends AbstractMinigameEvent {
         // Add all minigames that fill the criteria
         for(AbstractMinigame m : srcMinigameList){
             if(m.canSpawnInActOneEvent() && m.canSpawn()){
-                minigames.add(m);
+                minigames.add(m.makeCopy());
                 imageEventText.setDialogOption(m.getOption());
             }
         }

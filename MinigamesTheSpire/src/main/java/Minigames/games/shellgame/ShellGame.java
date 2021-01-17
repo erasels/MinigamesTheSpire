@@ -3,6 +3,7 @@ package Minigames.games.shellgame;
 import Minigames.events.ShellGameEvent;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.mastermind.MastermindMinigame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -571,4 +572,6 @@ public class ShellGame extends AbstractMinigame {
             s.render(sb);
         }
     }
+
+    public AbstractMinigame makeCopy(){ return new ShellGame(); }
 }

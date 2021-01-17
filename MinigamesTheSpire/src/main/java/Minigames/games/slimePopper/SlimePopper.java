@@ -2,6 +2,7 @@ package Minigames.games.slimePopper;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.mastermind.MastermindMinigame;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -340,4 +341,7 @@ public class SlimePopper extends AbstractMinigame {
                     }
                 });
     }
+
+    public AbstractMinigame makeCopy(){ return new SlimePopper(); }
+
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -330,4 +331,6 @@ public abstract class AbstractMinigame implements TextReceiver {
     public boolean canSpawnInActTwoEvent(){ return true; }
     // Determines if a minigame can spawn in the event ActTwoArcade
     public boolean canSpawnInActThreeEvent(){ return true; }
+
+    public abstract AbstractMinigame makeCopy();
 }
