@@ -17,7 +17,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class CatchPhase extends AbstractGamePhase {
     public static final float GAME_TIME = 40f; //40 seconds before fish escapes
     private static final float MINIMUM_BOUNCE_THRESHOLD = 10f;
-    private static final float GRAVITY_ACCEL = 200f, PULL_ACCEL = 190f;
+    private static final float GRAVITY_ACCEL = 250f, PULL_ACCEL = GRAVITY_ACCEL - 25f;
     private static final float TERMINAL_VELOCITY = -1000f;
     private static final float BOUNCE_COEFFICIENT = -0.55f;
     private static final float FBAR_GROUND_OFFSET = 12f;
