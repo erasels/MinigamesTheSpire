@@ -291,6 +291,6 @@ public class BlackjackMinigame extends AbstractMinigame {
 
     @Override
     public boolean canSpawn() {
-        return !AbstractDungeon.player.hasRelic(Ectoplasm.ID) && AbstractDungeon.player.gold >= MIN_BET;
+        return (!AbstractDungeon.player.hasRelic(Ectoplasm.ID)) && AbstractDungeon.player.gold >= MIN_BET;
     }
 }
