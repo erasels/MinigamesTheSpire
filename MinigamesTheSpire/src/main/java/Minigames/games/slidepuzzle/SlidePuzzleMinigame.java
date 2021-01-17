@@ -588,9 +588,9 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         if (state == GameState.VICTORY) {
             event.updateBodyText(eventStrings.DESCRIPTIONS[2]);
             String dialog = option[3] + option[6] + goldWon + option[7] +
-                    option[4] + aOrAn + rarityString + option[13] +
-                    option[4] + aOrAn + rarityString + option[14] +
-                    option[5] + aOrAn + rarityString + option[15] +
+                    option[4] + aOrAn + rarityString + option[6] + option[13] +
+                    option[4] + aOrAn + rarityString + option[6] + option[14] +
+                    option[5] + aOrAn + rarityString + option[6] + option[15] +
                     option[16];
             event.setDialogOption(dialog);
         } else {
@@ -598,10 +598,10 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             String dialog = option[3] + option[6] + goldWon;
             if (wonPotion) {
                 if (wonCard) {
-                    dialog += option[4] + aOrAn + rarityString + option[13];
-                    dialog += option[5] + aOrAn + rarityString + option[14];
+                    dialog += option[4] + aOrAn + rarityString + option[6] + option[13];
+                    dialog += option[5] + aOrAn + rarityString + option[6] + option[14];
                 } else {
-                    dialog += option[5] + aOrAn + rarityString + option[13];
+                    dialog += option[5] + aOrAn + rarityString + option[6] + option[13];
                 }
             }
             dialog += option[16];
