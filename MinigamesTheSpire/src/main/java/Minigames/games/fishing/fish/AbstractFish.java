@@ -96,12 +96,11 @@ public abstract class AbstractFish {
     public static AbstractFish returnRandomFish() {
         ArrayList<AbstractFish> fishies = new ArrayList<>(Arrays.asList(
                 new CeramicFish(),
-                new GoldFish()
+                new GoldFish(),
+                new PlatinumFish()
                 ));
 
         fishies.removeIf(f -> !f.canSpawn());
-        AbstractFish f = HelperClass.getRandomItem(fishies, AbstractDungeon.miscRng);
-
-        return f;
+        return HelperClass.getRandomItem(fishies, AbstractDungeon.miscRng);
     }
 }

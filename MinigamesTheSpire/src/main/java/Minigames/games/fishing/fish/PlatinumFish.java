@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PlatinumFish extends AbstractFish{
-    public static final float MAX_HP = 0.7f;
+    public static final float MAX_HP = 0.6f;
     private static final ArrayList<Vector2> BEHAVIORS = new ArrayList<>(Arrays.asList(
             new Vector2(3f, 1f),
             new Vector2(4f, 0f),
