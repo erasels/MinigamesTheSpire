@@ -4,6 +4,7 @@ import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
@@ -33,8 +34,11 @@ import static Minigames.Minigames.makeID;
  */
 public class SlimePopper extends AbstractMinigame {
     public static final String ASSET_PATH = "minigamesResources/img/games/slimePopper/sprites.atlas";
+    public static final String BACKGROUND_PATH = "minigamesResources/img/games/slimePopper/background.png";
     public static final AssetManager assetManager = new AssetManager();
     public static TextureAtlas atlas;
+    private static Texture background;
+
 
     private ArrayList<PopperItem> items;
     private final float minX = x - SIZE * 0.5f * Settings.scale;
@@ -60,7 +64,12 @@ public class SlimePopper extends AbstractMinigame {
             assetManager.load(ASSET_PATH, TextureAtlas.class);
             assetManager.finishLoadingAsset(ASSET_PATH);
         }
-        atlas = SlimePopper.assetManager.get(SlimePopper.ASSET_PATH, TextureAtlas.class);
+        if (!assetManager.isLoaded(BACKGROUND_PATH)) {
+            assetManager.load(BACKGROUND_PATH, Texture.class);
+            assetManager.finishLoadingAsset(BACKGROUND_PATH);
+        }
+        atlas = assetManager.get(ASSET_PATH, TextureAtlas.class);
+        background = assetManager.get(BACKGROUND_PATH, Texture.class);
         items = new ArrayList<>();
     }
 
@@ -130,6 +139,11 @@ public class SlimePopper extends AbstractMinigame {
 
     @Override
     public void render(SpriteBatch sb) {
+        if (phase >= 0) {
+            // render background
+            sb.setColor(Color.WHITE);
+            drawTexture(sb, background, 0, 0, background.getWidth());
+        }
         super.render(sb);
         if (phase == 1) {
             // render meter
@@ -178,13 +192,11 @@ public class SlimePopper extends AbstractMinigame {
             isDone = true;
             AbstractRoom room = AbstractDungeon.getCurrRoom();
             room.rewards.clear();
-            if (popCount >= 5) {
-                room.addGoldToRewards(75);
-            }
+            room.addGoldToRewards(5 * popCount);
             if (popCount >= 10) {
                 room.addPotionToRewards(AbstractDungeon.returnRandomPotion());
             }
-            if (popCount >= 15) {
+            if (popCount >= 20) {
                 AbstractRelic r = AbstractDungeon.returnRandomScreenlessRelic(AbstractDungeon.returnRandomRelicTier());
                 room.addRelicToRewards(r);
             }

@@ -316,4 +316,9 @@ public abstract class AbstractMinigame implements TextReceiver {
         }
         return false;
     }
+
+    //for when we need minigames to have conditional spawning I guess
+    public boolean canSpawn() {
+        return true;
+    }
 }
