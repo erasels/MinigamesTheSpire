@@ -47,6 +47,7 @@ public class CatchPhase extends AbstractGamePhase {
         fish = parent.fish;
         fish.scaleBehavior(GAME_TIME, maxPos + 100f);
         gameTime = GAME_TIME;
+        timeString = FishingGame.uiStrings.TEXT_DICT.get("TIME");
     }
 
     @Override
@@ -55,8 +56,6 @@ public class CatchPhase extends AbstractGamePhase {
         imgCatcher = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishCatcher.png"));
         imgFish = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Fish.png"));
         imgCrank = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Crank.png"));
-
-        timeString = FishingGame.uiStrings.TEXT_DICT.get("TIME");
     }
 
     @Override
