@@ -24,7 +24,7 @@ public class ActTwoArcade extends AbstractMinigameEvent {
         // Add all minigames that fill the criteria
         for(AbstractMinigame m : srcMinigameList){
             if(m.canSpawnInActTwoEvent() && m.canSpawn()){
-                minigames.add(m);
+                minigames.add(m.makeCopy());
                 imageEventText.setDialogOption(m.getOption());
             }
         }

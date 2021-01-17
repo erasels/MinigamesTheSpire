@@ -66,7 +66,7 @@
     ],
     "OPTIONS": [
       "Begin",
-      "Continue...?",
+      "Continue...",
       "Leave",
       "[Give #b%1$s gold] Obtain a random #gcommon relic.",
       "[Give #b%1$s gold] Obtain a random #buncommon relic.",
@@ -77,7 +77,8 @@
       "#gsatchel",
       "#binternal #bvariables",
       "#ppurse",
-      "[Locked] Requires #b%1$s #ygold."
+      "[Locked] Requires #b%1$s #ygold.",
+      "[Gremlin Flip] Flip tiles and avoid #rGremlin #rNobs!"
     ]
   },
   "${ModID}:MastermindMinigame": {
@@ -114,6 +115,20 @@
     "OPTIONS": [
       "[Begin] Catch the Fish!",
       "[Leave] Your job here is done."
+	  ]
+	  },
+  "minigames:ShellGame": {
+    "NAME": "Three Shell Monte",
+    "DESCRIPTIONS": [
+      "\"Step right up! #bThree shells, two rewards, one #pgnarly #pCurse! NL NL Keep your eyes on the #yprize or you'll pick your #pdemise! NL NL #bOne try, no do-overs. Are you ready? Let's start!\"",
+      "\"Looks like you won a #pCurse! NL That's not good. NL Oh well! Better luck next time!\"",
+      "\"Ah, a mighty #ygift! NL Enjoy!\""
+    ],
+    "OPTIONS": [
+      "#g[Easy] #gCommon Rewards or #rCursed - #rInjury.",
+      "#b[Medium] #bUncommon Rewards or #rCursed - #rRegret.",
+      "#y[Hard] #yRare Rewards or #rCursed - #rNormality.",
+      "[Leave]"
     ]
   }
 }

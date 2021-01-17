@@ -22,7 +22,7 @@ public class InfoTile extends AbstractTile {
 
     public void render(SpriteBatch sb){
         sb.setColor(Color.WHITE.cpy());
-        sb.draw((TextureRegion) tileTexture, x, y, tileTexture.packedWidth /2F, tileTexture.packedHeight /2F, tileTexture.packedWidth, tileTexture.packedHeight, Settings.scale, Settings.scale, 0.0F);
+        sb.draw((TextureRegion) tileTexture, x, y, 0, 0, tileTexture.packedWidth, tileTexture.packedHeight, Settings.scale, Settings.scale, 0.0F);
 
         String msg = String.valueOf(nobCount);
         BitmapFont font = FontHelper.buttonLabelFont;
@@ -31,7 +31,7 @@ public class InfoTile extends AbstractTile {
         msg = String.valueOf(goldCount);
         xOffset = FontHelper.getSmartWidth(font, msg, 9999f, 0f);
         FontHelper.renderFont(sb, font, msg, this.x - xOffset + (100F * Settings.scale), this.y + (76F * Settings.scale), sb.getColor());
-        }
+    }
 
     public void getInfoHorizontal(ArrayList<AbstractTile> tiles, int startingIndex){
         increaseInfoValues(((GameTile) tiles.get(startingIndex)));

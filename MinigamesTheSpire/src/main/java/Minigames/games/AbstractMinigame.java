@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -35,7 +36,7 @@ public abstract class AbstractMinigame implements TextReceiver {
 
     protected float time = 0;
 
-    protected int phase = -2;
+    public int phase = -2;
     //-2: Minigame area fading in.
     //-1: Displaying controls.
     //0 and up: Whatever you want. Use a switch statement, just stay at 0, doesn't really matter.
@@ -209,9 +210,9 @@ public abstract class AbstractMinigame implements TextReceiver {
     {
         float maxSize = 0.8f * Math.min(Settings.WIDTH, Settings.HEIGHT); //Settings.HEIGHT will pretty much always be smaller but maybe someone fucked with something, who knows
 
-        float ratio = ((int)(maxSize / SIZE * 2)) / 2.0f; //round to lower 0.5f
+        float ratio = ((int)(maxSize / SIZE * 4)) / 4.0f; //round to lower 0.25f
 
-        if (ratio < 0.5f)
+        if (ratio < 0.25f) //wtf
         {
             ratio = maxSize / SIZE;
         }
@@ -330,4 +331,6 @@ public abstract class AbstractMinigame implements TextReceiver {
     public boolean canSpawnInActTwoEvent(){ return true; }
     // Determines if a minigame can spawn in the event ActTwoArcade
     public boolean canSpawnInActThreeEvent(){ return true; }
+
+    public abstract AbstractMinigame makeCopy();
 }

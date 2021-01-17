@@ -13,6 +13,7 @@ package Minigames.games.beatpress;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.mastermind.MastermindMinigame;
 import Minigames.util.QueuedSound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -520,4 +521,7 @@ public class BeatPress extends AbstractMinigame {
         bindings.addMouseBind((x, y, pointer)->this.isWithinArea(x, y), (p)->boop());
         return bindings;
     }
+
+    public AbstractMinigame makeCopy(){ return new BeatPress(); }
+
 }

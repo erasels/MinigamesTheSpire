@@ -1,5 +1,5 @@
 *.class
-pom.xml
+MinigamesTheSpire/pom.xml
 
 # IntelliJ
 .idea/
@@ -82,4 +82,4 @@ $RECYCLE.BIN/
 .idea/workspace.xml
 
 #Sts
-pom.xml
+MinigamesTheSpire/pom.xml
