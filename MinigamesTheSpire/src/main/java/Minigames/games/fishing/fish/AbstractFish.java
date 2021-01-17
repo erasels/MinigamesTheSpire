@@ -3,6 +3,7 @@ package Minigames.games.fishing.fish;
 import Minigames.util.HelperClass;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 
 import java.util.ArrayList;
@@ -78,6 +79,11 @@ public abstract class AbstractFish {
     }
 
     public static AbstractFish returnRandomFish() {
-        return new TestFish();
+        int fish = AbstractDungeon.miscRng.random(1);
+        switch (fish) {
+            case 0:
+            default:
+                return new CeramicFish();
+        }
     }
 }
