@@ -3,6 +3,7 @@ package Minigames.events;
 import Minigames.games.AbstractMinigame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.AbstractImageEvent;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
 
@@ -20,6 +21,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
 
     protected void startGame(AbstractMinigame newGame)
     {
+        CardCrawlGame.music.playTempBgmInstantly("minigames:carnivalMusic", true);
         this.imageEventText.clearAllDialogs();
         GenericEventDialog.hide();
 
@@ -55,6 +57,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
     }
 
     public void endOfEvent() {
+        CardCrawlGame.music.fadeOutTempBGM();
         this.imageEventText.clearAllDialogs();
 
         this.imageEventText.updateBodyText("hmmmm");
