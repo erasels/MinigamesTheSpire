@@ -99,12 +99,31 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     @Override
     public void initialize() {
         super.initialize();
+        //determine rewards and difficulty
+        switch (AbstractDungeon.actNum) {
+            case 1:
+                rarity = AbstractCard.CardRarity.COMMON;
+                goldAmt = 5;
+                BOARD_SIZE = 3;
+                GAME_TIMER = 60.0f;
+                break;
+            case 2:
+                rarity = AbstractCard.CardRarity.UNCOMMON;
+                goldAmt = 10;
+                BOARD_SIZE = 4;
+                GAME_TIMER = 90.0f;
+                break;
+            default:
+                rarity = AbstractCard.CardRarity.RARE;
+                goldAmt = 15;
+                BOARD_SIZE = 4;
+                GAME_TIMER = 90.0f;
+                break;
+        }
 
         //customizable variables
-        BOARD_SIZE = 4;                         //width and height in # of tiles
         CAMERA_SIZE = 400;                      //width and height in pixels. Probably best to keep this always 400 because of manual creature placements
         INITIALIZE_TIMER = 5.0f;                //duration of starting animation
-        GAME_TIMER = 90.0f;                     //duration of game
         VICTORY_TIMER = 10.0f;                  //duration of victory animation
         DEFEAT_TIMER = 10.0f;                   //duration of defeat animation
         VICTORY_RAINBOW_SPEED = 1.0f;           //how long it takes for one full rainbow in victory animation
@@ -141,22 +160,6 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         //start "starting game" animation
         state = GameState.INITIALIZING;
         duration = INITIALIZE_TIMER;
-
-        //determine rewards
-        switch (AbstractDungeon.actNum) {
-            case 1:
-                rarity = AbstractCard.CardRarity.COMMON;
-                goldAmt = 5;
-                break;
-            case 2:
-                rarity = AbstractCard.CardRarity.UNCOMMON;
-                goldAmt = 10;
-                break;
-            default:
-                rarity = AbstractCard.CardRarity.RARE;
-                goldAmt = 15;
-                break;
-        }
     }
 
     @Override
