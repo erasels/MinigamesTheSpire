@@ -11,6 +11,7 @@ import Minigames.games.blackjack.BlackjackMinigame;
 import Minigames.games.fishing.FishingGame;
 import Minigames.games.gremlinFlip.gremlinFlip;
 import Minigames.games.mastermind.MastermindMinigame;
+import Minigames.games.shellgame.ShellGame;
 import Minigames.games.slimePopper.SlimePopper;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
@@ -61,7 +62,6 @@ public class Minigames implements
         BaseMod.addEvent(ActTwoArcade.ID, ActTwoArcade.class);
         BaseMod.addEvent(ActThreeArcade.ID, ActThreeArcade.class);
 
-        BaseMod.addEvent(ShellGameEvent.ID, ShellGameEvent.class);
 
     }
 
@@ -149,5 +149,6 @@ public class Minigames implements
         srcMinigameList.add(new MastermindMinigame());
         srcMinigameList.add(new SlimePopper());
         srcMinigameList.add(new FishingGame());
+        srcMinigameList.add(new ShellGame());
     }
 }
