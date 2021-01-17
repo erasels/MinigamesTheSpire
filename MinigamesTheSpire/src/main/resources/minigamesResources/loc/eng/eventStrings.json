@@ -133,5 +133,32 @@
       "#y[Hard] #yRare Rewards or #rCursed - #rNormality.",
       "[Leave]",
     ]
+  },
+  "minigames:SlidePuzzle": {
+    "NAME": "[Solve a Slide Puzzle] Get #grewards!",
+    "DESCRIPTIONS": [
+      "Can you solve the puzzle? Put as many pieces into the correct spot as you can within the time limit! The more you solve, the more you win!",
+      "Uh oh! Time ran out! You'll just have to make do with the prizes you were able to get.",
+      "Congratulations! You won the grand prize! You also get #yBonus #yGold for doing it so quickly!"
+    ],
+    "OPTIONS": [
+      "[Start]",
+      " #b4x4 puzzle, #r90 seconds.",
+      " #b3x3 puzzle, #r60 seconds.",
+      "[Collect]",
+      ", ",
+      ", and",
+      "#b",
+      " #yGold",
+      " a #b",
+      " an #b",
+      "common",
+      "uncommon",
+      "rare",
+      "potion",
+      "card",
+      "relic",
+      "."
+    ]
   }
 }

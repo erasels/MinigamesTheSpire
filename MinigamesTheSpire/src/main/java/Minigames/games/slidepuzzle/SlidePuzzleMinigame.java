@@ -69,6 +69,10 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     private int rewardsCount = 0;
     private int goldAmt;
     private AbstractCard.CardRarity rarity;
+    private boolean wonPotion = false;
+    private boolean wonCard = false;
+    private boolean wonRelic = false;
+    private int goldWon = 0;
 
     @Override
     protected BindingGroup getBindings() {
@@ -234,7 +238,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             }
         }
         //update scoreboard
-        tallyRewards();
+        tallyRewards(false);
         duration -= elapsed;
         if (duration <= 0.0f && !success) {
             state = GameState.DEFEAT;
@@ -250,7 +254,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     void updateVictory(float elapsed) {
         if (victoryColor == null) {
             victoryColor = new Color(0, 0, 0, 1);
-            tallyRewards();
+            tallyRewards(true);
         }
         //oscillate the render color for a nice little rainbow effect
         victoryColor.r = ((float)Math.sin(0d + (Math.PI * colorTimer * 2d)) * 0.5f) + 0.5f;
@@ -280,7 +284,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             }
 
             //finalize the scoreboard
-            tallyRewards();
+            tallyRewards(true);
         }
 
         //borders and timer fade out
@@ -307,7 +311,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         }
     }
 
-    private void tallyRewards() {
+    private void tallyRewards(boolean finalized) {
         rewardsCount = 0;
         //every tile currently in its original position is worth one reward
         for (Tile[] row : board) {
@@ -316,6 +320,27 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
                     ++rewardsCount;
                 }
             }
+        }
+
+        if (finalized) {
+            goldWon = 0;
+            wonPotion = false;
+            wonCard = false;
+            wonRelic = false;
+
+            for (int i = 0; i < rewardsCount; ++i) {
+                if (i == TILE_COUNT) {
+                    wonRelic = true;
+                } else if (i == (TILE_COUNT * 2 / 3)) {
+                    wonCard = true;
+                } else if (i == TILE_COUNT / 3) {
+                    wonPotion = true;
+                } else {
+                    goldWon += goldAmt;
+                }
+            }
+
+            goldWon += victoryTime;
         }
     }
 
@@ -528,7 +553,13 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     @Override
     public void setupInstructionScreen(GenericEventDialog event) {
         event.updateBodyText(eventStrings.DESCRIPTIONS[0]);
-        event.setDialogOption(eventStrings.OPTIONS[0]);
+        String option = eventStrings.OPTIONS[0];
+        if (AbstractDungeon.actNum == 1) {
+            option += eventStrings.OPTIONS[2];
+        } else {
+            option += eventStrings.OPTIONS[1];
+        }
+        event.setDialogOption(option);
     }
 
     @Override
@@ -540,8 +571,38 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
 
     @Override
     public void setupPostgameScreen(GenericEventDialog event) {
-        event.updateBodyText(eventStrings.DESCRIPTIONS[1]);
-        event.setDialogOption(eventStrings.DESCRIPTIONS[1]);
+        String[] option = eventStrings.OPTIONS;
+        String aOrAn = (rarity == AbstractCard.CardRarity.UNCOMMON ? option[9] : option[8]);
+        String rarityString;
+        if (rarity == AbstractCard.CardRarity.COMMON) {
+            rarityString = option[10];
+        } else if (rarity == AbstractCard.CardRarity.UNCOMMON) {
+            rarityString = option[11];
+        } else {
+            rarityString = option[12];
+        }
+        if (state == GameState.VICTORY) {
+            event.updateBodyText(eventStrings.DESCRIPTIONS[2]);
+            String dialog = option[3] + option[6] + goldWon + option[7] +
+                    option[4] + aOrAn + rarityString + option[13] +
+                    option[4] + aOrAn + rarityString + option[14] +
+                    option[5] + aOrAn + rarityString + option[15] +
+                    option[16];
+            event.setDialogOption(dialog);
+        } else {
+            event.updateBodyText(eventStrings.DESCRIPTIONS[1]);
+            String dialog = option[3] + option[6] + goldWon;
+            if (wonPotion) {
+                if (wonCard) {
+                    dialog += option[4] + aOrAn + rarityString + option[13];
+                    dialog += option[5] + aOrAn + rarityString + option[14];
+                } else {
+                    dialog += option[5] + aOrAn + rarityString + option[13];
+                }
+            }
+            dialog += option[16];
+            event.setDialogOption(dialog);
+        }
     }
 
     private enum BoardType {
