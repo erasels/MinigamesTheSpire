@@ -42,7 +42,7 @@ public class MastermindMinigame extends AbstractMinigame {
     private static final int BG_SIZE = 648;
     private Texture background;
 
-    private boolean won = false;
+    private boolean won;
 
     public MastermindMinigame() {
         super();
@@ -51,6 +51,7 @@ public class MastermindMinigame extends AbstractMinigame {
     @Override
     public void initialize() {
         super.initialize();
+        won = false;
         background = ImageMaster.loadImage(makeGamePath("mastermind/background.png"));
         activeRow = 0;
         marbleBoard = new MarbleBoard(this);
@@ -212,6 +213,7 @@ public class MastermindMinigame extends AbstractMinigame {
         if (won) {
             event.updateBodyText(eventStrings.DESCRIPTIONS[1]);
             event.setDialogOption(eventStrings.OPTIONS[2]);
+            event.setDialogOption(eventStrings.OPTIONS[3]);
         } else {
             event.updateBodyText(eventStrings.DESCRIPTIONS[2]);
             event.setDialogOption(eventStrings.OPTIONS[3]);
@@ -220,7 +222,10 @@ public class MastermindMinigame extends AbstractMinigame {
 
     public boolean postgameButtonPressed(int buttonIndex) {
         if (won) {
-            AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2f, Settings.HEIGHT / 2f, new BagOfMarbles());
+            if (buttonIndex == 0) {
+                AbstractRelic relic = AbstractDungeon.returnRandomScreenlessRelic(AbstractDungeon.returnRandomRelicTier());
+                AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2f, Settings.HEIGHT / 2f, relic);
+            }
         }
         return true;
     }
