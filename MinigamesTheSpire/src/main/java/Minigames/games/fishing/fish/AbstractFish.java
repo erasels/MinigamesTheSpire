@@ -97,7 +97,8 @@ public abstract class AbstractFish {
         ArrayList<AbstractFish> fishies = new ArrayList<>(Arrays.asList(
                 new CeramicFish(),
                 new GoldFish(),
-                new PlatinumFish()
+                new PlatinumFish(),
+                new FossilFish()
                 ));
 
         fishies.removeIf(f -> !f.canSpawn());
