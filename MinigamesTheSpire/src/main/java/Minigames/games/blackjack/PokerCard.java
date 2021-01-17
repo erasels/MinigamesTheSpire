@@ -39,15 +39,19 @@ public class PokerCard {
         } else {
             switch (value) {
                 case 11: {
-                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + "J.png"));
+                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/cardJ.png"));
                     break;
                 }
                 case 12: {
-                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + "Q.png"));
+                    if (suite == Suite.Hearts || suite == Suite.Spades) {
+                        t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/cardHeartsQ.png"));
+                    } else {
+                        t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/cardDiamondsQ.png"));
+                    }
                     break;
                 }
                 case 13: {
-                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/card" + suite.toString() + "K.png"));
+                    t = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/cardK.png"));
                     break;
                 }
                 case 14: {
