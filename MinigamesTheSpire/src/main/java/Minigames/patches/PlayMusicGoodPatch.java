@@ -9,7 +9,7 @@ import com.megacrit.cardcrawl.audio.TempMusic;
 import static Minigames.Minigames.makeAudioPath;
 
 @SpirePatch(clz = TempMusic.class, method = "getSong")
-public class MusicPlayer {
+public class PlayMusicGoodPatch {
     @SpirePostfixPatch
     public static Music Postfix(Music __result, TempMusic __instance, String key) {
         if ("minigames:carnivalMusic".equals(key)) {
