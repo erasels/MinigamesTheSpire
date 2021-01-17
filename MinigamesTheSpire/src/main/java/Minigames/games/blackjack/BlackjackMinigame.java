@@ -63,11 +63,11 @@ public class BlackjackMinigame extends AbstractMinigame {
         super.initialize();
         player = new Player(this);
         dealer = new Dealer(this);
-        hitButton = new HitButton(400.0f * Settings.scale, 200.0f * Settings.scale, this);
-        standButton = new StandButton(200.0f * Settings.scale, 200.0f * Settings.scale, this);
-        betButton = new BetButton(300.0f * Settings.scale, 200.0f * Settings.scale, this);
-        leaveButton = new LeaveButton(200.0f * Settings.scale, 200.0f * Settings.scale, this);
-        playAgainButton = new PlayAgainButton(400.0f * Settings.scale, 200.0f * Settings.scale, this);
+        hitButton = new HitButton(300.0f * Settings.scale, 200.0f * Settings.scale, this);
+        standButton = new StandButton(100.0f * Settings.scale, 200.0f * Settings.scale, this);
+        betButton = new BetButton(200.0f * Settings.scale, 200.0f * Settings.scale, this);
+        leaveButton = new LeaveButton(100.0f * Settings.scale, 200.0f * Settings.scale, this);
+        playAgainButton = new PlayAgainButton(300.0f * Settings.scale, 200.0f * Settings.scale, this);
         createNewDeck();
         bet = 0;
         phase = BETTING;

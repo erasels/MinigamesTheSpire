@@ -20,37 +20,31 @@
   "${ModID}:ActOneArcade": {
     "NAME": "The Strange Ritual",
     "DESCRIPTIONS": [
-      "Bunch of Cultists are praying to an old arcade machine"
+      "You spot a group of #pCultists praying to a strange, dilapidated machine. One of them waves its arms around, bumping into the machine and causing bright #ylights to @flicker@ on and off from the contraption. NL NL The scene piques your interest, and after a round of very familiar violence, you find yourself standing before the machine. NL NL It @flickers@ to #ylife before you, the screen displaying a list of curious #yoptions.",
+      "The game was strange, bizarre, and foreign. Yet you felt a spark of #yjoy from engaging with it nonetheless. NL NL Perhaps you could find more of these strange contraptions deeper in the depths of the #pSpire."
     ],
     "OPTIONS": [
-      "First minigame",
-      "Second minigame",
-      "Third minigame",
-      "Continue on with your adventure."
+      "[Continue on with your adventure]"
     ]
   },
   "${ModID}:ActTwoArcade": {
-    "NAME": "The Cool Hangout Spot",
+    "NAME": "The Popular Stall",
     "DESCRIPTIONS": [
-      "An old arcade in the city where the cool kids are"
+      "You see a group of the City's #plowlifes gathering around a stall, #pthieves and #pmuggers pushing each other to try and get closer. NL NL You unsheathe your weapon, then resheathe it a moment later. The stall's owner gazes up at you, unfazed by your sudden bout of #rviolence. NL NL \"What frightful #yguests I've been having lately! But no matter. How would you like to play a game?\"",
+      "The game ends, and the stall owner #ysmiles at you. NL NL \"Did you have fun? It's always nice to take a breather here in this #psuffocating #pSpire, isn't it?\" NL NL The owner wraps up his wares and vanishes, leaving his parting words ringing in your ear."
     ],
     "OPTIONS": [
-      "First minigame",
-      "Second minigame",
-      "Third minigame",
-      "Continue on with your adventure."
+      "[Continue on with your adventure]"
     ]
   },
   "${ModID}:ActThreeArcade": {
-    "NAME": "???",
+    "NAME": "Those Left Behind",
     "DESCRIPTIONS": [
-      "???"
+      "Deep within the bounds of the #pBeyond, you find a strange machine trapped within the growth of the #pSpire. Prying the #psickly roots away, a pile of #pbones clatter to your feet as you free the machine, the remains of a soul from long ago. NL NL The machine #ysparks to life, presenting you with a choice.",
+      "The game ends, and you reaffirm your #gresolve to climb to the top of this blasted tower. As you turn to leave, you glance back at the pile of #pbones resting near the machine. NL NL Perhaps you should help that soul achieve their final rest before you go."
     ],
     "OPTIONS": [
-      "First minigame",
-      "Second minigame",
-      "Third minigame",
-      "Continue on with your adventure."
+      "[Bury the Unknown Body]"
     ]
   },
   "${ModID}:gremlinFlip": {
