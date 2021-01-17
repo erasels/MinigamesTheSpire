@@ -22,9 +22,10 @@ public class InfoTile extends AbstractTile {
     public void render(SpriteBatch sb){
         sb.setColor(Color.WHITE.cpy());
         sb.draw((TextureRegion) tileTexture, x, y, tileTexture.packedWidth /2F, tileTexture.packedHeight /2F, tileTexture.packedWidth, tileTexture.packedHeight, Settings.scale, Settings.scale, 0.0F);
-        FontHelper.renderFont(sb, FontHelper.buttonLabelFont, String.valueOf(nobCount), this.x + ((136F / 2f) * Settings.scale), this.y + (34F * Settings.scale), sb.getColor());
-        FontHelper.renderFont(sb, FontHelper.buttonLabelFont, String.valueOf(goldCount), this.x + ((128F / 2f) * Settings.scale), this.y + (78F * Settings.scale), sb.getColor());
-    }
+        FontHelper.renderFontRightAligned(sb, FontHelper.buttonLabelFont, String.valueOf(nobCount), this.x + FontHelper.getSmartWidth(FontHelper.buttonLabelFont, String.valueOf(nobCount), 9999f, 0F) + ((124F / 2f) * Settings.scale), this.y + FontHelper.getSmartHeight(FontHelper.buttonLabelFont, String.valueOf(nobCount), 9999f, 0F) + (24F * Settings.scale), sb.getColor());
+        if(goldCount > 9){ FontHelper.renderFontRightAligned(sb, FontHelper.buttonLabelFont, String.valueOf(goldCount), this.x + FontHelper.getSmartWidth(FontHelper.buttonLabelFont, String.valueOf(goldCount), 9999f, 0F) + ((100F / 2f) * Settings.scale), this.y + FontHelper.getSmartHeight(FontHelper.buttonLabelFont, String.valueOf(goldCount), 9999f, 0F) + (64F * Settings.scale), sb.getColor()); }
+        else { FontHelper.renderFontRightAligned(sb, FontHelper.buttonLabelFont, String.valueOf(goldCount), this.x + FontHelper.getSmartWidth(FontHelper.buttonLabelFont, String.valueOf(goldCount), 9999f, 0F) + ((124F / 2f) * Settings.scale), this.y + FontHelper.getSmartHeight(FontHelper.buttonLabelFont, String.valueOf(goldCount), 9999f, 0F) + (64F * Settings.scale), sb.getColor()); }
+        }
 
     public void getInfoHorizontal(ArrayList<AbstractTile> tiles, int startingIndex){
         increaseInfoValues(((GameTile) tiles.get(startingIndex)));
