@@ -103,7 +103,7 @@ public abstract class AbstractFish {
         }
     }
 
-    private void initImage() {
+    protected void initImage() {
         img = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Fish.png"));
     }
 
