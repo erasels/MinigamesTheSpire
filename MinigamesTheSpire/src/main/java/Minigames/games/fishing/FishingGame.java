@@ -76,6 +76,11 @@ public class FishingGame extends AbstractMinigame {
         event.setDialogOption(eventStrings.OPTIONS[0]);
     }
 
+    @Override
+    public AbstractMinigame makeCopy() {
+        return new FishingGame();
+    }
+
     private void doAction(Vector2 vec) {
         if(gamePhase != null)
             gamePhase.action();
