@@ -1,5 +1,8 @@
 package Minigames;
 
+import Minigames.events.ActOneArcade;
+import Minigames.events.ActThreeArcade;
+import Minigames.events.ActTwoArcade;
 import Minigames.events.TestMinigameEvent;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
@@ -52,6 +55,9 @@ public class Minigames implements
         BaseMod.registerModBadge(TextureLoader.getTexture(makeImgPath("modBadge.png")), "Minigames The Spire", "erasels", "A mod, boyo.", settingsPanel);
 
         BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
+        BaseMod.addEvent(ActOneArcade.ID, ActOneArcade.class);
+        BaseMod.addEvent(ActTwoArcade.ID, ActTwoArcade.class);
+        BaseMod.addEvent(ActThreeArcade.ID, ActThreeArcade.class);
 
     }
 
