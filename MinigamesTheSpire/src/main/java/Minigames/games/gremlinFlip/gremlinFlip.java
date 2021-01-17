@@ -95,7 +95,7 @@ public class gremlinFlip extends AbstractMinigame {
     }
 
     @Override
-    public String getOption() { return NAME; }
+    public String getOption() { return OPTIONS[13]; }
 
     @Override
     public void setupInstructionScreen(GenericEventDialog event) {
