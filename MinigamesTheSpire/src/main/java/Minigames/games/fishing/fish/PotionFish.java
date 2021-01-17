@@ -2,6 +2,7 @@ package Minigames.games.fishing.fish;
 
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.relics.Sozu;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 
 import java.util.ArrayList;
@@ -28,5 +29,10 @@ public class PotionFish extends AbstractFish{
     @Override
     public ArrayList<RewardItem> returnReward() {
         return new ArrayList<>(Arrays.asList(new RewardItem(AbstractDungeon.returnRandomPotion())));
+    }
+
+    @Override
+    public boolean canSpawn() {
+        return !AbstractDungeon.player.hasRelic(Sozu.ID);
     }
 }

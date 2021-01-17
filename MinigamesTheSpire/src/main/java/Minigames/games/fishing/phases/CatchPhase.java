@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -27,8 +28,6 @@ public class CatchPhase extends AbstractGamePhase {
     private static int bbw = 152, bbh = 600;
     private static Texture imgCatcher;
     private static int cbw = 36, cbh = 124;
-    private static Texture imgFish; //Could be replaced with custom picture of fish
-    private static int fbw = 56, fbh = 53;
     private static Texture imgCrank;
     private static Color notCatchingColor = new Color(0.75f, 0.65f, 0.65f, 0.75f);
     private static Color catchingColor = new Color(0.75f, 0.85f, 0.75f, 1f);
@@ -46,7 +45,6 @@ public class CatchPhase extends AbstractGamePhase {
         maxPos = bbh - (cbh / 2f) - 100f;
         pos = 0;
         fish = parent.fish;
-        fish.scaleBehavior(GAME_TIME, maxPos + 100f);
         gameTime = GAME_TIME;
         timeString = FishingGame.uiStrings.TEXT_DICT.get("TIME");
     }
@@ -55,13 +53,13 @@ public class CatchPhase extends AbstractGamePhase {
     public void initialize() {
         imgBar = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishingBar.png"));
         imgCatcher = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishCatcher.png"));
-        imgFish = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Fish.png"));
         imgCrank = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Crank.png"));
+        fish.initialize(GAME_TIME, maxPos + 100f);
     }
 
     @Override
     public void update() {
-        if (!isDone && !waiting) {
+        if (!waiting && !isDone) {
             float dt = HelperClass.getTime();
 
             gameTime -= dt;
@@ -92,7 +90,7 @@ public class CatchPhase extends AbstractGamePhase {
                 reelTimer -= gt;
                 if (bobTimer <= 0) {
                     CardCrawlGame.sound.play(fishBeingCaught ? FishingGame.sHit : FishingGame.sBob);
-                    bobTimer = (fishBeingCaught ? FishingGame.timeHit : FishingGame.timeBob) + INFORMATION_SOUND_TIME_OFFSET;
+                    bobTimer = (fishBeingCaught ? FishingGame.timeHit : FishingGame.timeBob) + getSoundDelay();
                 }
             } else {
                 //Reduce wait time because there is no next game phase
@@ -116,7 +114,7 @@ public class CatchPhase extends AbstractGamePhase {
         float blBound = (-(AbstractMinigame.SIZE / 2f));
 
         //Render game time
-        if(!isDone && !waiting) {
+        if (!isDone && !waiting) {
             //System.out.printf("isdone = %b, waiting = %b, waitTimer = %f, gameTime = %f", isDone, waiting, parent.waitTimer, gameTime);
             Color col;
             if (gameTime > GAME_TIME * 0.66f) {
@@ -137,6 +135,7 @@ public class CatchPhase extends AbstractGamePhase {
         parent.drawTexture(sb, imgCatcher, blBound + (bbw / 2f) + (cbw / 2f) - 8f, blBound + (AbstractMinigame.SIZE - bbh) + (cbh / 2f) + pos, 0, cbw, cbh, false, false);
 
         //Render fish catching progress
+
         if (fish.hp > fish.mHp * 0.66f) {
             sb.setColor(Color.RED);
         } else if (fish.hp > fish.mHp * 0.33f) {
@@ -148,10 +147,12 @@ public class CatchPhase extends AbstractGamePhase {
         parent.drawTexture(sb, ImageMaster.WHITE_SQUARE_IMG, blBound + bbw - 16f, blBound + (AbstractMinigame.SIZE - bbh) + (bbh / 2f) + ((height - (bbh - FBAR_GROUND_OFFSET)) / 2f) - 8f, 0, 10, (NumberUtils.max(height - 8, 0)), false, false);
 
         //Render Fish
-        boolean catching = fish.isWithinY(pos, pos + cbh);
-        Color fC = catching ? catchingColor : notCatchingColor;
-        sb.setColor(fC);
-        parent.drawTexture(sb, imgFish, blBound + (bbw / 2f) + (fbw / 2f) - 20f + (catching? getFishShake() : 0), blBound + (AbstractMinigame.SIZE - bbh) + (fbh / 2f) + fish.y - FBAR_GROUND_OFFSET, 0, fbw, fbh, catching, false);
+        if (fish.getTexture() != null) {
+            boolean catching = fish.isWithinY(pos, pos + cbh);
+            Color fC = catching ? catchingColor : notCatchingColor;
+            sb.setColor(fC);
+            parent.drawTexture(sb, fish.getTexture(), blBound + (bbw / 2f) + (fish.w / 2f) - 20f + (catching ? getFishShake() : 0), blBound + (AbstractMinigame.SIZE - bbh) + (fish.h / 2f) + fish.y - FBAR_GROUND_OFFSET, 0, fish.w, fish.h, false, false);
+        }
         sb.setColor(Color.WHITE);
 
         //Render Crank
@@ -183,17 +184,22 @@ public class CatchPhase extends AbstractGamePhase {
     private static final float FISH_SHAKE_TIME = 0.15f;
     private float fishShakeTimer = FISH_SHAKE_TIME;
     private boolean switchFishShake = false;
+
     private float getFishShake() {
         fishShakeTimer -= HelperClass.getTime();
-        if(fishShakeTimer <= 0) {
+        if (fishShakeTimer <= 0) {
             fishShakeTimer = FISH_SHAKE_TIME;
             switchFishShake = !switchFishShake;
         }
-        if(switchFishShake) {
-            return Interpolation.linear.apply(12f, -12f, 1 - fishShakeTimer/FISH_SHAKE_TIME);
+        if (switchFishShake) {
+            return Interpolation.linear.apply(12f, -12f, 1 - fishShakeTimer / FISH_SHAKE_TIME);
         } else {
-            return Interpolation.linear.apply(-12f, 12f, 1 - fishShakeTimer/FISH_SHAKE_TIME);
+            return Interpolation.linear.apply(-12f, 12f, 1 - fishShakeTimer / FISH_SHAKE_TIME);
         }
+    }
+
+    private float getSoundDelay() {
+        return (0.1f + MathUtils.random(0, INFORMATION_SOUND_TIME_OFFSET));
     }
 
     @Override
@@ -206,13 +212,13 @@ public class CatchPhase extends AbstractGamePhase {
 
     @Override
     public void dispose() {
+        Minigames.logger.info("Disposing of Fishing art assets.");
         imgBar.dispose();
         imgBar = null;
         imgCatcher.dispose();
         imgCatcher = null;
-        imgFish.dispose();
-        imgFish = null;
         imgCrank.dispose();
         imgCrank = null;
+        fish.dispose();
     }
 }

@@ -1,6 +1,9 @@
 package Minigames.games.fishing.fish;
 
+import Minigames.Minigames;
 import Minigames.util.HelperClass;
+import Minigames.util.TextureLoader;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -26,6 +29,10 @@ public abstract class AbstractFish {
     protected Vector2 currentBehavior;
     protected boolean shuffleWhenCycled;
 
+    protected Texture img;
+    //base image sizes
+    public static int w = 56, h = 53;
+
     public AbstractFish(float hp, ArrayList<Vector2> ogBehavior, boolean shuffleWhenCycled) {
         mHp = this.hp = hp;
         this.shuffleWhenCycled = shuffleWhenCycled;
@@ -38,11 +45,15 @@ public abstract class AbstractFish {
         this(hp, ogBehavior, false);
     }
 
+    public void initialize(float maxGameTime, float maxPos) {
+        initImage();
+        scaleBehavior(maxGameTime, maxPos);
+    }
+
     public void update(boolean inArea) {
         if(inArea) {
             hp -= HelperClass.getTime();
             if(isCaught()) {
-                dispose();
                 return;
             }
         }
@@ -63,7 +74,10 @@ public abstract class AbstractFish {
 
     public abstract ArrayList<RewardItem> returnReward();
 
-    public void dispose() { }
+    public void dispose() {
+        img.dispose();
+        img = null;
+    }
 
     private void cycleBehavior() {
         initialY = y;
@@ -82,11 +96,19 @@ public abstract class AbstractFish {
         return y >= y1 && y <= y2;
     }
 
-    public void scaleBehavior(float maxGameTime, float maxPos) {
+    protected void scaleBehavior(float maxGameTime, float maxPos) {
         hp = mHp = mHp * maxGameTime;
         for(Vector2 vec : originBehavior) {
             vec.y *= maxPos;
         }
+    }
+
+    private void initImage() {
+        img = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Fish.png"));
+    }
+
+    public Texture getTexture() {
+        return img;
     }
 
     public boolean canSpawn() {
@@ -104,6 +126,9 @@ public abstract class AbstractFish {
                 ));
 
         fishies.removeIf(f -> !f.canSpawn());
+        if(fishies.isEmpty()) {
+            return new GoldFish();
+        }
         return HelperClass.getRandomItem(fishies, AbstractDungeon.miscRng);
     }
 }

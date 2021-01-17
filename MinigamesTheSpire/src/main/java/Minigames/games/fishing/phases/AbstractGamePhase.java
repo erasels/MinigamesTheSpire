@@ -1,5 +1,6 @@
 package Minigames.games.fishing.phases;
 
+import Minigames.Minigames;
 import Minigames.games.fishing.FishingGame;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -26,6 +27,7 @@ public abstract class AbstractGamePhase {
         if(parent.waiting()) {
             if(nextGame != null)
                 nextGame.initialize();
+            Minigames.logger.info("Disposing of Fishing game.");
             killAction();
             dispose();
             parent.gamePhase = nextGame;
