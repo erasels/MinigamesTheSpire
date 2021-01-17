@@ -130,13 +130,6 @@ public class FishingGame extends AbstractMinigame {
     }
 
     @Override
-    public void dispose() {
-        super.dispose();
-
-        fish = null;
-    }
-
-    @Override
     protected BindingGroup getBindings() {
         BindingGroup bindings = new BindingGroup();
 
