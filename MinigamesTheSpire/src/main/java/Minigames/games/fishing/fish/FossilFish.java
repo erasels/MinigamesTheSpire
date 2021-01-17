@@ -32,6 +32,6 @@ public class FossilFish extends AbstractFish{
 
     @Override
     public boolean canSpawn() {
-        return !AbstractDungeon.player.hasRelic(FossilizedHelix.ID);
+        return !AbstractDungeon.player.hasRelic(FossilizedHelix.ID) && AbstractDungeon.actNum > 1;
     }
 }

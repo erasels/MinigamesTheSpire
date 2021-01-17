@@ -20,7 +20,6 @@ import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
-import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import static Minigames.Minigames.makeID;
 
@@ -103,7 +102,7 @@ public class FishingGame extends AbstractMinigame {
                     CardCrawlGame.sound.play(sReward, 1f);
 
                     AbstractDungeon.getCurrRoom().rewards = fish.returnReward();
-                    AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
+                    //AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
                     AbstractDungeon.combatRewardScreen.open(uiStrings.TEXT_DICT.get("WIN"));
                 } else {
                     CardCrawlGame.sound.play("ENEMY_TURN", 1f);

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -92,7 +93,7 @@ public class CatchPhase extends AbstractGamePhase {
                 reelTimer -= gt;
                 if (bobTimer <= 0) {
                     CardCrawlGame.sound.play(fishBeingCaught ? FishingGame.sHit : FishingGame.sBob);
-                    bobTimer = (fishBeingCaught ? FishingGame.timeHit : FishingGame.timeBob) + INFORMATION_SOUND_TIME_OFFSET;
+                    bobTimer = (fishBeingCaught ? FishingGame.timeHit : FishingGame.timeBob) + getSoundDelay();
                 }
             } else {
                 //Reduce wait time because there is no next game phase
@@ -194,6 +195,10 @@ public class CatchPhase extends AbstractGamePhase {
         } else {
             return Interpolation.linear.apply(-12f, 12f, 1 - fishShakeTimer/FISH_SHAKE_TIME);
         }
+    }
+
+    private float getSoundDelay() {
+        return (0.1f + MathUtils.random(0, INFORMATION_SOUND_TIME_OFFSET));
     }
 
     @Override

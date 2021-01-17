@@ -1,6 +1,7 @@
 package Minigames.games.fishing.fish;
 
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 
 import java.util.ArrayList;
@@ -26,5 +27,10 @@ public class GoldFish extends AbstractFish{
     @Override
     public ArrayList<RewardItem> returnReward() {
         return new ArrayList<>(Arrays.asList(new RewardItem(60)));
+    }
+
+    @Override
+    public boolean canSpawn() {
+        return AbstractDungeon.actNum < 3;
     }
 }

@@ -104,6 +104,9 @@ public abstract class AbstractFish {
                 ));
 
         fishies.removeIf(f -> !f.canSpawn());
+        if(fishies.isEmpty()) {
+            return new GoldFish();
+        }
         return HelperClass.getRandomItem(fishies, AbstractDungeon.miscRng);
     }
 }
