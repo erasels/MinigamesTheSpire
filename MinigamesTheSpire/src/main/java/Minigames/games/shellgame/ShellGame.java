@@ -46,7 +46,7 @@ public class ShellGame extends AbstractMinigame {
     private static final String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
     private static final String[] OPTIONS = eventStrings.OPTIONS;
 
-    public Shell shell1;
+    private Shell shell1;
     private Shell shell2;
     private Shell shell3;
 
@@ -54,47 +54,47 @@ public class ShellGame extends AbstractMinigame {
 
     private static float timeModifier = 1F;
 
-    private static float xpos1 = Settings.WIDTH * 0.4F;
-    private static float xpos2 = Settings.WIDTH * 0.5F;
-    private static float xpos3 = Settings.WIDTH * 0.6F;
+    private static final float xpos1 = Settings.WIDTH * 0.4F;
+    private static final float xpos2 = Settings.WIDTH * 0.5F;
+    private static final float xpos3 = Settings.WIDTH * 0.6F;
 
-    public static float offscreenShellHeight = 195F;
+    public static final float offscreenShellHeight = 195F;
 
-    public static float yBackgroundSwap = Settings.HEIGHT * 0.575F;
-    public static float yForegroundSwap = Settings.HEIGHT * 0.425F;
+    private static float yBackgroundSwap = Settings.HEIGHT * 0.575F;
+    private static float yForegroundSwap = Settings.HEIGHT * 0.425F;
     public static float yMid = Settings.HEIGHT * 0.5F;
 
-    public static float scaleForegroundSwap = 1.25F;
-    public static float scaleBackgroundSwap = 0.75F;
+    private static final float scaleForegroundSwap = 1.25F;
+    private static final float scaleBackgroundSwap = 0.75F;
 
-    public static float cardScaleStart = 0.05F;
-    public static float cardScalePeak = 1.15F;
-    public static float cardScaleNorm = 1F;
-    public static float cardScaleCup = .3F;
+    public static final float cardScaleStart = 0.05F;
+    public static final float cardScalePeak = 1.15F;
+    public static final float cardScaleNorm = 1F;
+    public static final float cardScaleCup = .3F;
 
-    public static float relicScaleStart = 0.05F;
-    public static float relicScalePeak = 13F;
-    public static float relicScaleNorm = 11F;
-    public static float relicScaleCup = 3F;
+    public static final float relicScaleStart = 0.05F;
+    public static final float relicScalePeak = 13F;
+    public static final float relicScaleNorm = 11F;
+    public static final float relicScaleCup = 3F;
+
+    private static final float baseSpeed = .75F;
 
     private int subPhase = 0;
 
-    private static int totalSwaps = 20;
+    private static int totalSwaps = 0;
     private static int currentSwaps = 0;
-
-    public static float baseSpeed = .75F;
 
     private static boolean listenForSwap = false;
 
     private static float sppedIncreasePerSwap = 0.2F;
 
-    public static float timeToBeginNextSwap;
+    private static float timeToBeginNextSwap;
 
-    float timer = 1F;
+    private float timer = 1F;
 
-    public ArrayList<Shell> shellsToRender = new ArrayList<>();
+    private ArrayList<Shell> shellsToRender = new ArrayList<>();
 
-    public static int difficultyMode = 0;
+    private static int difficultyMode = 0;
 
     public static boolean gotCurse = false;
 
@@ -217,6 +217,10 @@ public class ShellGame extends AbstractMinigame {
         shell1.shellOffsetY = offscreenShellHeight;
         shell2.shellOffsetY = offscreenShellHeight;
         shell3.shellOffsetY = offscreenShellHeight;
+
+        gotCurse = false;
+        listenForSwap = false;
+        currentSwaps = 0;
     }
 
 
