@@ -145,20 +145,22 @@
       "[Start]",
       " #b4x4 puzzle, #r90 seconds.",
       " #b3x3 puzzle, #r60 seconds.",
-      "[Collect]",
-      ", ",
-      ", and",
-      " #b",
+      "[Collect] #b",
       " #yGold",
-      " a #b",
-      " an #b",
+      ".",
+      " and ",
+      "a #bCommon",
+      "an #bUncommon",
+      "a #bRare",
+      " #bPotion.",
+      " #bPotion and #bCard.",
+      " #bPotion, #bCard, and #bRelic.",
       "Common",
       "Uncommon",
       "Rare",
       "Potion",
       "Card",
-      "Relic",
-      "."
+      "Relic"
     ]
   }
 }

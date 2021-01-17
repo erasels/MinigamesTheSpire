@@ -576,35 +576,28 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     @Override
     public void setupPostgameScreen(GenericEventDialog event) {
         String[] option = eventStrings.OPTIONS;
-        String aOrAn = (rarity == AbstractCard.CardRarity.UNCOMMON ? option[9] : option[8]);
         String rarityString;
         if (rarity == AbstractCard.CardRarity.COMMON) {
-            rarityString = option[10];
+            rarityString = option[7];
         } else if (rarity == AbstractCard.CardRarity.UNCOMMON) {
-            rarityString = option[11];
+            rarityString = option[8];
         } else {
-            rarityString = option[12];
+            rarityString = option[9];
         }
         if (state == GameState.VICTORY) {
             event.updateBodyText(eventStrings.DESCRIPTIONS[2]);
-            String dialog = option[3] + option[6] + goldWon + option[7] +
-                    option[4] + aOrAn + rarityString + option[6] + option[13] +
-                    option[4] + aOrAn + rarityString + option[6] + option[14] +
-                    option[5] + aOrAn + rarityString + option[6] + option[15] +
-                    option[16];
+            String dialog = option[3] + goldWon + option[4] + option[6] + rarityString + option[12];
             event.setDialogOption(dialog);
         } else {
             event.updateBodyText(eventStrings.DESCRIPTIONS[1]);
-            String dialog = option[3] + option[6] + goldWon;
-            if (wonPotion) {
-                if (wonCard) {
-                    dialog += option[4] + aOrAn + rarityString + option[6] + option[13];
-                    dialog += option[5] + aOrAn + rarityString + option[6] + option[14];
-                } else {
-                    dialog += option[5] + aOrAn + rarityString + option[6] + option[13];
-                }
+            String dialog;
+            if (wonCard) {
+                dialog = option[3] + goldWon + option[4] + option[6] + rarityString + option[11];
+            } else if (wonPotion) {
+                dialog = option[3] + goldWon + option[4] + option[6] + rarityString + option[10];
+            } else {
+                dialog = option[3] + goldWon + option[4] + option[5];
             }
-            dialog += option[16];
             event.setDialogOption(dialog);
         }
     }
