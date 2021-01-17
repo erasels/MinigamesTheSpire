@@ -254,6 +254,8 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     void updateVictory(float elapsed) {
         if (victoryColor == null) {
             victoryColor = new Color(0, 0, 0, 1);
+
+            //finalize the scoreboard
             tallyRewards(true);
         }
         //oscillate the render color for a nice little rainbow effect
@@ -264,7 +266,8 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         duration -= elapsed;
         colorTimer -= elapsed;
         if (duration <= 0.0f) {
-            //complete game, indicate victory
+            isPlaying = false;
+            isDone = true;
         }
         if (colorTimer <= 0.0f) {
             colorTimer = VICTORY_RAINBOW_SPEED;
@@ -307,7 +310,8 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         }
         duration -= elapsed;
         if (duration <= 0.0f) {
-            //complete game, tally score
+            isPlaying = false;
+            isDone = true;
         }
     }
 
