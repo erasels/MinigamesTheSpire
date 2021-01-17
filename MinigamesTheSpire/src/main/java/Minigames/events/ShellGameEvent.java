@@ -22,6 +22,8 @@ public class ShellGameEvent extends AbstractMinigameEvent {
         imageEventText.setDialogOption(OPTIONS[0]);
         imageEventText.setDialogOption(OPTIONS[1]);
         imageEventText.setDialogOption(OPTIONS[2]);
+
+        CardCrawlGame.music.playTempBgmInstantly("minigames:carnivalMusic", true);
     }
 
     @Override
