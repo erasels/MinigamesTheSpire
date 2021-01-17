@@ -1,5 +1,5 @@
 {
-  "minigames:Test": {
+  "${ModID}:Test": {
     "NAME": "Test",
     "DESCRIPTIONS": [
       "#r@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@"
@@ -107,6 +107,16 @@
       "[Blackjack] Bet some gold and earn 3x your bet if you win!"
     ]
   },
+  "${ModID}:Fishing": {
+    "NAME": "[Fishing] Catch the Fish!",
+    "DESCRIPTIONS": [
+      "To catch the fish you must deplete its #r@strength@ before your time runs out! NL NL To do so, you must keep it within your #g~catching~ #g~area~ which can be controlled by dragging your mouse within the game area."
+    ],
+    "OPTIONS": [
+      "[Begin] Catch the Fish!",
+      "[Leave] Your job here is done."
+	  ]
+	  },
   "minigames:ShellGame": {
     "NAME": "Three Shell Monte",
     "DESCRIPTIONS": [

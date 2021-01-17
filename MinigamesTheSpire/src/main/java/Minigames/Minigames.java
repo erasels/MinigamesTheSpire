@@ -8,6 +8,7 @@ import Minigames.events.TestMinigameEvent;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.beatpress.BeatPress;
 import Minigames.games.blackjack.BlackjackMinigame;
+import Minigames.games.fishing.FishingGame;
 import Minigames.games.gremlinFlip.gremlinFlip;
 import Minigames.games.mastermind.MastermindMinigame;
 import Minigames.games.slimePopper.SlimePopper;
@@ -94,6 +95,14 @@ public class Minigames implements
         BaseMod.addAudio(makeID("cardPlace1"), makeGamePath("Blackjack/SFX/cardPlace1.ogg"));
         BaseMod.addAudio(makeID("cardPlace2"), makeGamePath("Blackjack/SFX/cardPlace2.ogg"));
         BaseMod.addAudio(makeID("cardPlace3"), makeGamePath("Blackjack/SFX/cardPlace3.ogg"));
+
+        BaseMod.addAudio(FishingGame.sBob, makeAudioPath("Fishing/bob.wav"));
+        BaseMod.addAudio(FishingGame.sWaterPlop, makeAudioPath("Fishing/dropItemInWater.wav"));
+        BaseMod.addAudio(FishingGame.sHit, makeAudioPath("Fishing/hitEnemy.wav"));
+        BaseMod.addAudio(FishingGame.sWaterSploosh, makeAudioPath("Fishing/pullItemFromWater.wav"));
+        BaseMod.addAudio(FishingGame.sReward, makeAudioPath("Fishing/reward.wav"));
+        BaseMod.addAudio(FishingGame.sLongReel, makeAudioPath("Fishing/fastReel.wav"));
+        BaseMod.addAudio(FishingGame.sShortReel, makeAudioPath("Fishing/slowReel.wav"));
     }
 
     private static String locPath() {
@@ -139,5 +148,6 @@ public class Minigames implements
         srcMinigameList.add(new gremlinFlip());
         srcMinigameList.add(new MastermindMinigame());
         srcMinigameList.add(new SlimePopper());
+        srcMinigameList.add(new FishingGame());
     }
 }
