@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GoldFish extends AbstractFish{
-    public static final float MAX_HP = 0.33f;
+    public static final float MAX_HP = 0.25f;
     private static final ArrayList<Vector2> BEHAVIORS = new ArrayList<>(Arrays.asList(
             new Vector2(3.5f, 1f),
             new Vector2(4.5f, 0f),
