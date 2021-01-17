@@ -3,11 +3,12 @@ package Minigames.games.blackjack;
 import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 import static Minigames.Minigames.makeGamePath;
 
 public class PlayAgainButton extends BlackjackButton {
-    private static final Texture texture = TextureLoader.getTexture(makeGamePath("Blackjack/Cards/cardBack_blue1.png"));
+    private static final Texture texture = ImageMaster.loadImage(makeGamePath("Blackjack/Cards/cardBack_blue1.png"));
 
     public PlayAgainButton(float x, float y, BlackjackMinigame parent) {
         super(x, y, texture, parent);

@@ -1,13 +1,13 @@
 package Minigames.games.gremlinFlip.tiles;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 
 public abstract class AbstractTile {
 
-    protected Texture tileTexture;
+    protected TextureAtlas.AtlasRegion tileTexture;
 
     protected int x;
     protected int y;
