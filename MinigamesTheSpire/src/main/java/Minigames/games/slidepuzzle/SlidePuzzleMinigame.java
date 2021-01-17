@@ -605,6 +605,11 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         }
     }
 
+    @Override
+    public String getOption() {
+        return eventStrings.NAME;
+    }
+
     private enum BoardType {
         CULTIST,
         JAW_WORM,
