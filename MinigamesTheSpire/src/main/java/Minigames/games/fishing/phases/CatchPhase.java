@@ -17,10 +17,11 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class CatchPhase extends AbstractGamePhase {
     public static final float GAME_TIME = 40f; //40 seconds before fish escapes
     private static final float MINIMUM_BOUNCE_THRESHOLD = 10f;
-    private static final float GRAVITY_ACCEL = 200f, PULL_ACCEL = 190f;
+    private static final float GRAVITY_ACCEL = 250f, PULL_ACCEL = GRAVITY_ACCEL - 25f;
     private static final float TERMINAL_VELOCITY = -1000f;
     private static final float BOUNCE_COEFFICIENT = -0.55f;
     private static final float FBAR_GROUND_OFFSET = 12f;
+    private static final float INFORMATION_SOUND_TIME_OFFSET = 0.5f;
 
     private static Texture imgBar;
     private static int bbw = 152, bbh = 600;
@@ -47,6 +48,7 @@ public class CatchPhase extends AbstractGamePhase {
         fish = parent.fish;
         fish.scaleBehavior(GAME_TIME, maxPos + 100f);
         gameTime = GAME_TIME;
+        timeString = FishingGame.uiStrings.TEXT_DICT.get("TIME");
     }
 
     @Override
@@ -55,8 +57,6 @@ public class CatchPhase extends AbstractGamePhase {
         imgCatcher = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishCatcher.png"));
         imgFish = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Fish.png"));
         imgCrank = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Crank.png"));
-
-        timeString = FishingGame.uiStrings.TEXT_DICT.get("TIME");
     }
 
     @Override
@@ -92,7 +92,7 @@ public class CatchPhase extends AbstractGamePhase {
                 reelTimer -= gt;
                 if (bobTimer <= 0) {
                     CardCrawlGame.sound.play(fishBeingCaught ? FishingGame.sHit : FishingGame.sBob);
-                    bobTimer = fishBeingCaught ? FishingGame.timeHit : FishingGame.timeBob;
+                    bobTimer = (fishBeingCaught ? FishingGame.timeHit : FishingGame.timeBob) + INFORMATION_SOUND_TIME_OFFSET;
                 }
             } else {
                 //Reduce wait time because there is no next game phase

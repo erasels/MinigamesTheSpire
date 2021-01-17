@@ -7,6 +7,9 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public abstract class AbstractFish {
     //How long the player has to be catching the fish (percentage of total game time)
@@ -21,12 +24,18 @@ public abstract class AbstractFish {
     //X = time spent on the move
     protected ArrayList<Vector2> originBehavior;
     protected Vector2 currentBehavior;
+    protected boolean shuffleWhenCycled;
 
-    public AbstractFish(float hp, ArrayList<Vector2> ogBehavior) {
+    public AbstractFish(float hp, ArrayList<Vector2> ogBehavior, boolean shuffleWhenCycled) {
         mHp = this.hp = hp;
-        originBehavior = ogBehavior;
+        this.shuffleWhenCycled = shuffleWhenCycled;
+        originBehavior = ogBehavior.stream().map(Vector2::cpy).collect(Collectors.toCollection(ArrayList::new));
         currentBehavior = originBehavior.get(nextBehavior);
         y = initialY = 0;
+    }
+
+    public AbstractFish(float hp, ArrayList<Vector2> ogBehavior) {
+        this(hp, ogBehavior, false);
     }
 
     public void update(boolean inArea) {
@@ -60,6 +69,8 @@ public abstract class AbstractFish {
         initialY = y;
         ttl = 0;
         if(nextBehavior >= originBehavior.size() - 1) {
+            if(shuffleWhenCycled)
+                Collections.shuffle(originBehavior);
             nextBehavior = 0;
         } else {
             nextBehavior++;
@@ -78,12 +89,21 @@ public abstract class AbstractFish {
         }
     }
 
+    public boolean canSpawn() {
+        return true;
+    }
+
     public static AbstractFish returnRandomFish() {
-        int fish = AbstractDungeon.miscRng.random(1);
-        switch (fish) {
-            case 0:
-            default:
-                return new CeramicFish();
-        }
+        ArrayList<AbstractFish> fishies = new ArrayList<>(Arrays.asList(
+                new CeramicFish(),
+                new GoldFish(),
+                new PlatinumFish(),
+                new FossilFish(),
+                new CardFish(),
+                new PotionFish()
+                ));
+
+        fishies.removeIf(f -> !f.canSpawn());
+        return HelperClass.getRandomItem(fishies, AbstractDungeon.miscRng);
     }
 }
