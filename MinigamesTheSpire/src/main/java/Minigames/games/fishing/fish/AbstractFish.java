@@ -98,7 +98,8 @@ public abstract class AbstractFish {
                 new CeramicFish(),
                 new GoldFish(),
                 new PlatinumFish(),
-                new FossilFish()
+                new FossilFish(),
+                new CardFish()
                 ));
 
         fishies.removeIf(f -> !f.canSpawn());
