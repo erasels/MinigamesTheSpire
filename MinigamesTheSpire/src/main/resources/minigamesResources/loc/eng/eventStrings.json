@@ -133,5 +133,29 @@
       "#y[Hard] #yRare Rewards or #rCursed - #rNormality.",
       "[Leave]",
     ]
+  },
+  "${ModID}:SlidePuzzle": {
+    "NAME": "[Slide Puzzle] Solve a Puzzle!",
+    "DESCRIPTIONS": [
+      "Can you ~solve~ ~the~ ~puzzle?~ Put as many pieces into the correct spot as you can within the #rtime #rlimit! The more you #ysolve, the more you #gwin!",
+      "Uh oh! #r@Time@ #r@ran@ #r@out!@ You'll just have to make do with the #gprizes you were able to get.",
+      "@Congratulations!@ You won the #g~grand~ #g~prize!~ You also get #yBonus #yGold for doing it so quickly!"
+    ],
+    "OPTIONS": [
+      "[Start]",
+      " #b4x4 puzzle, #r90 seconds.",
+      " #b3x3 puzzle, #r45 seconds.",
+      "[Collect] #gObtain #gRewards.",
+      " Gold",
+      "Common Potion",
+      "Common Card",
+      "Common Relic",
+      "Uncommon Potion",
+      "Uncommon Card",
+      "Uncommon Relic",
+      "Rare Potion",
+      "Rare Card",
+      "Rare Relic"
+    ]
   }
 }
