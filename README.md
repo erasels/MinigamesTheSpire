@@ -20,6 +20,7 @@ Slime Popper: NotInTheFace
 Shell Game: MichaelMayhem & Dark Vexon  
 Rubix Cube: Kiooeht  
 Sliding Puzzle: JohnnyDevo  
+Mastermind: JohnnyBazooka  
 Blackjack: Darkglade  
 
 And Reddit user u/Mr.Mulk for his [url=https://www.reddit.com/r/slaythespire/comments/du0bwg/slay_the_spire_playing_card_art/]Amazing Art[/url] which was tweaked and used for Darkglade's minigame.
