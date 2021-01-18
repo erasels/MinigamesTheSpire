@@ -411,17 +411,17 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         }
 
         //render "scoreboard"
-        String goldString = goldAmt + eventStrings.OPTIONS[13];
+        String goldString = goldAmt + eventStrings.OPTIONS[4];
         int n = 0;
         switch (rarity) {
             case COMMON:
-                n = 14;
+                n = 5;
                 break;
             case UNCOMMON:
-                n = 17;
+                n = 8;
                 break;
             case RARE:
-                n = 20;
+                n = 11;
                 break;
         }
         String potionString = eventStrings.OPTIONS[n];
@@ -594,31 +594,12 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
 
     @Override
     public void setupPostgameScreen(GenericEventDialog event) {
-        String[] option = eventStrings.OPTIONS;
-        String rarityString;
-        if (rarity == AbstractCard.CardRarity.COMMON) {
-            rarityString = option[7];
-        } else if (rarity == AbstractCard.CardRarity.UNCOMMON) {
-            rarityString = option[8];
-        } else {
-            rarityString = option[9];
-        }
         if (state == GameState.VICTORY) {
             event.updateBodyText(eventStrings.DESCRIPTIONS[2]);
-            String dialog = option[3] + goldWon + option[4] + option[6] + rarityString + option[12];
-            event.setDialogOption(dialog);
         } else {
             event.updateBodyText(eventStrings.DESCRIPTIONS[1]);
-            String dialog;
-            if (wonCard) {
-                dialog = option[3] + goldWon + option[4] + option[6] + rarityString + option[11];
-            } else if (wonPotion) {
-                dialog = option[3] + goldWon + option[4] + option[6] + rarityString + option[10];
-            } else {
-                dialog = option[3] + goldWon + option[4] + option[5];
-            }
-            event.setDialogOption(dialog);
         }
+        event.setDialogOption(eventStrings.OPTIONS[3]);
     }
 
     @Override
