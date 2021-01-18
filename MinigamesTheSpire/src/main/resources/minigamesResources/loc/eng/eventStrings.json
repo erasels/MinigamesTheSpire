@@ -180,5 +180,19 @@
     "OPTIONS": [
       "[Start]"
     ]
+  },
+  "${ModID}:JellyDrop": {
+    "NAME": "[Jelly Drop] Get rid of falling jellies!",
+    "DESCRIPTIONS": [
+      "Get rid of falling jellies in this fun puzzle game! NL NL Connect 4 or more jellies of the same color to make them disappear! NL NL Arrow key (Left, Right) - Move NL Arrow key (Down) - Fall faster NL Arrow key (Up) or X key - Rotate clockwise NL Z key - Rotate counter-clockwise",
+      "Congratulations! NL NL You became the professional Jelly Drop player and got all the prizes.",
+      "Nice! NL NL You quickly grab the rewards.",
+      "Ouch! NL NL You barely got through the jelly mayhem. NL You are relieved, but return empty handed."
+    ],
+    "OPTIONS": [
+      "[Start] Play for #b80 seconds.",
+      "[Collect] #gObtain #gRewards.",
+      "[Leave]"
+    ]
   }
 }

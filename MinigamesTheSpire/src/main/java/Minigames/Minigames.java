@@ -9,6 +9,7 @@ import Minigames.games.beatpress.BeatPress;
 import Minigames.games.blackjack.BlackjackMinigame;
 import Minigames.games.fishing.FishingGame;
 import Minigames.games.gremlinFlip.gremlinFlip;
+import Minigames.games.jellydrop.JellyDropGame;
 import Minigames.games.mastermind.MastermindMinigame;
 import Minigames.games.rubik.RubikMinigame;
 import Minigames.games.shellgame.ShellGame;
@@ -167,5 +168,6 @@ public class Minigames implements
         srcMinigameList.add(new ShellGame());
         srcMinigameList.add(new SlidePuzzleMinigame());
         srcMinigameList.add(new RubikMinigame());
+	    srcMinigameList.add(new JellyDropGame());
     }
 }

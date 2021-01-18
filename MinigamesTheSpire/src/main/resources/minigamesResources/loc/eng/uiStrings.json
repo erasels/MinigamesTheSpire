@@ -33,5 +33,19 @@
       "TIME": "Time left: ",
       "WIN": "You caught this!"
     }
+  },
+  "${ModID}:JellyDrop": {
+    "TEXT_DICT": {
+      "SCORE": "Score",
+      "HISCORE": "Hi-Score",
+      "CONTINUE": "Press Z to continue",
+      "FINISH": "FINISH",
+      "RECORD": "NEW RECORD!",
+      "GOLD": " Gold",
+      "POTION": "Potion",
+      "CARD": "Card",
+      "RELIC": "Relic",
+      "PT": "pts = "
+    }
   }
 }
