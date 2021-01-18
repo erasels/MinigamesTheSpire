@@ -11,15 +11,15 @@ Play them, win and gain prizes to help you on your trip through the spire!
 If you find bugs or think something could use another balance pass, don't hesitate to let us know. It's hard to balance a game if you made it yourself, who would've thought.
 
 ## Credits:
-Minigame and Event System: Alchyr
-Event text: Darkglade
-[spoiler]Stardew-like Fishing[\spoiler]: Erasels
-[spoiler]Beatpress a rhythm game[\spoiler]: Alchyr
-[spoiler](Nob) Voltorbflip[\spoiler]: Squeeny
-[spoiler]Slime Popper[\spoiler]: NotInTheFace
-[spoiler]Shell Game[\spoiler]: MichaelMayhem & Dark Vexon
-[spoiler]Rubix Cube[\spoiler]: Kiooeht
-[spoiler]Sliding Puzzle[\spoiler]: JohnnyDevo
-[spoiler]Blackjack[\spoiler]: Darkglade
+Minigame and Event System: Alchyr 
+Event text: Darkglade  
+Stardew-like Fishing: Erasels  
+Beatpress a rhythm game: Alchyr  
+(Nob) Voltorbflip: Squeeny  
+Slime Popper: NotInTheFace  
+Shell Game: MichaelMayhem & Dark Vexon  
+Rubix Cube: Kiooeht  
+Sliding Puzzle: JohnnyDevo  
+Blackjack: Darkglade  
 
 And Reddit user u/Mr.Mulk for his [url=https://www.reddit.com/r/slaythespire/comments/du0bwg/slay_the_spire_playing_card_art/]Amazing Art[/url] which was tweaked and used for Darkglade's minigame.
