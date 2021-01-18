@@ -1,5 +1,7 @@
 package Minigames.games.fishing.fish;
 
+import Minigames.Minigames;
+import Minigames.util.TextureLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rewards.RewardItem;
@@ -32,5 +34,10 @@ public class GoldFish extends AbstractFish{
     @Override
     public boolean canSpawn() {
         return AbstractDungeon.actNum < 3;
+    }
+
+    @Override
+    protected void initImage() {
+        img = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/GoldFish.png"));
     }
 }

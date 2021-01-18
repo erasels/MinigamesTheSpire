@@ -10,7 +10,9 @@ import Minigames.games.blackjack.BlackjackMinigame;
 import Minigames.games.fishing.FishingGame;
 import Minigames.games.gremlinFlip.gremlinFlip;
 import Minigames.games.mastermind.MastermindMinigame;
+import Minigames.games.rubik.RubikMinigame;
 import Minigames.games.shellgame.ShellGame;
+import Minigames.games.slidepuzzle.SlidePuzzleMinigame;
 import Minigames.games.slimePopper.SlimePopper;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
@@ -152,5 +154,7 @@ public class Minigames implements
         srcMinigameList.add(new SlimePopper());
         srcMinigameList.add(new FishingGame());
         srcMinigameList.add(new ShellGame());
+        srcMinigameList.add(new SlidePuzzleMinigame());
+        srcMinigameList.add(new RubikMinigame());
     }
 }

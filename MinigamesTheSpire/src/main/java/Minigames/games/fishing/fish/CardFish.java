@@ -1,5 +1,7 @@
 package Minigames.games.fishing.fish;
 
+import Minigames.Minigames;
+import Minigames.util.TextureLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rewards.RewardItem;
@@ -28,5 +30,10 @@ public class CardFish extends AbstractFish{
     @Override
     public ArrayList<RewardItem> returnReward() {
         return new ArrayList<>(Arrays.asList(new RewardItem(AbstractDungeon.player.getCardColor())));
+    }
+
+    @Override
+    protected void initImage() {
+        img = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/CardFish.png"));
     }
 }

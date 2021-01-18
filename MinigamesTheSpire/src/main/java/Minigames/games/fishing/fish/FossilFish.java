@@ -1,5 +1,7 @@
 package Minigames.games.fishing.fish;
 
+import Minigames.Minigames;
+import Minigames.util.TextureLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.FossilizedHelix;
@@ -33,5 +35,10 @@ public class FossilFish extends AbstractFish{
     @Override
     public boolean canSpawn() {
         return !AbstractDungeon.player.hasRelic(FossilizedHelix.ID) && AbstractDungeon.actNum > 1;
+    }
+
+    @Override
+    protected void initImage() {
+        img = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FossilizedFish.png"));
     }
 }
