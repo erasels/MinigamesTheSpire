@@ -308,10 +308,8 @@ public class RubikMinigame extends AbstractMinigame
         super.update(elapsed);
 
         if (clickedSide != null) {
-            System.out.println(clickedSide.toString());
             instance.nodes.forEach(node -> {
                 if (matchesSide(node)) {
-                    System.out.println(node.id);
                     Matrix4 invWorld = new Matrix4().set(node.globalTransform).inv();
                     Vector3 axis = clickedSide.cpy().mul(invWorld);
                     node.rotation.mul(new Quaternion(axis, 90));
