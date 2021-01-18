@@ -31,8 +31,8 @@ public class CatchPhase extends AbstractGamePhase {
     private static Texture imgCatcher;
     private static int cbw = 36, cbh = 124;
     private static Texture imgCrank;
-    private static Color notCatchingColor = new Color(0.75f, 0.65f, 0.65f, 0.75f);
-    private static Color catchingColor = new Color(0.75f, 0.85f, 0.75f, 1f);
+    private static Color notCatchingColor = new Color(0.75f, 0.65f, 0.65f, 0.85f);
+    //private static Color catchingColor = new Color(0.75f, 0.85f, 0.75f, 1f);
 
     private float gameTime;
     private float spinnerAngle, speed, pos, maxPos;
@@ -151,7 +151,7 @@ public class CatchPhase extends AbstractGamePhase {
         //Render Fish
         if (fish.getTexture() != null) {
             boolean catching = fish.isWithinY(pos, pos + cbh);
-            Color fC = catching ? catchingColor : notCatchingColor;
+            Color fC = catching ? Color.WHITE : notCatchingColor;
             sb.setColor(fC);
             parent.drawTexture(sb, fish.getTexture(), blBound + (bbw / 2f) + (fish.w / 2f) - 20f + (catching ? getFishShake() : 0), blBound + (AbstractMinigame.SIZE - bbh) + (fish.h / 2f) + fish.y - FBAR_GROUND_OFFSET, 0, fish.w, fish.h, false, false);
         }
