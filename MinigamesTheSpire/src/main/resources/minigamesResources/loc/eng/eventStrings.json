@@ -135,17 +135,17 @@
     ]
   },
   "${ModID}:SlidePuzzle": {
-    "NAME": "#y[Solve #ya #ySlide #yPuzzle] Get #grewards!",
+    "NAME": "[Slide Puzzle] #ySolve a #yPuzzle, Get #gRewards!",
     "DESCRIPTIONS": [
-      "Can you solve the puzzle? Put as many pieces into the correct spot as you can within the time limit! The more you solve, the more you win!",
-      "Uh oh! Time ran out! You'll just have to make do with the prizes you were able to get.",
-      "Congratulations! You won the grand prize! You also get #yBonus #yGold for doing it so quickly!"
+      "Can you ~solve~ ~the~ ~puzzle?~ Put as many pieces into the correct spot as you can within the #rtime #rlimit! The more you #ysolve, the more you #gwin!",
+      "Uh oh! #r@Time@ #r@ran@ #r@out!@ You'll just have to make do with the #gprizes you were able to get.",
+      "@Congratulations!@ You won the #g~grand~ #g~prize!~ You also get #yBonus #yGold for doing it so quickly!"
     ],
     "OPTIONS": [
       "[Start]",
-      " #b4x4 puzzle, #r90 seconds.",
-      " #b3x3 puzzle, #r45 seconds.",
-      "[Collect] #bObtain #bRewards.",
+      "#b4x4 puzzle, #r90 seconds.",
+      "#b3x3 puzzle, #r45 seconds.",
+      "[Collect] #gObtain #gRewards.",
       " Gold",
       "Common Potion",
       "Common Card",
