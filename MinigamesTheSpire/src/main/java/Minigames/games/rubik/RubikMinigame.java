@@ -3,6 +3,7 @@ package Minigames.games.rubik;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.games.input.bindings.MouseHoldObject;
+import basemod.Pair;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,7 +19,9 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.megacrit.cardcrawl.core.Settings;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RubikMinigame extends AbstractMinigame
 {
@@ -31,6 +34,8 @@ public class RubikMinigame extends AbstractMinigame
 
     private Vector2 lastMousePos;
     private Vector3 clickedSide = null;
+    private float rotationTime = 0;
+    private Map<String, Pair<Quaternion, Quaternion>> rotations = new HashMap<>();
 
     @Override
     public void initialize()
@@ -250,7 +255,7 @@ public class RubikMinigame extends AbstractMinigame
                 (x, y, pointer) -> {
                         if (isWithinArea(x, y)) {
                             if (pointer == 1) return true;
-                            if (pointer == 0) {
+                            if (pointer == 0 && clickedSide == null && rotations.isEmpty()) {
                                 x -= Settings.WIDTH / 2;
                                 y -= Settings.HEIGHT / 2;
                                 Ray ray = getPickRay(x, y);
@@ -312,11 +317,30 @@ public class RubikMinigame extends AbstractMinigame
                 if (matchesSide(node)) {
                     Matrix4 invWorld = new Matrix4().set(node.globalTransform).inv();
                     Vector3 axis = clickedSide.cpy().mul(invWorld);
-                    node.rotation.mul(new Quaternion(axis, 90));
-                    node.calculateTransforms(false);
+                    Quaternion start = node.rotation.cpy();
+                    Quaternion end = node.rotation.cpy().mul(new Quaternion(axis, 90));
+                    rotations.put(node.id, new Pair<>(start, end));
                 }
             });
             clickedSide = null;
+        }
+
+        if (!rotations.isEmpty()) {
+            rotationTime += Gdx.graphics.getDeltaTime() * 2f;
+            if (rotationTime > 1) {
+                rotationTime = 1;
+            }
+
+            rotations.forEach((id, rotation) -> {
+                Node node = instance.getNode(id);
+                node.rotation.set(rotation.getKey().cpy().slerp(rotation.getValue(), rotationTime));
+                node.calculateTransforms(false);
+            });
+
+            if (rotationTime == 1) {
+                rotations.clear();
+                rotationTime = 0;
+            }
         }
     }
 
