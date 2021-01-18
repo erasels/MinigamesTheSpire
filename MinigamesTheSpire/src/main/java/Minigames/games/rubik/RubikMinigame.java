@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.model.Node;
+import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -28,6 +30,7 @@ public class RubikMinigame extends AbstractMinigame
     private ModelInstance instance;
 
     private Vector2 lastMousePos;
+    private Vector3 clickedSide = null;
 
     @Override
     public void initialize()
@@ -200,6 +203,44 @@ public class RubikMinigame extends AbstractMinigame
         return ray;
     }
 
+    private Vector3 longestAxis(Vector3 v)
+    {
+        Vector3 axis = v.cpy();
+
+        float x = Math.abs(axis.x);
+        float y = Math.abs(axis.y);
+        float z = Math.abs(axis.z);
+
+        if (x > y && x > z) {
+            axis.y = axis.z = 0;
+        } else if (y > x && y > z) {
+            axis.x = axis.z = 0;
+        } else if (z > x && z > y) {
+            axis.x = axis.y = 0;
+        } else {
+            System.out.println("Failed to find side of cube");
+            axis = null;
+        }
+        if (axis != null) {
+            axis.nor();
+        }
+
+        return axis;
+    }
+
+    private boolean matchesSide(Node node)
+    {
+        for (NodePart part : node.parts) {
+            Vector3 face = part.meshPart.center.cpy();
+            face.mul(node.localTransform);
+            face = longestAxis(face);
+            if (face.epsilonEquals(clickedSide, 0.000001f)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     protected BindingGroup getBindings()
     {
@@ -232,9 +273,8 @@ public class RubikMinigame extends AbstractMinigame
 
                                 Vector3 intersect = new Vector3();
                                 if (Intersector.intersectRayTriangles(ray, triangles, intersect)) {
-                                    System.out.println("HIT " + intersect.toString());
-                                } else {
-                                    System.out.println("NO HIT");
+                                    intersect.mul(instance.transform.cpy().inv());
+                                    clickedSide = longestAxis(intersect);
                                 }
                             }
                         }
@@ -266,6 +306,20 @@ public class RubikMinigame extends AbstractMinigame
     public void update(float elapsed)
     {
         super.update(elapsed);
+
+        if (clickedSide != null) {
+            System.out.println(clickedSide.toString());
+            instance.nodes.forEach(node -> {
+                if (matchesSide(node)) {
+                    System.out.println(node.id);
+                    Matrix4 invWorld = new Matrix4().set(node.globalTransform).inv();
+                    Vector3 axis = clickedSide.cpy().mul(invWorld);
+                    node.rotation.mul(new Quaternion(axis, 90));
+                    node.calculateTransforms(false);
+                }
+            });
+            clickedSide = null;
+        }
     }
 
     @Override
