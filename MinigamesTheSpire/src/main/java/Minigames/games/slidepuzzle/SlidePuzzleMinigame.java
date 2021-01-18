@@ -404,10 +404,22 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         }
 
         //render "scoreboard"
-        String goldString = goldAmt + " gold";
-        String potionString = rarity.toString().toLowerCase() + " potion";
-        String cardString = rarity.toString().toLowerCase() + " card";
-        String relicString = rarity.toString().toLowerCase() + " relic";
+        String goldString = goldAmt + eventStrings.OPTIONS[13];
+        int n = 0;
+        switch (rarity) {
+            case COMMON:
+                n = 14;
+                break;
+            case UNCOMMON:
+                n = 17;
+                break;
+            case RARE:
+                n = 20;
+                break;
+        }
+        String potionString = eventStrings.OPTIONS[n];
+        String cardString = eventStrings.OPTIONS[n + 1];
+        String relicString = eventStrings.OPTIONS[n + 2];
 
         for (int i = 1; i <= TILE_COUNT; ++i) {
             FontHelper.renderFontCentered(sb,

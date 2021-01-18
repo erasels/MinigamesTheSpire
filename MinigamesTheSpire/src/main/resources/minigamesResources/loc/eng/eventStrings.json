@@ -155,12 +155,16 @@
       " #bPotion.",
       " #bPotion and #bCard.",
       " #bPotion, #bCard, and #bRelic.",
-      "Common",
-      "Uncommon",
-      "Rare",
-      "Potion",
-      "Card",
-      "Relic"
+      " gold",
+      "Common Potion",
+      "Common Card",
+      "Common Relic",
+      "Uncommon Potion",
+      "Uncommon Card",
+      "Uncommon Relic",
+      "Rare Potion",
+      "Rare Card",
+      "Rare Relic"
     ]
   }
 }
