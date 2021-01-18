@@ -78,10 +78,22 @@
   "${ModID}:BeatPress": {
     "NAME": "Beat Press",
     "DESCRIPTIONS": [
-      "Press whatever button you want! Just make sure you time it right."
+      "Use the mouse or any button you want to hit the balls! Just make sure you time it right.",
+      "You feel like the machine is #rlaughing at you.",
+      "The machine spits a ~barrage~ of ~balls~ at you! It doesn't hurt very much, but it certainly feels insulting.",
+      "The machine #y~glows~ briefly, and you find that you feel just a bit better than you did before.",
+      "You feel #b~perfect.~"
     ],
     "OPTIONS": [
-      "Start"
+      "[Beat Press] Demonstrate your rhythm and precision.",
+      "[Start] Ready?",
+      "[Finish]",
+      "[Ouch] #rLose #r1 #rHP.",
+      "[Renewed] #gHeal #g",
+      "[Perfection] #gMax #gHP #g+",
+      " #gHP.",
+      ". #gHeal #g",
+      ". #gHeal #gto #gfull #gHP."
     ]
   },
   "${ModID}:MastermindMinigame": {

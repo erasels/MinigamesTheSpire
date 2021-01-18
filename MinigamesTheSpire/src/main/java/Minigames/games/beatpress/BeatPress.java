@@ -13,16 +13,19 @@ package Minigames.games.beatpress;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
-import Minigames.games.mastermind.MastermindMinigame;
 import Minigames.util.QueuedSound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.megacrit.cardcrawl.cards.DamageInfo;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.localization.EventStrings;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,6 +35,12 @@ import static Minigames.Minigames.makeGamePath;
 import static Minigames.Minigames.makeID;
 
 public class BeatPress extends AbstractMinigame {
+    public static final String ID = makeID("BeatPress");
+    private static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(ID);
+    private static final String NAME = eventStrings.NAME;
+    private static final String[] DESCRIPTIONS = eventStrings.DESCRIPTIONS;
+    private static final String[] OPTIONS = eventStrings.OPTIONS;
+
     public static final String sfxC = makeID("sfxC"); //rollers go C -> D -> E
     public static final String sfxD = makeID("sfxD");
     public static final String sfxE = makeID("sfxE");
@@ -52,18 +61,27 @@ public class BeatPress extends AbstractMinigame {
     private static final ArrayList<BeatPattern> heckPatterns = new ArrayList<>();
 
     static {
-        basicPatterns.add(new BeatPattern("?R1.6 !=1.6"));
-        basicPatterns.add(new BeatPattern("?B1.6 =R0.8 !B0.8"));
-        basicPatterns.add(new BeatPattern("??2.4 =R0.8"));
-        basicPatterns.add(new BeatPattern("=_0.8 =_0.8 =?1.6"));
-        basicPatterns.add(new BeatPattern("!?0.8 ==0.8 ??0.8 ==0.8"));
+        basicPatterns.add(new BeatPattern("!B0.8 ?B1.6 ?R2.4", BeatPattern.PatternType.NORMAL));
+        basicPatterns.add(new BeatPattern("!R1.6 !B0.8 =B1.6 !S0.8", BeatPattern.PatternType.NORMAL));
+        basicPatterns.add(new BeatPattern("!R1.6 =R3.2 !B0.8", BeatPattern.PatternType.NOFINISH));
+        basicPatterns.add(new BeatPattern("!R1.6 !S0.8 !R2.4 !B0.8", BeatPattern.PatternType.NOFINISH));
+        basicPatterns.add(new BeatPattern("!R1.6 =S1.6 !R1.6 =S1.6", BeatPattern.PatternType.NOFINISH));
+        basicPatterns.add(new BeatPattern("!R1.6 !R1.6 !R2.4 =B0.8", BeatPattern.PatternType.NOFINISH));
+        basicPatterns.add(new BeatPattern("!B0.8 =R1.6 !B0.8 !S1.6", BeatPattern.PatternType.FINISH));
+        basicPatterns.add(new BeatPattern("!R1.6 =S0.8", BeatPattern.PatternType.FINISH));
 
-        //mediumPatterns.add(new BeatPattern("!?1.066667 !?1.066667 !?1.066667"));
-        mediumPatterns.add(new BeatPattern("?B1.2 !B1.2 !B0.8"));
-        mediumPatterns.add(new BeatPattern("??1.6 ?_0.4 =_0.4 =_0.8"));
+        mediumPatterns.add(new BeatPattern("!B0.8 !R0.8 =S0.8 !B1.6 !R0.8", BeatPattern.PatternType.NORMAL));
+        mediumPatterns.add(new BeatPattern("!B1.2 !R0.4 !B2.8 !R0.4", BeatPattern.PatternType.NORMAL));
+        mediumPatterns.add(new BeatPattern("!B0.8 =B1.6 !B2.0 !R0.4", BeatPattern.PatternType.NORMAL));
+        mediumPatterns.add(new BeatPattern("!R1.6 =S0 !B0.8 !R2.4 =R0.4 =S0.4", BeatPattern.PatternType.NORMAL));
+        mediumPatterns.add(new BeatPattern("!B0.8 =R1.6 !S0.8", BeatPattern.PatternType.FINISH));
+        mediumPatterns.add(new BeatPattern("!B0.8 !S0.8 !S0.8", BeatPattern.PatternType.FINISH));
 
-        heckPatterns.add(new BeatPattern("??0.4 !S0.8 !=0.8 !=0.8 !S0.4"));
-        heckPatterns.add(new BeatPattern("=B0.4 !S0.8 =B0.4 !S0.8 =B0.4 =B0.4"));
+        heckPatterns.add(new BeatPattern("!R1.6 =S0.4 !B0.8 !S0.8 !B0.8 =S0.4", BeatPattern.PatternType.NORMAL));
+        heckPatterns.add(new BeatPattern("!B0.8 !B0 !B1.6 !B0 !S1.2 !S0 !S0.8 !S0 !B1.2 !B0", BeatPattern.PatternType.NORMAL));
+        heckPatterns.add(new BeatPattern("!B0.8 =B1.6 !S0.8 !B0.8 !S0.8 !R1.6", BeatPattern.PatternType.NOFINISH));
+        heckPatterns.add(new BeatPattern("!B0.8 !S0 =S1.2 !B1.2 !S0 !R3.2", BeatPattern.PatternType.NOFINISH));
+        heckPatterns.add(new BeatPattern("!S0.4 !S1.2 !S1.2 !S1.2", BeatPattern.PatternType.FINISH));
     }
 
     private Texture title;
@@ -101,7 +119,7 @@ public class BeatPress extends AbstractMinigame {
     private ArrayList<Ball> allBalls = new ArrayList<>(); //for tallying score after
 
     private PressResult currentResult = PressResult.MISS; //the result if the press is pressed after a specific frame of update
-    private Ball hitBall = null;
+    private final ArrayList<Ball> hitBalls = new ArrayList<>();
 
     protected enum PressResult {
         MISS,
@@ -121,19 +139,103 @@ public class BeatPress extends AbstractMinigame {
 
     public BeatPress() {
         super();
-
-        hasInstructionScreen = false;
     }
 
     @Override
     public String getOption() {
-        return "I'll add localization later.";
+        return OPTIONS[0];
     }
 
     @Override
+    public void setupInstructionScreen(GenericEventDialog event) {
+        event.updateBodyText(DESCRIPTIONS[0]);
+        event.setDialogOption(OPTIONS[1]);
+    }
+
+    private int heal = 0;
+    private int maxhp = 0;
+    @Override
     public void setupPostgameScreen(GenericEventDialog event) {
-        event.updateBodyText("How'd you do?");
-        event.setDialogOption("There will probably be rewards.");
+        switch (finalRating) {
+            case OUCH:
+                if (AbstractDungeon.actNum <= 2) {
+                    event.updateBodyText(DESCRIPTIONS[1]);
+                    event.setDialogOption(OPTIONS[2]);
+                }
+                else {
+                    event.updateBodyText(DESCRIPTIONS[2]);
+                    event.setDialogOption(OPTIONS[3]);
+                }
+                break;
+            case NOT_BAD:
+                switch (AbstractDungeon.actNum) {
+                    case 1:
+                        heal = 10;
+                        break;
+                    case 2:
+                        heal = 15;
+                        break;
+                    default:
+                        heal = 20;
+                        break;
+                }
+                event.updateBodyText(DESCRIPTIONS[3]);
+                event.setDialogOption(OPTIONS[4] + heal + OPTIONS[6]);
+                break;
+            case PERFECT:
+                event.updateBodyText(DESCRIPTIONS[4]);
+                maxhp = AbstractDungeon.actNum * 5;
+                heal = 5 + AbstractDungeon.actNum * 10; //only used in act 1 or 2.
+                switch (AbstractDungeon.actNum) {
+                    case 1:
+                    case 2:
+                        event.setDialogOption(OPTIONS[5] + maxhp + OPTIONS[7] + heal + OPTIONS[6]);
+                        break;
+                    default:
+                        event.setDialogOption(OPTIONS[5] + maxhp + OPTIONS[8]);
+                        break;
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean postgameButtonPressed(int buttonIndex) {
+        switch (finalRating) {
+            case OUCH:
+                if (AbstractDungeon.actNum > 2) {
+                    AbstractDungeon.player.damage(new DamageInfo((AbstractCreature)null, 1, DamageInfo.DamageType.HP_LOSS));
+                }
+                break;
+            case NOT_BAD:
+                //heal
+                AbstractDungeon.player.heal(heal);
+                break;
+            case PERFECT:
+                //max hp+
+                AbstractDungeon.player.increaseMaxHp(maxhp, true);
+
+                if (AbstractDungeon.actNum > 2) {
+                    //heal to full
+                    AbstractDungeon.player.heal(AbstractDungeon.player.maxHealth);
+                }
+                else
+                {
+                    //heal
+                    AbstractDungeon.player.heal(heal);
+                }
+                break;
+        }
+        return true;
+    }
+
+    private int patternCount = 6;
+    private float mediumRate = 0.3f;
+    private float hardRate = 0.1f;
+    public void setDifficulty(int patternCount, float mediumRate, float hardRate) {
+        this.patternCount = patternCount;
+        this.mediumRate = mediumRate;
+        this.hardRate = hardRate;
     }
 
     @Override
@@ -141,8 +243,24 @@ public class BeatPress extends AbstractMinigame {
         super.initialize();
 
         Ball.initialize();
-        //6 "patterns". One "pattern" is 2 random beatpatterns = 12 total beatpatterns.
-        generateBalls(6, 0.3f, 0.05f, 4);
+        //One pattern is 6.4 seconds long.
+
+        switch (AbstractDungeon.actNum) {
+            case 1:
+                setDifficulty(5, 0.3f, 0);
+                break;
+            case 2:
+                setDifficulty(7, 0.5f, 0.1f);
+                break;
+            case 3:
+                setDifficulty(9, 0.5f, 0.25f);
+                break;
+            default:
+                setDifficulty(9, 0.65f, 0.35f);
+                break;
+        }
+
+        generateBalls(patternCount, mediumRate, hardRate);
 
         title = ImageMaster.loadImage(makeGamePath("beatpress/title.png"));
         input = ImageMaster.loadImage(makeGamePath("beatpress/input.png"));
@@ -195,7 +313,7 @@ public class BeatPress extends AbstractMinigame {
                 press.update(elapsed);
 
                 currentResult = PressResult.MISS;
-                hitBall = null;
+                hitBalls.clear();
 
                 Ball b = balls.peek();
                 while (b != null && time >= b.startTime)
@@ -212,27 +330,24 @@ public class BeatPress extends AbstractMinigame {
 
                     b.update(time, elapsed); //and balls use time
 
-                    if (currentResult == PressResult.MISS)
-                    {
-                        float gap = b.hitTime - time;
+                    float gap = b.hitTime - time;
 
-                        if (gap < 0.04f && (gap > -0.04f || !b.triggered)) //ensure there is always at least one frame where you can get a perfect
-                        {
-                            currentResult = PressResult.NICE;
-                            b.triggered = true;
-                            hitBall = b;
-                        }
-                        else if (gap < 0.08f && gap > -0.08f)
-                        {
+                    if (gap < 0.04f && (gap > -0.04f || !b.triggered)) //ensure there is always at least one frame where you can get a perfect
+                    {
+                        currentResult = PressResult.NICE;
+                        b.triggered = true;
+                        hitBalls.add(b);
+                    }
+                    else if (gap < 0.08f && gap > -0.08f)
+                    {
+                        if (currentResult == PressResult.MISS)
                             currentResult = PressResult.NOT_QUITE;
-                            hitBall = b;
-                        }
+                        hitBalls.add(b);
                     }
 
                     if (b.done)
                     {
                         ballIterator.remove();
-
                     }
                 }
 
@@ -354,10 +469,11 @@ public class BeatPress extends AbstractMinigame {
 
                     //Test if this is a valid hit
                     //Possiblities are: Spot On, A Bit Off, and Whiff
-                    if (hitBall != null)
+                    for (Ball b : hitBalls)
                     {
-                        hitBall.setResult(currentResult);
+                        b.setResult(currentResult);
                     }
+                    hitBalls.clear();
                 }
                 break;
             case 5:
@@ -366,80 +482,45 @@ public class BeatPress extends AbstractMinigame {
         }
     }
 
-    private void generateBalls(int length, float mediumRate, float heckRate, int patternCount) {
-        float time = 0; //For the first ball, this should be when it first makes a sound.
-        int completePatterns = 0;
+    private void generateBalls(int length, float mediumRate, float heckRate) {
+        float time = 0;
 
         mediumRate += heckRate;
 
-        float type;
+        float difficulty;
+        ArrayList<BeatPattern> possible;
 
-        BeatPattern[] patterns = new BeatPattern[patternCount * 2];
-        int patternIndex = 0;
-        boolean patternsDecided = false;
-
-        while (completePatterns < length)
+        for (int i = 1; i <= length; ++i)
         {
-            if (!patternsDecided)
+            difficulty = MathUtils.random();
+            if (difficulty < heckRate)
             {
-                type = MathUtils.random();
-
-                if (type < heckRate)
-                {
-                    patterns[patternIndex] = heckPatterns.get(MathUtils.random(heckPatterns.size() - 1));
-                }
-                else if (type < mediumRate)
-                {
-                    patterns[patternIndex] = mediumPatterns.get(MathUtils.random(mediumPatterns.size() - 1));
-                }
-                else
-                {
-                    patterns[patternIndex] = basicPatterns.get(MathUtils.random(basicPatterns.size() - 1));
-                }
-                patterns[patternIndex].reset();
+                possible = heckPatterns;
             }
-
-            time = patterns[patternIndex].addBalls(this, time, balls, allBalls);
-
-            ++patternIndex;
-            if (patternIndex >= patterns.length)
-                patternsDecided = true;
-
-            if (patternIndex % 2 == 0)
+            else if (difficulty < mediumRate)
             {
-                ++completePatterns;
-
-                if (patternsDecided)
-                    patternIndex = MathUtils.random(patternCount - 1) * 2;
-            }
-        }
-
-        //After that, targetTime is adjusted based on when that ball will land, and used exclusively as the "hit" time of the next ball.
-        //Ball firstBall = new Ball(this, Ball.BallType.ROLL, targetTime + Ball.getDuration(Ball.BallType.ROLL), false);
-        //balls.add(firstBall);
-
-        /*targetTime = firstBall.hitTime;
-
-        for (int i = 0; i < 100; ++i) {
-            targetTime += 0.8f;
-            if (i % 2 == 0)
-            {
-                if (i % 4 == 0)
-                {
-                    balls.add(new Ball(this, Ball.BallType.BOUNCE, targetTime, true));
-                }
-                else
-                {
-                    balls.add(new Ball(this, Ball.BallType.SPEED, targetTime, false));
-                }
+                possible = mediumPatterns;
             }
             else
             {
-                balls.add(new Ball(this, Ball.BallType.ROLL, targetTime, false));
+                possible = basicPatterns;
             }
-        }
 
-        allBalls.addAll(balls);*/
+            getRandomPattern(possible, i == length).addBalls(this, time, balls, allBalls);
+
+            time += 6.4f;
+        }
+    }
+
+    private BeatPattern getRandomPattern(ArrayList<BeatPattern> source, boolean isFinish) {
+        ArrayList<BeatPattern> validPatterns = new ArrayList<>(source);
+
+        if (isFinish)
+            validPatterns.removeIf((bp)->bp.type == BeatPattern.PatternType.NOFINISH);
+        else
+            validPatterns.removeIf((bp)->bp.type == BeatPattern.PatternType.FINISH);
+
+        return validPatterns.get(MathUtils.random(validPatterns.size() - 1));
     }
 
     private void calculateRating() {
