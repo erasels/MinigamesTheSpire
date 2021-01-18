@@ -22,8 +22,15 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
+import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.PotionHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.PrismaticShard;
+import com.megacrit.cardcrawl.rewards.RewardItem;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -612,6 +619,67 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             }
             event.setDialogOption(dialog);
         }
+    }
+
+    @Override
+    public boolean postgameButtonPressed(int buttonIndex, GenericEventDialog event) {
+        AbstractDungeon.getCurrRoom().rewards.clear();
+        if (wonRelic) {
+            AbstractRelic.RelicTier tier = AbstractRelic.RelicTier.COMMON;
+            if (rarity == AbstractCard.CardRarity.UNCOMMON) {
+                tier = AbstractRelic.RelicTier.UNCOMMON;
+            }
+            if (rarity == AbstractCard.CardRarity.RARE) {
+                tier = AbstractRelic.RelicTier.RARE;
+            }
+            AbstractRelic r = AbstractDungeon.returnRandomScreenlessRelic(tier);
+            AbstractDungeon.getCurrRoom().addRelicToRewards(r);
+        }
+        if (wonCard) {
+            RewardItem reward = new RewardItem();
+            for (int i = 0; i < reward.cards.size(); ++i) {
+                if (reward.cards.get(i).rarity != rarity) {
+                    AbstractCard card;
+                    do {
+                        if (AbstractDungeon.player.hasRelic(PrismaticShard.ID)) {
+                            card = CardLibrary.getAnyColorCard(rarity);
+                        } else {
+                            card = AbstractDungeon.getCard(rarity);
+                        }
+                    } while (isDupe(card, reward.cards));
+                    reward.cards.set(i, card);
+                }
+            }
+            AbstractDungeon.getCurrRoom().rewards.add(reward);
+        }
+        if (wonPotion) {
+            AbstractPotion potion;
+            AbstractPotion.PotionRarity potRar = AbstractPotion.PotionRarity.COMMON;
+            if (rarity == AbstractCard.CardRarity.UNCOMMON) {
+                potRar = AbstractPotion.PotionRarity.UNCOMMON;
+            }
+            if (rarity == AbstractCard.CardRarity.RARE) {
+                potRar = AbstractPotion.PotionRarity.RARE;
+            }
+            do {
+                potion = PotionHelper.getRandomPotion();
+            } while (potion.rarity != potRar);
+            RewardItem reward = new RewardItem(potion);
+            AbstractDungeon.getCurrRoom().rewards.add(reward);
+        }
+        AbstractDungeon.getCurrRoom().addGoldToRewards(goldWon);
+        AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
+        AbstractDungeon.combatRewardScreen.open();
+        return true;
+    }
+
+    boolean isDupe(AbstractCard card, ArrayList<AbstractCard> cards) {
+        for (AbstractCard c : cards) {
+            if (c.cardID.equals(card.cardID)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
