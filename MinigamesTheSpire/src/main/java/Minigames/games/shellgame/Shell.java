@@ -6,6 +6,7 @@ import Minigames.util.TextureLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
@@ -147,7 +148,7 @@ public class Shell {
             case REWARDINTRO: {
                 moveTimer += elapsed;
                 if (heldCard != null) {
-                    heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScaleStart, ShellGame.cardScalePeak, moveTimer / startMoveTimer);
+                    heldCard.drawScale = heldCard.targetDrawScale = Interpolation.linear.apply(ShellGame.cardScaleStart, ShellGame.cardScalePeak, moveTimer / startMoveTimer);
                     if (moveTimer >= startMoveTimer) {
                         heldCard.drawScale = ShellGame.cardScalePeak;
                         startMoveTimer = 0.3F;
@@ -155,7 +156,7 @@ public class Shell {
                         currentPhase = animPhase.REWARDINTRO2;
                     }
                 } else if (heldRelic != null) {
-                    heldRelic.scale = MathUtils.lerp(ShellGame.relicScaleStart, ShellGame.relicScalePeak, moveTimer / startMoveTimer);
+                    heldRelic.scale = Interpolation.linear.apply(ShellGame.relicScaleStart, ShellGame.relicScalePeak, moveTimer / startMoveTimer);
                     if (moveTimer >= startMoveTimer) {
                         heldRelic.scale = ShellGame.relicScalePeak;
                         startMoveTimer = 0.3F;
@@ -169,7 +170,7 @@ public class Shell {
                 moveTimer += elapsed;
                 if (heldCard != null) {
                     if (moveTimer < startMoveTimer) {
-                        heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScalePeak, ShellGame.cardScaleNorm, moveTimer / startMoveTimer);
+                        heldCard.drawScale = heldCard.targetDrawScale = Interpolation.linear.apply(ShellGame.cardScalePeak, ShellGame.cardScaleNorm, moveTimer / startMoveTimer);
                     } else {
                         heldCard.drawScale = ShellGame.cardScaleNorm;
                         //heldCard.current_x = heldCard.target_x = targetX;
@@ -181,7 +182,7 @@ public class Shell {
                     }
                 } else if (heldRelic != null) {
                     if (moveTimer < startMoveTimer) {
-                        heldRelic.scale = MathUtils.lerp(ShellGame.relicScalePeak, ShellGame.relicScaleNorm, moveTimer / startMoveTimer);
+                        heldRelic.scale = Interpolation.linear.apply(ShellGame.relicScalePeak, ShellGame.relicScaleNorm, moveTimer / startMoveTimer);
                     } else {
                         heldRelic.scale = ShellGame.relicScaleNorm;
                         //heldCard.current_x = heldCard.target_x = targetX;
@@ -197,16 +198,16 @@ public class Shell {
             case REWARDMOVETOSPACE: {
                 moveTimer += elapsed;
                 if (heldCard != null) {
-                    heldCard.drawScale = heldCard.targetDrawScale = MathUtils.lerp(ShellGame.cardScaleNorm, ShellGame.cardScaleCup, moveTimer / startMoveTimer);
-                    x = MathUtils.lerp(x, targetX, moveTimer / startMoveTimer);
+                    heldCard.drawScale = heldCard.targetDrawScale = Interpolation.linear.apply(ShellGame.cardScaleNorm, ShellGame.cardScaleCup, moveTimer / startMoveTimer);
+                    x = Interpolation.linear.apply(x, targetX, moveTimer / startMoveTimer);
                     heldCard.current_x = heldCard.target_x = x;
                     if (moveTimer >= startMoveTimer) {
                         heldCard.drawScale = heldCard.targetDrawScale = ShellGame.cardScaleCup;
                         heldCard.current_x = heldCard.target_x = targetX;
                     }
                 } else if (heldRelic != null) {
-                    heldRelic.scale = MathUtils.lerp(ShellGame.relicScaleNorm, ShellGame.relicScaleCup, moveTimer / startMoveTimer);
-                    //x = MathUtils.lerp(x, targetX, moveTimer / startMoveTimer);
+                    heldRelic.scale = Interpolation.linear.apply(ShellGame.relicScaleNorm, ShellGame.relicScaleCup, moveTimer / startMoveTimer);
+                    //x = Interpolation.linear.apply(x, targetX, moveTimer / startMoveTimer);
                     //heldRelic.targetX = heldRelic.currentX = x;
                     if (moveTimer >= startMoveTimer) {
                         heldRelic.scale = ShellGame.relicScaleCup;
@@ -218,8 +219,8 @@ public class Shell {
             case SHELLINTRO: {
                 if (moveTimerY < startMoveTimerY) {
                     moveTimerY += elapsed;
-                    shellOffsetY = MathUtils.lerp(ShellGame.offscreenShellHeight, 0F, moveTimerY / startMoveTimerY);
-                    alpha = Math.min(1F, MathUtils.lerp(startAlpha, targetAlpha, moveTimerY / (startMoveTimerY / 2)));
+                    shellOffsetY = Interpolation.linear.apply(ShellGame.offscreenShellHeight, 0F, moveTimerY / startMoveTimerY);
+                    alpha = Math.min(1F, Interpolation.linear.apply(startAlpha, targetAlpha, moveTimerY / (startMoveTimerY / 2)));
                 } else {
                     shellOffsetY = 0F;
                     alpha = 1F;
@@ -231,8 +232,8 @@ public class Shell {
                     moveTimer += elapsed;
                     moveTimerY += elapsed;
 
-                    scale = MathUtils.lerp(startScale, targetScale, moveTimerY / startMoveTimerY);
-                    y = MathUtils.lerp(startY, targetY, moveTimerY / startMoveTimerY);
+                    scale = Interpolation.linear.apply(startScale, targetScale, moveTimerY / startMoveTimerY);
+                    y = Interpolation.linear.apply(startY, targetY, moveTimerY / startMoveTimerY);
 
                     if (!yApexReached) {
                         if (moveTimerY >= startMoveTimerY) {
@@ -247,7 +248,7 @@ public class Shell {
                         }
                     }
 
-                    x = MathUtils.lerp(startX, targetX, moveTimer / startMoveTimer);
+                    x = Interpolation.linear.apply(startX, targetX, moveTimer / startMoveTimer);
 
                     if (moveTimer >= startMoveTimer) {
                         x = targetX;
@@ -265,9 +266,9 @@ public class Shell {
             }
             case SHELLOUTRO: {
                 if (moveTimerY < startMoveTimerY) {
-                    moveTimerY += HelperClass.getTime();
-                    shellOffsetY = MathUtils.lerp(0F, ShellGame.offscreenShellHeight, moveTimerY / startMoveTimerY);
-                    // alpha = MathUtils.lerp(targetAlpha, startAlpha, moveTimerY / startMoveTimerY);
+                    moveTimerY += elapsed;
+                    shellOffsetY = Interpolation.linear.apply(0F, ShellGame.offscreenShellHeight, moveTimerY / startMoveTimerY);
+                    // alpha = Interpolation.linear.apply(targetAlpha, startAlpha, moveTimerY / startMoveTimerY);
                 }
                 break;
             }

@@ -380,7 +380,7 @@ public class ShellGame extends AbstractMinigame {
                         shell3.setEnclosedLocations();
                         timeModifier = 1F;  //Reset time modifier back to normal so the timers aren't still going at lightning speed
                     } else if (timeToBeginNextSwap > 0F) {
-                        timeToBeginNextSwap -= HelperClass.getTime() * timeModifier;
+                        timeToBeginNextSwap -= elapsed * timeModifier;
                         if (timeToBeginNextSwap <= 0F) {
                             decideSwap();
                         }
