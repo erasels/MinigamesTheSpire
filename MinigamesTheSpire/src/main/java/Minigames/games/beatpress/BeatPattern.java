@@ -7,14 +7,23 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class BeatPattern {
-    private ArrayList<BallInfo> ballInfos = new ArrayList<>();
+    public PatternType type;
+    public enum PatternType {
+        NORMAL,
+        NOFINISH,
+        FINISH
+    }
 
-    public BeatPattern(String pattern) {
+    private final ArrayList<BallInfo> ballInfos = new ArrayList<>();
+
+    public BeatPattern(String pattern, PatternType type) {
         // key:
 
         // Side: L R ? _ ! =    ?random _fixed random !opposite of last =same as last
         // Type: R B S ? _ =     ?random _fixed random
-        // Duration (time until next ball, float)
+        // Wait (time until hit of this ball, float)
+
+        this.type = type;
 
         String[] tokens = pattern.split(" ");
 
@@ -22,8 +31,8 @@ public class BeatPattern {
             ballInfos.add(new BallInfo(s));
     }
 
-    public float addBalls(AbstractMinigame parent, float time, PriorityQueue<Ball> balls, ArrayList<Ball> allBalls) {
-        //reset();
+    public void addBalls(AbstractMinigame parent, float time, PriorityQueue<Ball> balls, ArrayList<Ball> allBalls) {
+        reset();
 
         boolean lastRight = true;
         Ball.BallType lastType = Ball.BallType.ROLL;
@@ -36,15 +45,16 @@ public class BeatPattern {
 
         for (BallInfo info : ballInfos)
         {
+            time += info.wait;
+
             Ball b = generateBall(parent, time, info, lastRight, lastType);
+
+            lastRight = b.right;
+            lastType = b.type;
 
             balls.add(b);
             allBalls.add(b);
-
-            time += info.duration;
         }
-
-        return time;
     }
 
     public void reset() {
@@ -138,7 +148,7 @@ public class BeatPattern {
             REPEAT
         }
 
-        protected float duration;
+        protected float wait;
         protected SideType sideType;
         protected BallGenType genType;
 
@@ -185,7 +195,7 @@ public class BeatPattern {
                     break;
             }
 
-            duration = Float.parseFloat(info.substring(2));
+            wait = Float.parseFloat(info.substring(2));
         }
     }
 }

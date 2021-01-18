@@ -16,6 +16,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
         if (game != null)
         {
             game.dispose(); //player quit in middle of a minigame, dispose the old one.
+            game = null;
         }
 
         //TODO - Decide if alt music should play for all minigames.  Is currently only playing in Shell Game.  Could also play only during minigame time.
