@@ -8,11 +8,6 @@
       "COUNTER": "Popped %d Slimes"
     }
   },
-  "${ModID}:ExamplePotion": {
-    "TEXT": [
-      "Do nothing ya chump."
-    ]
-  },
   "${ModID}:BlackjackText": {
     "TEXT": [
       "Bet ",
