@@ -17,12 +17,15 @@ import Minigames.games.slimePopper.SlimePopper;
 import Minigames.util.TextureLoader;
 import basemod.BaseMod;
 import basemod.ModPanel;
+import basemod.eventUtil.AddEventParams;
 import basemod.interfaces.AddAudioSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import basemod.interfaces.PostUpdateSubscriber;
+import basemod.patches.com.megacrit.cardcrawl.characters.AbstractPlayer.SeenEvents;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.dungeons.Exordium;
 import com.megacrit.cardcrawl.dungeons.TheBeyond;
 import com.megacrit.cardcrawl.dungeons.TheCity;
@@ -52,6 +55,8 @@ public class Minigames implements
     private ModPanel settingsPanel;
     private final float xPos = 350f, yPos = 750f;
 
+    private static boolean oncePerRun = true; // set up some config for this or something
+
     @Override
     public void receivePostInitialize() {
         //UIStrings UIStrings = CardCrawlGame.languagePack.getUIString(makeID("OptionsMenu"));
@@ -61,12 +66,18 @@ public class Minigames implements
 
         BaseMod.registerModBadge(TextureLoader.getTexture(makeImgPath("modBadge.png")), "Minigames The Spire", "erasels", "A mod, boyo.", settingsPanel);
 
-        BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class);
-        BaseMod.addEvent(ActOneArcade.ID, ActOneArcade.class, Exordium.ID);
-        BaseMod.addEvent(ActTwoArcade.ID, ActTwoArcade.class, TheCity.ID);
-        BaseMod.addEvent(ActThreeArcade.ID, ActThreeArcade.class, TheBeyond.ID);
+        BaseMod.addEvent(TestMinigameEvent.ID, TestMinigameEvent.class, ""); //Only appears in dungeons with the ID "", which should be none.
 
+        BaseMod.addEvent(new AddEventParams.Builder(ActOneArcade.ID, ActOneArcade.class).dungeonID(Exordium.ID).spawnCondition(this::canEventSpawn).create());
+        BaseMod.addEvent(new AddEventParams.Builder(ActTwoArcade.ID, ActTwoArcade.class).dungeonID(TheCity.ID).spawnCondition(this::canEventSpawn).create());
+        BaseMod.addEvent(new AddEventParams.Builder(ActThreeArcade.ID, ActThreeArcade.class).dungeonID(TheBeyond.ID).spawnCondition(this::canEventSpawn).create());
+    }
 
+    private boolean canEventSpawn() {
+        //This won't work correctly if the ID has a space in it, since those get converted to underscores, or if another event is registered with the same ID. But I mean, who would do that. Right?
+        return !oncePerRun || (!SeenEvents.seenEvents.get(AbstractDungeon.player).contains(ActOneArcade.ID) &&
+                !SeenEvents.seenEvents.get(AbstractDungeon.player).contains(ActTwoArcade.ID) &&
+                !SeenEvents.seenEvents.get(AbstractDungeon.player).contains(ActThreeArcade.ID));
     }
 
     @Override
