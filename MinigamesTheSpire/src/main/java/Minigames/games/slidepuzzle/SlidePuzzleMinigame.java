@@ -74,6 +74,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     private float colorTimer;
     private Color timerColor = Color.WHITE.cpy();
     private float timerScale = 1.0f;
+    private int timerSound = 5;
 
     //rewards calculation
     private int rewardsCount = 0;
@@ -207,6 +208,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         if (duration > (INITIALIZE_TIMER * 2.0f) / 3.0f) {
             //at the start of the animation, determine random spots for tiles to explode out to, but hold the image in place for user to see
             if (duration == INITIALIZE_TIMER) {
+                CardCrawlGame.sound.play("SHOP_OPEN");
                 for (Tile[] row : board) {
                     for (Tile tile : row) {
                         tile.setMovement(convertToBoardPosition(getRandomPoint(), false), INITIALIZE_TIMER / 3.0f);
@@ -214,6 +216,9 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
                 }
             }
             duration -= elapsed;
+            if (duration <= (INITIALIZE_TIMER * 2.0f) / 3.0f) {
+                CardCrawlGame.sound.play("BLOCK_BREAK");
+            }
             return;
         } else {
             //update movement
@@ -228,6 +233,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             //once the tiles have reached the end points, shuffle their grid positions and set to move to grid
             if (duration <= INITIALIZE_TIMER / 3.0f) {
                 shuffleTiles();
+                CardCrawlGame.sound.play("GUARDIAN_ROLL_UP");
                 for (Tile[] row : board) {
                     for (Tile tile : row) {
                         tile.setMovement(tile.gridPosition, INITIALIZE_TIMER / 3.0f);
@@ -239,6 +245,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         }
         //once finished, begin the game
         if (duration <= 0) {
+            CardCrawlGame.sound.play("UI_CLICK_2");
             state = GameState.PLAYING;
             duration = GAME_TIMER;
         }
@@ -261,6 +268,10 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         if (duration < 5.0f) {
             timerColor = Color.RED.cpy();
             timerScale = 1.0f + Interpolation.circleIn.apply(duration - (float)Math.floor(duration));
+            if (duration < timerSound) {
+                CardCrawlGame.sound.play("KEY_OBTAIN");
+                --timerSound;
+            }
         } else if (duration < 10.0f) {
             timerColor = Color.YELLOW.cpy();
         }
@@ -269,6 +280,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             duration = DEFEAT_TIMER;
         }
         if (success && !sliding) {
+            CardCrawlGame.sound.play("BOSS_VICTORY_STINGER");
             state = GameState.VICTORY;
             victoryTime = (int)Math.ceil(duration);     //lock in timer display
             duration = VICTORY_TIMER;
@@ -278,6 +290,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     void updateVictory(float elapsed) {
         if (victoryColor == null) {
             victoryColor = new Color(0, 0, 0, 1);
+            CardCrawlGame.sound.play("UNLOCK_SCREEN");
 
             //finalize the scoreboard
             tallyRewards(true);

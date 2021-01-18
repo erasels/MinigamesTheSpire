@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
@@ -67,6 +68,7 @@ public class Tile {
         }
         if (isNeighbor(emptyTile)) {
             parent.sliding = true; //disable clicks during sliding animation
+            CardCrawlGame.sound.play("MAP_SELECT_3");
             swap(emptyTile);
         }
     }
@@ -127,6 +129,7 @@ public class Tile {
                 currentPosition = gridPosition.cpy();
                 previousPosition = gridPosition.cpy();
                 parent.sliding = false; //once sliding is finished, allow clicking again
+                CardCrawlGame.sound.play("UI_CLICK_1");
             } else {
                 currentPosition.x = Interpolation.linear.apply(gridPosition.x, previousPosition.x, slideTimer / SLIDE_TIME);
                 currentPosition.y = Interpolation.linear.apply(gridPosition.y, previousPosition.y, slideTimer / SLIDE_TIME);
