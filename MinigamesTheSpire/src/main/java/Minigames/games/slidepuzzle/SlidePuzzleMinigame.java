@@ -122,7 +122,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
                 rarity = AbstractCard.CardRarity.COMMON;
                 goldAmt = 5;
                 BOARD_SIZE = 3;
-                GAME_TIMER = 60.0f;
+                GAME_TIMER = 45.0f;
                 break;
             case 2:
                 rarity = AbstractCard.CardRarity.UNCOMMON;
