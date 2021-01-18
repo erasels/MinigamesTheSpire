@@ -1,11 +1,15 @@
 package Minigames.games.rubik;
 
+import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
+import Minigames.games.fishing.FishingGame;
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.games.input.bindings.MouseHoldObject;
+import Minigames.util.HelperClass;
 import basemod.Pair;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -16,13 +20,20 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.Ray;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
+import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.localization.EventStrings;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.*;
 
 public class RubikMinigame extends AbstractMinigame
 {
+    public static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(Minigames.makeID("RubikCube"));
+
     private PerspectiveCamera camera;
     private FrameBuffer fbo;
     private ModelBatch mb;
@@ -35,10 +46,29 @@ public class RubikMinigame extends AbstractMinigame
     private float rotationTime = 0;
     private Map<String, Pair<Quaternion, Quaternion>> rotations = new HashMap<>();
 
+    private float standardFontWidth = -1;
+    private float timer;
+    private float startTimer;
+
     @Override
     public void initialize()
     {
         super.initialize();
+
+        hasPostgameScreen = false;
+
+        switch (AbstractDungeon.actNum) {
+            case 1:
+                timer = 120f;
+                break;
+            case 2:
+                time = 90f;
+                break;
+            default:
+                time = 60f;
+                break;
+        }
+        startTimer = timer;
 
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, SIZE, SIZE, true);
 
@@ -381,7 +411,15 @@ public class RubikMinigame extends AbstractMinigame
         rotate();
 
         if (isSolved()) {
-            System.out.println("SOLVED");
+            AbstractRelic relic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.COMMON);
+            AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2f, Settings.HEIGHT / 2f, relic);
+            isDone = true;
+        }
+
+        timer -= Gdx.graphics.getRawDeltaTime();
+
+        if (timer <= 0) {
+            isDone = true;
         }
     }
 
@@ -410,5 +448,40 @@ public class RubikMinigame extends AbstractMinigame
                 SIZE, SIZE,
                 false, true
         );
+
+        BitmapFont font = FontHelper.charTitleFont;
+        float fontHeight = FontHelper.getHeight(font);
+        String msg = FishingGame.uiStrings.TEXT_DICT.get("TIME") + HelperClass.get2DecString(timer);
+        if (standardFontWidth == -1) {
+            standardFontWidth = FontHelper.getSmartWidth(font, msg, 9999f, 0f);;
+        }
+        Color c;
+        if (timer > startTimer * 0.66f) {
+            c = Color.SKY;
+        } else if (timer > startTimer * 0.33f) {
+            c = Color.ORANGE;
+        } else {
+            c = Color.RED;
+        }
+        FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (standardFontWidth/2f), fontHeight + (20f * Settings.scale), c);
+    }
+
+    @Override
+    public String getOption()
+    {
+        return eventStrings.NAME;
+    }
+
+    @Override
+    public void setupInstructionScreen(GenericEventDialog event)
+    {
+        event.updateBodyText(eventStrings.DESCRIPTIONS[0]);
+        event.setDialogOption(eventStrings.OPTIONS[0]);
+    }
+
+    @Override
+    public AbstractMinigame makeCopy()
+    {
+        return new RubikMinigame();
     }
 }

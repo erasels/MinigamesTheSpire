@@ -131,7 +131,7 @@
       "#g[Easy] #gCommon Rewards or #rCursed - #rInjury.",
       "#b[Medium] #bUncommon Rewards or #rCursed - #rRegret.",
       "#y[Hard] #yRare Rewards or #rCursed - #rNormality.",
-      "[Leave]",
+      "[Leave]"
     ]
   },
   "${ModID}:SlidePuzzle": {
@@ -156,6 +156,15 @@
       "Rare Potion",
       "Rare Card",
       "Rare Relic"
+    ]
+  },
+  "${ModID}:RubikCube": {
+    "NAME": "[Puzzle Cube] Unscramble the Cube!",
+    "DESCRIPTIONS": [
+      "Unscramble the cube within the time limit. NL NL Controls: NL #yLeft #yclick a side of the cube to rotate it. NL #yRight #yclick and drag to rotate the entire cube."
+    ],
+    "OPTIONS": [
+      "[Start]"
     ]
   }
 }
