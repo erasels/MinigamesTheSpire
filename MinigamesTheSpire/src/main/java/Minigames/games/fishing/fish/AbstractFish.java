@@ -1,12 +1,18 @@
 package Minigames.games.fishing.fish;
 
+import Minigames.Minigames;
 import Minigames.util.HelperClass;
+import Minigames.util.TextureLoader;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public abstract class AbstractFish {
     //How long the player has to be catching the fish (percentage of total game time)
@@ -21,19 +27,33 @@ public abstract class AbstractFish {
     //X = time spent on the move
     protected ArrayList<Vector2> originBehavior;
     protected Vector2 currentBehavior;
+    protected boolean shuffleWhenCycled;
 
-    public AbstractFish(float hp, ArrayList<Vector2> ogBehavior) {
+    protected Texture img;
+    //base image sizes
+    public static int w = 56, h = 53;
+
+    public AbstractFish(float hp, ArrayList<Vector2> ogBehavior, boolean shuffleWhenCycled) {
         mHp = this.hp = hp;
-        originBehavior = ogBehavior;
+        this.shuffleWhenCycled = shuffleWhenCycled;
+        originBehavior = ogBehavior.stream().map(Vector2::cpy).collect(Collectors.toCollection(ArrayList::new));
         currentBehavior = originBehavior.get(nextBehavior);
         y = initialY = 0;
+    }
+
+    public AbstractFish(float hp, ArrayList<Vector2> ogBehavior) {
+        this(hp, ogBehavior, false);
+    }
+
+    public void initialize(float maxGameTime, float maxPos) {
+        initImage();
+        scaleBehavior(maxGameTime, maxPos);
     }
 
     public void update(boolean inArea) {
         if(inArea) {
             hp -= HelperClass.getTime();
             if(isCaught()) {
-                dispose();
                 return;
             }
         }
@@ -54,12 +74,17 @@ public abstract class AbstractFish {
 
     public abstract ArrayList<RewardItem> returnReward();
 
-    public void dispose() { }
+    public void dispose() {
+        img.dispose();
+        img = null;
+    }
 
     private void cycleBehavior() {
         initialY = y;
         ttl = 0;
         if(nextBehavior >= originBehavior.size() - 1) {
+            if(shuffleWhenCycled)
+                Collections.shuffle(originBehavior);
             nextBehavior = 0;
         } else {
             nextBehavior++;
@@ -71,19 +96,39 @@ public abstract class AbstractFish {
         return y >= y1 && y <= y2;
     }
 
-    public void scaleBehavior(float maxGameTime, float maxPos) {
+    protected void scaleBehavior(float maxGameTime, float maxPos) {
         hp = mHp = mHp * maxGameTime;
         for(Vector2 vec : originBehavior) {
             vec.y *= maxPos;
         }
     }
 
+    protected void initImage() {
+        img = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Fish.png"));
+    }
+
+    public Texture getTexture() {
+        return img;
+    }
+
+    public boolean canSpawn() {
+        return true;
+    }
+
     public static AbstractFish returnRandomFish() {
-        int fish = AbstractDungeon.miscRng.random(1);
-        switch (fish) {
-            case 0:
-            default:
-                return new CeramicFish();
+        ArrayList<AbstractFish> fishies = new ArrayList<>(Arrays.asList(
+                new CeramicFish(),
+                new GoldFish(),
+                new PlatinumFish(),
+                new FossilFish(),
+                new CardFish(),
+                new PotionFish()
+                ));
+
+        fishies.removeIf(f -> !f.canSpawn());
+        if(fishies.isEmpty()) {
+            return new GoldFish();
         }
+        return HelperClass.getRandomItem(fishies, AbstractDungeon.miscRng);
     }
 }
