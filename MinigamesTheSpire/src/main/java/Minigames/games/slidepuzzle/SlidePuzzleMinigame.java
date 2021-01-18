@@ -332,7 +332,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             wonCard = false;
             wonRelic = false;
 
-            for (int i = 0; i < rewardsCount; ++i) {
+            for (int i = 1; i <= rewardsCount; ++i) {
                 if (i == TILE_COUNT) {
                     wonRelic = true;
                 } else if (i == Math.ceil((double)TILE_COUNT * 2d / 3d)) {
