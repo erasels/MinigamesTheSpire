@@ -17,11 +17,9 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.Ray;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RubikMinigame extends AbstractMinigame
 {
@@ -107,6 +105,12 @@ public class RubikMinigame extends AbstractMinigame
         face(modelBuilder, "left");
         model = modelBuilder.end();
         instance = new ModelInstance(model);
+
+        Vector3[] moves = new Vector3[] { Vector3.X, Vector3.Y, Vector3.Z, Vector3.X.cpy().scl(-1), Vector3.Y.cpy().scl(-1), Vector3.Z.cpy().scl(-1) };
+        for (int i = 0; i < 10; ++i) {
+            int m = AbstractDungeon.miscRng.random(0, moves.length-1);
+            instantRotate(moves[m]);
+        }
     }
 
     private Vector3 faceTranslation = new Vector3();
@@ -246,6 +250,47 @@ public class RubikMinigame extends AbstractMinigame
         return false;
     }
 
+    private void rotate()
+    {
+        if (clickedSide != null) {
+            instance.nodes.forEach(node -> {
+                if (matchesSide(node)) {
+                    Matrix4 invWorld = new Matrix4().set(node.globalTransform).inv();
+                    Vector3 axis = clickedSide.cpy().mul(invWorld);
+                    Quaternion start = node.rotation.cpy();
+                    Quaternion end = node.rotation.cpy().mul(new Quaternion(axis, 90));
+                    rotations.put(node.id, new Pair<>(start, end));
+                }
+            });
+            clickedSide = null;
+        }
+
+        if (!rotations.isEmpty()) {
+            rotationTime += Gdx.graphics.getDeltaTime() * 2f;
+            if (rotationTime > 1) {
+                rotationTime = 1;
+            }
+
+            rotations.forEach((id, rotation) -> {
+                Node node = instance.getNode(id);
+                node.rotation.set(rotation.getKey().cpy().slerp(rotation.getValue(), rotationTime));
+                node.calculateTransforms(false);
+            });
+
+            if (rotationTime == 1) {
+                rotations.clear();
+                rotationTime = 0;
+            }
+        }
+    }
+
+    private void instantRotate(Vector3 side)
+    {
+        clickedSide = side.cpy();
+        rotationTime = 1;
+        rotate();
+    }
+
     private boolean isSolved()
     {
         Node first = Arrays.stream(instance.nodes.items).filter(Objects::nonNull).findFirst().get();
@@ -333,35 +378,8 @@ public class RubikMinigame extends AbstractMinigame
     {
         super.update(elapsed);
 
-        if (clickedSide != null) {
-            instance.nodes.forEach(node -> {
-                if (matchesSide(node)) {
-                    Matrix4 invWorld = new Matrix4().set(node.globalTransform).inv();
-                    Vector3 axis = clickedSide.cpy().mul(invWorld);
-                    Quaternion start = node.rotation.cpy();
-                    Quaternion end = node.rotation.cpy().mul(new Quaternion(axis, 90));
-                    rotations.put(node.id, new Pair<>(start, end));
-                }
-            });
-            clickedSide = null;
-        }
+        rotate();
 
-        if (!rotations.isEmpty()) {
-            rotationTime += Gdx.graphics.getDeltaTime() * 2f;
-            if (rotationTime > 1) {
-                rotationTime = 1;
-            }
-
-            rotations.forEach((id, rotation) -> {
-                Node node = instance.getNode(id);
-                node.rotation.set(rotation.getKey().cpy().slerp(rotation.getValue(), rotationTime));
-                node.calculateTransforms(false);
-            });
-
-            if (rotationTime == 1) {
-                rotations.clear();
-                rotationTime = 0;
-            }
         if (isSolved()) {
             System.out.println("SOLVED");
         }
