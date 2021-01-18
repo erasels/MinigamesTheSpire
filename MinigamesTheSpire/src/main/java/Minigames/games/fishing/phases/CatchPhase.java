@@ -12,11 +12,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class CatchPhase extends AbstractGamePhase {
-    public static final float GAME_TIME = 40f; //40 seconds before fish escapes
+    public static final float GAME_TIME = 45f; //X seconds before fish escapes
+    private static final float ACT_TIME_MODIFIER = 5;
     private static final float MINIMUM_BOUNCE_THRESHOLD = 10f;
     private static final float GRAVITY_ACCEL = 250f, PULL_ACCEL = GRAVITY_ACCEL - 25f;
     private static final float TERMINAL_VELOCITY = -1000f;
@@ -45,12 +47,12 @@ public class CatchPhase extends AbstractGamePhase {
         maxPos = bbh - (cbh / 2f) - 100f;
         pos = 0;
         fish = parent.fish;
-        gameTime = GAME_TIME;
         timeString = FishingGame.uiStrings.TEXT_DICT.get("TIME");
     }
 
     @Override
     public void initialize() {
+        gameTime = GAME_TIME - (ACT_TIME_MODIFIER * NumberUtils.min((AbstractDungeon.actNum - 1), 2));
         imgBar = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishingBar.png"));
         imgCatcher = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/FishCatcher.png"));
         imgCrank = TextureLoader.getTexture(Minigames.makeGamePath("Fishing/Crank.png"));
