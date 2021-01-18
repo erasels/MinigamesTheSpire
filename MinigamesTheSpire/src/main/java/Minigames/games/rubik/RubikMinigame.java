@@ -246,6 +246,27 @@ public class RubikMinigame extends AbstractMinigame
         return false;
     }
 
+    private boolean isSolved()
+    {
+        Node first = Arrays.stream(instance.nodes.items).filter(Objects::nonNull).findFirst().get();
+        Quaternion firstRotation = new Quaternion();
+        first.localTransform.getRotation(firstRotation, true);
+        float firstRoll = firstRotation.getRoll();
+        float firstPitch = firstRotation.getPitchRad();
+        float firstYaw = firstRotation.getYaw();
+
+        return Arrays.stream(instance.nodes.items)
+                .filter(Objects::nonNull)
+                .allMatch(node -> {
+                    Quaternion rotation = new Quaternion();
+                    node.localTransform.getRotation(rotation, true);
+                    float roll = rotation.getRoll();
+                    float pitch = rotation.getPitchRad();
+                    float yaw = rotation.getYaw();
+                    return MathUtils.isEqual(roll, firstRoll, 0.001f) && MathUtils.isEqual(pitch, firstPitch, 0.001f) && MathUtils.isEqual(yaw, firstYaw, 0.001f);
+                });
+    }
+
     @Override
     protected BindingGroup getBindings()
     {
@@ -341,6 +362,8 @@ public class RubikMinigame extends AbstractMinigame
                 rotations.clear();
                 rotationTime = 0;
             }
+        if (isSolved()) {
+            System.out.println("SOLVED");
         }
     }
 
