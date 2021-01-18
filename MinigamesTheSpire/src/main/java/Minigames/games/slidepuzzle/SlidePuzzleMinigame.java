@@ -276,6 +276,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             timerColor = Color.YELLOW.cpy();
         }
         if (duration <= 0.0f && !success) {
+            CardCrawlGame.sound.play("ATTACK_BOWLING");
             state = GameState.DEFEAT;
             duration = DEFEAT_TIMER;
         }
