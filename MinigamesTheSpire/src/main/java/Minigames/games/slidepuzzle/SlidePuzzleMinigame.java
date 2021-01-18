@@ -335,9 +335,9 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             for (int i = 0; i < rewardsCount; ++i) {
                 if (i == TILE_COUNT) {
                     wonRelic = true;
-                } else if (i == (TILE_COUNT * 2 / 3)) {
+                } else if (i == Math.ceil((double)TILE_COUNT * 2d / 3d)) {
                     wonCard = true;
-                } else if (i == TILE_COUNT / 3) {
+                } else if (i == Math.ceil((double)TILE_COUNT / 3d)) {
                     wonPotion = true;
                 } else {
                     goldWon += goldAmt;
@@ -424,7 +424,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         for (int i = 1; i <= TILE_COUNT; ++i) {
             FontHelper.renderFontCentered(sb,
                     (rewardsCount >= i ? FontHelper.energyNumFontGreen : FontHelper.tipBodyFont),
-                    (i == TILE_COUNT ? relicString : (i == (TILE_COUNT / 3 * 2) ? cardString: (i == (TILE_COUNT / 3) ? potionString : goldString))),
+                    (i == TILE_COUNT ? relicString : (i == (Math.ceil((double)TILE_COUNT / 3d * 2d)) ? cardString: (i == (Math.ceil((double)TILE_COUNT / 3d)) ? potionString : goldString))),
                     (Settings.WIDTH / 2.0f) - (bgSize / 2.0f) - (xOffset * Settings.scale),
                     (Settings.HEIGHT / 2.0f) - (bgSize / 3.0f) + ((((bgSize * 2.0f) / 3.0f) / TILE_COUNT) * i) - (20.0f * Settings.scale),
                     Color.WHITE.cpy(),
