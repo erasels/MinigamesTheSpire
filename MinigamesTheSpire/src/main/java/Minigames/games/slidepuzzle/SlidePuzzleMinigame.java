@@ -433,13 +433,12 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         String relicString = eventStrings.OPTIONS[n + 2];
 
         for (int i = 1; i <= TILE_COUNT; ++i) {
-            FontHelper.renderFontCentered(sb,
-                    (rewardsCount >= i ? FontHelper.energyNumFontGreen : FontHelper.tipBodyFont),
+            FontHelper.renderFontLeft(sb,
+                    FontHelper.charDescFont,
                     (i == TILE_COUNT ? relicString : (i == (Math.ceil((double)TILE_COUNT / 3d * 2d)) ? cardString: (i == (Math.ceil((double)TILE_COUNT / 3d)) ? potionString : goldString))),
-                    (Settings.WIDTH / 2.0f) - (bgSize / 2.0f) - (xOffset * Settings.scale),
-                    (Settings.HEIGHT / 2.0f) - (bgSize / 3.0f) + ((((bgSize * 2.0f) / 3.0f) / TILE_COUNT) * i) - (20.0f * Settings.scale),
-                    Color.WHITE.cpy(),
-                    (rewardsCount >= i ? 0.75f : 1.0f) * Settings.scale);
+                    (Settings.WIDTH / 2.0f) - (bgSize / 2.0f) + 10.0f * Settings.scale,
+                    (Settings.HEIGHT / 2.0f) - (bgSize / 3.0f) + ((((bgSize * 2.0f) / 3.0f) / TILE_COUNT) * i),
+                    (rewardsCount >= i ? Color.GREEN.cpy() : Color.WHITE.cpy()));
         }
     }
 
