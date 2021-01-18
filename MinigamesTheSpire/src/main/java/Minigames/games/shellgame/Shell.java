@@ -1,8 +1,8 @@
 package Minigames.games.shellgame;
 
 import Minigames.games.AbstractMinigame;
+import Minigames.util.HelperClass;
 import Minigames.util.TextureLoader;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -265,7 +265,7 @@ public class Shell {
             }
             case SHELLOUTRO: {
                 if (moveTimerY < startMoveTimerY) {
-                    moveTimerY += Gdx.graphics.getDeltaTime();
+                    moveTimerY += HelperClass.getTime();
                     shellOffsetY = MathUtils.lerp(0F, ShellGame.offscreenShellHeight, moveTimerY / startMoveTimerY);
                     // alpha = MathUtils.lerp(targetAlpha, startAlpha, moveTimerY / startMoveTimerY);
                 }

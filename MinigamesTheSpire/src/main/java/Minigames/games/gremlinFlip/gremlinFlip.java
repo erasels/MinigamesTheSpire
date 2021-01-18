@@ -15,12 +15,12 @@ package Minigames.games.gremlinFlip;
  */
 
 import Minigames.games.AbstractMinigame;
-import Minigames.games.gremlinFlip.boards.*;
+import Minigames.games.gremlinFlip.boards.AbstractBoard;
+import Minigames.games.gremlinFlip.boards.proceduralBoard;
 import Minigames.games.gremlinFlip.tiles.AbstractTile;
 import Minigames.games.gremlinFlip.tiles.GameTile;
 import Minigames.games.input.bindings.BindingGroup;
-import Minigames.games.mastermind.MastermindMinigame;
-import com.badlogic.gdx.Gdx;
+import Minigames.util.HelperClass;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -30,8 +30,6 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.relics.*;
-
-import java.util.ArrayList;
 
 import static Minigames.Minigames.makeID;
 
@@ -203,7 +201,7 @@ public class gremlinFlip extends AbstractMinigame {
                 break;
             case 1:
                 board.update();
-                countdown -= Gdx.graphics.getDeltaTime();
+                countdown -= HelperClass.getTime();
                 if(countdown <= 0f){
                     if(finished) { phase = 2; }
                     AbstractTile currentTile = board.getTile(currentIndexPointer);

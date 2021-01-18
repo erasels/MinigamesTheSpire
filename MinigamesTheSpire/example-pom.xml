@@ -75,18 +75,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*.psd</exclude>
-                        <exclude>**/*.pdn</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.4.2</version>
                 <executions>
