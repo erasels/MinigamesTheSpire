@@ -23,6 +23,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.PotionHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
@@ -79,6 +80,9 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     private boolean wonCard = false;
     private boolean wonRelic = false;
     private int goldWon = 0;
+
+    //border texture
+    private TextureRegion border = new TextureRegion(ImageMaster.loadImage("minigamesResources/img/games/slidepuzzle/SlidePuzzleBorder.png"));
 
     @Override
     protected BindingGroup getBindings() {
@@ -394,9 +398,17 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         CardCrawlGame.psb.setProjectionMatrix(tmp);
 
         //render game border
+        sb.begin();
+        sb.draw(border,
+                (Settings.WIDTH / 2.0f) - (border.getRegionWidth() / 2.0f),
+                (Settings.HEIGHT / 2.0f) - (border.getRegionHeight() / 2.0f),
+                border.getRegionWidth() / 2.0f,
+                border.getRegionHeight() / 2.0f,
+                border.getRegionWidth(),
+                border.getRegionHeight(),
+                Settings.scale, Settings.scale, 0);
 
         //render tiles
-        sb.begin();
         for (Tile[] row : board) {
             for (Tile tile : row) {
                 tile.render(sb);

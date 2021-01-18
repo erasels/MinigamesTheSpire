@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 public class Tile {
     //tile variables
@@ -15,7 +16,7 @@ public class Tile {
     public TextureRegion region;
 
     //border graphics
-    private static final Texture TILE_BORDER = new Texture("minigamesResources/img/games/slidepuzzle/SlidePuzzleTileBorder.png");
+    private static final Texture TILE_BORDER = ImageMaster.loadImage("minigamesResources/img/games/slidepuzzle/SlidePuzzleTileBorder.png");
     private static final TextureRegion TILE_BORDER_REGION = new TextureRegion(TILE_BORDER);
     private static final Color MOVING_COLOR = Color.WHITE.cpy();
     private static final Color SOLVED_COLOR = Color.CYAN.cpy();
