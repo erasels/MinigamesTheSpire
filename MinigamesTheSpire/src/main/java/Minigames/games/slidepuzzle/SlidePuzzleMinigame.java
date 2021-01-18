@@ -135,8 +135,8 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         //customizable variables
         CAMERA_SIZE = 400;                      //width and height in pixels. Probably best to keep this always 400 because of manual creature placements
         INITIALIZE_TIMER = 5.0f;                //duration of starting animation
-        VICTORY_TIMER = 5.0f;                   //duration of victory animation
-        DEFEAT_TIMER = 5.0f;                    //duration of defeat animation
+        VICTORY_TIMER = 3.5f;                   //duration of victory animation
+        DEFEAT_TIMER = 3.5f;                    //duration of defeat animation
         VICTORY_RAINBOW_SPEED = 1.0f;           //how long it takes for one full rainbow in victory animation
 
         //derived constants
