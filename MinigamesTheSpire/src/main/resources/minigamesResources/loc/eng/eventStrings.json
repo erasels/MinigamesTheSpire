@@ -30,10 +30,10 @@
     ]
   },
   "${ModID}:ActTwoArcade": {
-    "NAME": "The Popular Stall",
+    "NAME": "The Popular Spot",
     "DESCRIPTIONS": [
-      "You see a group of the City's #plowlifes gathering around a stall, #pthieves and #pmuggers pushing each other to try and get closer. NL NL You unsheathe your weapon, then resheathe it a moment later. The stall's owner gazes up at you, unfazed by your sudden bout of #rviolence. NL NL \"What frightful #yguests I've been having lately! But no matter. How would you like to play a game?\"",
-      "The game ends, and the stall owner #ysmiles at you. NL NL \"Did you have fun? It's always nice to take a breather here in this #psuffocating #pSpire, isn't it?\" NL NL The owner wraps up his wares and vanishes, leaving his parting words ringing in your ear."
+      "You see a group of the City's #plowlifes gathering around a bulky machine, #pthieves and #pmuggers pushing each other to try and get closer. NL NL You unsheathe your weapon, then resheathe it a moment later. The machine responds by playing a little jingle. NL NL \"Are you the next challenger? Choose your game!\"",
+      "The game ends, and the machine plays another ~#yjingle~ mockingly. NL NL \"You were a worthy opponent, come back again!\" NL NL A parting @#rjingle@ plays as you take your leave."
     ],
     "OPTIONS": [
       "[Continue on with your adventure]"
@@ -134,7 +134,7 @@
       "[Leave] Your job here is done."
 	  ]
   },
-  "minigames:ShellGame": {
+  "${ModID}:ShellGame": {
     "NAME": "[Three Shell Monte] Follow the #yprize as it shuffles around!",
     "DESCRIPTIONS": [
       "\"Step right up! #bThree shells, two rewards, one #pgnarly #pCurse! NL NL Keep your eyes on the #yprize or you'll pick your #pdemise! NL NL #bOne try, no do-overs. Are you ready? Let's start!\"",
