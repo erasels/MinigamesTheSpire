@@ -1,7 +1,37 @@
 {
+  "${ModID}:SlimePopper": {
+    "TEXT_DICT": {
+      "POWER_UP": "Power Up!!",
+      "AIM": "Aim!",
+      "GAME_OVER": "Game Over",
+      "SCORE": "Final Score: %d",
+      "COUNTER": "Popped %d Slimes"
+    }
+  },
   "${ModID}:ExamplePotion": {
     "TEXT": [
       "Do nothing ya chump."
     ]
+  },
+  "${ModID}:BlackjackText": {
+    "TEXT": [
+      "Bet ",
+      " gold.",
+      "Hit",
+      "Stand",
+      "Leave",
+      "You win! ",
+      "You lose! ",
+      "You tied! ",
+      "Your total hand value: ",
+      "Dealer's total hand value: ",
+      "Play Again"
+    ]
+  },
+  "${ModID}:FishingText": {
+    "TEXT_DICT": {
+      "TIME": "Time left: ",
+      "WIN": "You caught this!"
+    }
   }
 }

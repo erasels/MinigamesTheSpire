@@ -1,5 +1,5 @@
 {
-  "minigames:Test": {
+  "${ModID}:Test": {
     "NAME": "Test",
     "DESCRIPTIONS": [
       "#r@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@"
@@ -8,40 +8,154 @@
       "Begin"
     ]
   },
+  "${ModID}:SlimePopper": {
+    "NAME": "Test Slime Popper",
+    "DESCRIPTIONS": [
+      "Test Slime Popper"
+    ],
+    "OPTIONS": [
+      "Start"
+    ]
+  },
   "${ModID}:ActOneArcade": {
     "NAME": "The Strange Ritual",
     "DESCRIPTIONS": [
-      "Bunch of Cultists are praying to an old arcade machine"
+      "You spot a group of #pCultists praying to a strange, dilapidated machine. One of them waves its arms around, bumping into the machine and causing bright #ylights to @flicker@ on and off from the contraption. NL NL The scene piques your interest, and after a round of very familiar violence, you find yourself standing before the machine. NL NL It @flickers@ to #ylife before you, the screen displaying a list of curious #yoptions.",
+      "The game was strange, bizarre, and foreign. Yet you felt a spark of #yjoy from engaging with it nonetheless. NL NL Perhaps you could find more of these strange contraptions deeper in the depths of the #pSpire."
     ],
     "OPTIONS": [
-      "First minigame",
-      "Second minigame",
-      "Third minigame",
-      "Continue on with your adventure."
+      "[Continue on with your adventure]"
     ]
   },
   "${ModID}:ActTwoArcade": {
-    "NAME": "The Cool Hangout Spot",
+    "NAME": "The Popular Stall",
     "DESCRIPTIONS": [
-      "An old arcade in the city where the cool kids are"
+      "You see a group of the City's #plowlifes gathering around a stall, #pthieves and #pmuggers pushing each other to try and get closer. NL NL You unsheathe your weapon, then resheathe it a moment later. The stall's owner gazes up at you, unfazed by your sudden bout of #rviolence. NL NL \"What frightful #yguests I've been having lately! But no matter. How would you like to play a game?\"",
+      "The game ends, and the stall owner #ysmiles at you. NL NL \"Did you have fun? It's always nice to take a breather here in this #psuffocating #pSpire, isn't it?\" NL NL The owner wraps up his wares and vanishes, leaving his parting words ringing in your ear."
     ],
     "OPTIONS": [
-      "First minigame",
-      "Second minigame",
-      "Third minigame",
-      "Continue on with your adventure."
+      "[Continue on with your adventure]"
     ]
   },
   "${ModID}:ActThreeArcade": {
-    "NAME": "???",
+    "NAME": "Those Left Behind",
     "DESCRIPTIONS": [
-      "???"
+      "Deep within the bounds of the #pBeyond, you find a strange machine trapped within the growth of the #pSpire. Prying the #psickly roots away, a pile of #pbones clatter to your feet as you free the machine, the remains of a soul from long ago. NL NL The machine #ysparks to life, presenting you with a choice.",
+      "The game ends, and you reaffirm your #gresolve to climb to the top of this blasted tower. As you turn to leave, you glance back at the pile of #pbones resting near the machine. NL NL Perhaps you should help that soul achieve their final rest before you go."
     ],
     "OPTIONS": [
-      "First minigame",
-      "Second minigame",
-      "Third minigame",
-      "Continue on with your adventure."
+      "[Bury the Unknown Body]"
+    ]
+  },
+  "${ModID}:gremlinFlip": {
+    "NAME": "Gremlin Flip",
+    "DESCRIPTIONS": [
+      "Gremlin Flip tasks the player with flipping cards to gain #ygold and avoid #rGremlin #rNobs. NL NL The first tile flipped gives the player that much #ygold on the first card, and each subsequent card that is greater than #b1 multiplies the total by the number on the card. For subsequent tiles that are flipped that have the number #b1, #b1 is added to the player's score. Flipping a #rGremlin #rNob causes the player to spill all #ygold and #plose the minigame. NL NL Numbers next to the Nob denote how many Nobs are on that row, and numbers in the top right denote the sum of the numbers in the row. NL Press left-click to flip a tile. NL Press right-click to mark a tile.",
+      "With your sharp wits and keen eyes, you managed to avoid the #rGremlin #rNob! NL  NL After a while, the cabinet begins to rattle, spewing out a plethora of #yshiny gold coins. NL NL Upon bringing them to the #bMerchant, he states that he's never seen coins in such condition before, and proposes that you trade some for his wares.",
+      "Sadly, you got caught by a #rGremlin #rNob! NL NL While you managed to get away, all of your collected #ygold spilled from your pockets and onto the ground as you ran to safety. NL NL You leave empty handed, and disappointed.",
+      "You won #b%1$s #ygold playing #rGremlin #rFlip. NL (Score : #b%2$s ) NL (Difficulty: #b%3$s )",
+      "You trade some #ygold for the #bMerchant's wares, and continue with your journey. NL You keep the unspent #ygold in your %1$s.",
+      "You politely decline the #bMerchant's offer, and continue with your journey. NL You keep the unspent #ygold in your %1$s.",
+      "You exchange your #ygold for the ~ancient~ ~capsule~ and unseal its contents. NL NL You feel #bdifferent, and you feel #genergized. NL NL You keep the unspent #ygold in your %1$s."
+    ],
+    "OPTIONS": [
+      "Begin",
+      "Continue...",
+      "Leave",
+      "[Give #b%1$s gold] Obtain a random #gcommon relic.",
+      "[Give #b%1$s gold] Obtain a random #buncommon relic.",
+      "[Give #b%1$s gold] Obtain a random #prare relic.",
+      "[Give #b%1$s gold] Obtain an ancient capsule?",
+      "[Cash Out] Obtain #b%1$s #ygold.",
+      "#rwallet",
+      "#gsatchel",
+      "#binternal #bvariables",
+      "#ppurse",
+      "[Locked] Requires #b%1$s #ygold.",
+      "[Gremlin Flip] Flip tiles and avoid #rGremlin #rNobs!"
+    ]
+  },
+  "${ModID}:BeatPress": {
+    "NAME": "Beat Press",
+    "DESCRIPTIONS": [
+      "Press whatever button you want! Just make sure you time it right."
+    ],
+    "OPTIONS": [
+      "Start"
+    ]
+  },
+  "${ModID}:MastermindMinigame": {
+    "NAME": "Mastermind",
+    "DESCRIPTIONS": [
+      "The goal of Mastermind is to crack the secret code consisting of 4 icons with 6 possible symbols. NL NL You have 8 guesses and after each guess you get hints about the code: black hints mean that icons have the correct symbols and are in the correct places, while white hints mean that icons have the correct symbols, but are in incorrect places. NL NL Good luck!",
+      "Congratulations! NL NL After cracking the code, the secret stash opens and you find a treasure of great value inside it.",
+      "Too bad... NL NL Better luck next time!"
+    ],
+    "OPTIONS": [
+      "[Mastermind] Crack the code!",
+      "[Start]",
+      "[Take the treasure] Obtain a random relic.",
+      "[Leave]"
+    ]
+  },
+  "${ModID}:Blackjack": {
+    "NAME": "Blackjack",
+    "DESCRIPTIONS": [
+      "In Blackjack, you compete against the dealer to try to assemble the hand of poker cards with the highest value without going over 21. NL NL Different cards are worth different values: NL #y2 #y- #y10: worth the same as their number. NL #yJack, #yQueen, #yKing: worth 10. NL #yAce: Worth either 1 or 11, depending on which is better for your hand. NL NL You and the dealer both start with 2 cards, but you can only see 1 of the dealer's cards.",
+      "During your turn, you can choose to either #yHit or #yStand. If you #yHit, you add another random card to your hand, but if that causes your total hand value to go over 21, you go #rbust and #rlose! If you're satisfied with your hand's current total value, you can choose to #yStand, at which point the dealer begins their turn. NL NL The dealer will continue to hit until their total hand value is 17 or more. If the dealer doesn't go bust, whoever has the higher total hand value #gwins! NL NL Winning pays out 3x the amount of your bet."
+    ],
+    "OPTIONS": [
+      "[Continue]",
+      "[Begin]",
+      "[Blackjack] Bet some gold and earn 3x your bet if you win!"
+    ]
+  },
+  "${ModID}:Fishing": {
+    "NAME": "[Fishing] Catch the Fish!",
+    "DESCRIPTIONS": [
+      "To catch the fish you must deplete its #r@strength@ before your time runs out! NL NL To do so, you must keep it within your #g~catching~ #g~area~ which can be controlled by dragging your mouse within the game area."
+    ],
+    "OPTIONS": [
+      "[Begin] Catch the Fish!",
+      "[Leave] Your job here is done."
+	  ]
+  },
+  "minigames:ShellGame": {
+    "NAME": "[Three Shell Monte] Follow the #yprize as it shuffles around!",
+    "DESCRIPTIONS": [
+      "\"Step right up! #bThree shells, two rewards, one #pgnarly #pCurse! NL NL Keep your eyes on the #yprize or you'll pick your #pdemise! NL NL #bOne try, no do-overs. Are you ready? Let's start!\"",
+      "\"Looks like you won a #pCurse! NL That's not good. NL Oh well! Better luck next time!\"",
+      "\"Ah, a mighty #ygift! NL Enjoy!\""
+    ],
+    "OPTIONS": [
+      "#g[Easy] #gCommon Rewards or #rCursed - #rInjury.",
+      "#b[Medium] #bUncommon Rewards or #rCursed - #rRegret.",
+      "#y[Hard] #yRare Rewards or #rCursed - #rNormality.",
+      "[Leave]",
+    ]
+  },
+  "${ModID}:SlidePuzzle": {
+    "NAME": "[Slide Puzzle] Solve a Puzzle!",
+    "DESCRIPTIONS": [
+      "Can you ~solve~ ~the~ ~puzzle?~ Put as many pieces into the correct spot as you can within the #rtime #rlimit! The more you #ysolve, the more you #gwin!",
+      "Uh oh! #r@Time@ #r@ran@ #r@out!@ You'll just have to make do with the #gprizes you were able to get.",
+      "@Congratulations!@ You won the #g~grand~ #g~prize!~ You also get #yBonus #yGold for doing it so quickly!"
+    ],
+    "OPTIONS": [
+      "[Start]",
+      " #b4x4 puzzle, #r90 seconds.",
+      " #b3x3 puzzle, #r45 seconds.",
+      "[Collect] #gObtain #gRewards.",
+      " Gold",
+      "Common Potion",
+      "Common Card",
+      "Common Relic",
+      "Uncommon Potion",
+      "Uncommon Card",
+      "Uncommon Relic",
+      "Rare Potion",
+      "Rare Card",
+      "Rare Relic"
     ]
   }
 }

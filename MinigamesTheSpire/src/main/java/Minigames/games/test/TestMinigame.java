@@ -2,11 +2,13 @@ package Minigames.games.test;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.mastermind.MastermindMinigame;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
@@ -30,6 +32,9 @@ public class TestMinigame extends AbstractMinigame {
 
     public TestMinigame() {
         super();
+
+        hasInstructionScreen = true;
+        hasPostgameScreen = true;
     }
 
     @Override
@@ -39,6 +44,31 @@ public class TestMinigame extends AbstractMinigame {
         player = new Player(this);
         target = new Target(this);
         score = 0;
+    }
+
+    @Override
+    public String getOption() {
+        return "THIS IS THE TEST GAME";
+    }
+
+    @Override
+    public void setupInstructionScreen(GenericEventDialog event) {
+        event.updateBodyText("Click or use wasd/the arrow keys to collect #y~stars!~ Collect 5 #ystars to win!");
+        event.setDialogOption("Get started!");
+    }
+    @Override
+    public boolean instructionsButtonPressed(int buttonIndex) {
+        return true;
+    }
+
+    @Override
+    public void setupPostgameScreen(GenericEventDialog event) {
+        event.updateBodyText("Good job! I would have been really impressed if you failed a game with no fail state!");
+        event.setDialogOption("There is no reward!");
+    }
+    @Override
+    public boolean postgameButtonPressed(int buttonIndex) {
+        return super.postgameButtonPressed(buttonIndex);
     }
 
     @Override
@@ -53,7 +83,7 @@ public class TestMinigame extends AbstractMinigame {
                     target.randomizePosition();
                     ++score;
 
-                    if (score >= 10)
+                    if (score >= 5)
                     {
                         phase = 1;
                     }
@@ -270,4 +300,6 @@ public class TestMinigame extends AbstractMinigame {
             t.dispose();
         }
     }
+
+    public AbstractMinigame makeCopy(){ return new TestMinigame(); }
 }

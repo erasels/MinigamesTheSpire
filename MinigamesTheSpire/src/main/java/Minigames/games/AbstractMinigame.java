@@ -2,6 +2,7 @@ package Minigames.games;
 
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.patches.Input;
+import Minigames.util.QueuedSound;
 import basemod.interfaces.TextReceiver;
 import basemod.patches.com.megacrit.cardcrawl.helpers.input.ScrollInputProcessor.TextInput;
 import com.badlogic.gdx.graphics.Color;
@@ -9,10 +10,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+
+import java.util.PriorityQueue;
 
 import static Minigames.Minigames.makeGamePath;
 
@@ -31,10 +36,13 @@ public abstract class AbstractMinigame implements TextReceiver {
 
     protected float time = 0;
 
-    protected int phase = -2;
+    public int phase = -2;
     //-2: Minigame area fading in.
     //-1: Displaying controls.
     //0 and up: Whatever you want. Use a switch statement, just stay at 0, doesn't really matter.
+
+    //A sound thing, if you want it
+    public final PriorityQueue<QueuedSound> queuedSounds = new PriorityQueue<>();
 
     //Rendering stuff
     //640x640
@@ -47,8 +55,8 @@ public abstract class AbstractMinigame implements TextReceiver {
     private final Color c;
 
     //background
-    private static final int BG_SIZE = 648;
-    private Texture background;
+    public static final int BG_SIZE = 648;
+    protected Texture background;
 
     public AbstractMinigame()
     {
@@ -108,7 +116,15 @@ public abstract class AbstractMinigame implements TextReceiver {
         if (scaleProgress < scaleTime)
         {
             scaleProgress += elapsed;
-            setScale(Interpolation.linear.apply(initialScale, targetScale, Math.min(1, scaleProgress / scaleTime)));
+            this.scale = Interpolation.linear.apply(initialScale, targetScale, Math.min(1, scaleProgress / scaleTime));
+        }
+
+        QueuedSound s = queuedSounds.peek();
+        while (s != null && time > s.time)
+        {
+            CardCrawlGame.sound.play(s.key);
+            queuedSounds.remove();
+            s = queuedSounds.peek();
         }
 
         switch (phase) {
@@ -126,7 +142,7 @@ public abstract class AbstractMinigame implements TextReceiver {
             case -1:
                 time += elapsed;
 
-                if (time > (Settings.FAST_MODE ? 2.5f : 4.0f))
+                if (time > (Settings.FAST_MODE ? 0.2f : 0.5f))
                 {
                     time = 0;
                     phase = 0;
@@ -158,6 +174,14 @@ public abstract class AbstractMinigame implements TextReceiver {
     {
         sb.draw(t, x + cX - baseWidth / 2.0f, y + cY - baseHeight / 2.0f, -(cX - baseWidth / 2.0f), -(cY - baseHeight / 2.0f), baseWidth, baseHeight, scale, scale, this.angle + angle, 0, 0, baseWidth, baseHeight, flipX, flipY);
     }
+    public void drawTexture(SpriteBatch sb, Texture t, float x, float y, float width, float height, float angle, int originWidth, int originHeight, boolean flipX, boolean flipY)
+    {
+        sb.draw(t, this.x + x, this.y + y, -x, -y, width, height, scale, scale, this.angle + angle, 0, 0, originWidth, originHeight, flipX, flipY);
+    }
+    public void drawTexture(SpriteBatch sb, Texture t, float x, float y, float width, float height, float angle, int originX, int originY, int originWidth, int originHeight, boolean flipX, boolean flipY)
+    {
+        sb.draw(t, this.x + x, this.y + y, -x, -y, width, height, scale, scale, this.angle + angle, originX, originY, originWidth, originHeight, flipX, flipY);
+    }
 
 
     // Position/Scale control
@@ -169,6 +193,9 @@ public abstract class AbstractMinigame implements TextReceiver {
     public void setScale(float newScale)
     {
         this.scale = newScale;
+        this.initialScale = scale;
+        this.scaleProgress = 1;
+        this.scaleTime = 1;
     }
 
     public void transformScale(float targetScale, float time)
@@ -181,25 +208,23 @@ public abstract class AbstractMinigame implements TextReceiver {
 
     public float getMaxScale()
     {
+        return Settings.scale; // eh this is just simpler and will be more consistent.
+
+        /*
         float maxSize = 0.8f * Math.min(Settings.WIDTH, Settings.HEIGHT); //Settings.HEIGHT will pretty much always be smaller but maybe someone fucked with something, who knows
 
-        float ratio = ((int)(maxSize / SIZE * 2)) / 2.0f; //round to lower 0.5f
+        float ratio = ((int)(maxSize / SIZE * 4)) / 4.0f; //round to lower 0.25f
 
-        if (ratio < 0.5f)
+        if (ratio < 0.25f) //wtf
         {
             ratio = maxSize / SIZE;
         }
 
-        return ratio;
+        return ratio;*/
     }
 
-    public void getReward() {
-        //figure out how this works later
-    }
-
-    public enum MINIGAME_RESULT {
-        SUCCESS, //maybe some in-between results idk
-        FAILURE
+    public String getOption() {
+        return "[wow] this is just hardcoded! (Please don't hardcode your strings.)";
     }
 
     //Input binding stuff
@@ -218,11 +243,47 @@ public abstract class AbstractMinigame implements TextReceiver {
     public Vector2 getRelativeVector(Vector2 base)
     {
         Vector2 cpy = base.cpy();
-        cpy.x -= x;
+        cpy.x -= x; //convert to be based on centerpoint of area
         cpy.y -= y;
+
+        cpy.scl(1 / scale); //scaling
 
         return cpy;
     }
+
+    public boolean hasInstructionScreen = true;
+    public void setupInstructionScreen(GenericEventDialog event) {
+        event.updateBodyText("UPDATE BODY TEXT\n\nSet hasInstructionScreen to false in your constructor if you have no instructions!");
+        event.setDialogOption("This event has no instructions!");
+    }
+    public boolean instructionsButtonPressed(int buttonIndex) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages of instructions.
+        //Return true here to start the game.
+        return true;
+    }
+    public boolean instructionsButtonPressed(int buttonIndex, GenericEventDialog event) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages of instructions.
+        //Return true here to start the game.
+        return instructionsButtonPressed(buttonIndex);
+    }
+
+    public boolean hasPostgameScreen = true;
+    public void setupPostgameScreen(GenericEventDialog event) {
+        event.updateBodyText("UPDATE BODY TEXT\n\nSet hasPostgameScreen to false in your constructor if you have no post-game screen!");
+        event.setDialogOption("This event has no special postgame screen!");
+    }
+    public boolean postgameButtonPressed(int buttonIndex) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages.
+        //Return true here to go to ending of event.
+        return true;
+    }
+    public boolean postgameButtonPressed(int buttonIndex, GenericEventDialog event) {
+        //If you wanna do fancy stuff, you can track pages in your event and have multiple pages.
+        //Return true here to go to ending of event.
+        return postgameButtonPressed(buttonIndex);
+    }
+
+
 
 
     //This class implements TextReceiver to not screw over the console when it disables input, by being compatible with basemod's text input stuff.
@@ -259,4 +320,20 @@ public abstract class AbstractMinigame implements TextReceiver {
         }
         return false;
     }
+
+    //for when we need minigames to have conditional spawning I guess
+    public boolean canSpawn() {
+        return true;
+    }
+
+    // TODO: Figure out actNum behaviour - and switch if necessary
+
+    // Determines if a minigame can spawn in the event ActOneArcade
+    public boolean canSpawnInActOneEvent(){ return true; }
+    // Determines if a minigame can spawn in the event ActTwoArcade
+    public boolean canSpawnInActTwoEvent(){ return true; }
+    // Determines if a minigame can spawn in the event ActTwoArcade
+    public boolean canSpawnInActThreeEvent(){ return true; }
+
+    public abstract AbstractMinigame makeCopy();
 }

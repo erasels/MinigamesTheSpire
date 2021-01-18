@@ -32,7 +32,7 @@ public class TextureLoader {
                 loadTexture(textureString);
             } catch (GdxRuntimeException e) {
                 logger.error("Could not find texture: " + textureString);
-                return getTexture("spicyShopResources/img/ui/missing_texture.png");
+                return getTexture("minigamesResources/img/ui/missing_texture.png");
             }
         }
         return textures.get(textureString);
