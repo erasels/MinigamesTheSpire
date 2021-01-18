@@ -9,12 +9,14 @@
     ]
   },
   "${ModID}:SlimePopper": {
-    "NAME": "Test Slime Popper",
+    "NAME": "[Slime Popper] Play a retro-looking slime themed game.",
     "DESCRIPTIONS": [
-      "Test Slime Popper"
+      "Pop as many slimes as you can.",
+      "Looks like you win a prize!"
     ],
     "OPTIONS": [
-      "Start"
+      "[Begin] Let's pop some slimes!",
+      "[Leave] Well, that was...interesting."
     ]
   },
   "${ModID}:ActOneArcade": {
@@ -78,10 +80,22 @@
   "${ModID}:BeatPress": {
     "NAME": "Beat Press",
     "DESCRIPTIONS": [
-      "Press whatever button you want! Just make sure you time it right."
+      "Use the mouse or any button you want to hit the balls! Just make sure you time it right.",
+      "You feel like the machine is #rlaughing at you.",
+      "The machine spits a ~barrage~ of ~balls~ at you! It doesn't hurt very much, but it certainly feels insulting.",
+      "The machine #y~glows~ briefly, and you find that you feel just a bit better than you did before.",
+      "You feel #b~perfect.~"
     ],
     "OPTIONS": [
-      "Start"
+      "[Beat Press] Demonstrate your rhythm and precision.",
+      "[Start] Ready?",
+      "[Finish]",
+      "[Ouch] #rLose #r1 #rHP.",
+      "[Renewed] #gHeal #g",
+      "[Perfection] #gMax #gHP #g+",
+      " #gHP.",
+      ". #gHeal #g",
+      ". #gHeal #gto #gfull #gHP."
     ]
   },
   "${ModID}:MastermindMinigame": {
@@ -131,7 +145,54 @@
       "#g[Easy] #gCommon Rewards or #rCursed - #rInjury.",
       "#b[Medium] #bUncommon Rewards or #rCursed - #rRegret.",
       "#y[Hard] #yRare Rewards or #rCursed - #rNormality.",
-      "[Leave]",
+      "[Leave]"
+    ]
+  },
+  "${ModID}:SlidePuzzle": {
+    "NAME": "[Slide Puzzle] Solve a Puzzle!",
+    "DESCRIPTIONS": [
+      "Can you ~solve~ ~the~ ~puzzle?~ Put as many pieces into the correct spot as you can within the #rtime #rlimit! The more you #ysolve, the more you #gwin!",
+      "Uh oh! #r@Time@ #r@ran@ #r@out!@ You'll just have to make do with the #gprizes you were able to get.",
+      "@Congratulations!@ You won the #g~grand~ #g~prize!~ You also get #yBonus #yGold for doing it so quickly!"
+    ],
+    "OPTIONS": [
+      "[Start]",
+      " #b4x4 puzzle, #r90 seconds.",
+      " #b3x3 puzzle, #r45 seconds.",
+      "[Collect] #gObtain #gRewards.",
+      " Gold",
+      "Common Potion",
+      "Common Card",
+      "Common Relic",
+      "Uncommon Potion",
+      "Uncommon Card",
+      "Uncommon Relic",
+      "Rare Potion",
+      "Rare Card",
+      "Rare Relic"
+    ]
+  },
+  "${ModID}:RubikCube": {
+    "NAME": "[Puzzle Cube] Unscramble the Cube!",
+    "DESCRIPTIONS": [
+      "Unscramble the cube within the time limit. NL NL Controls: NL #yLeft #yclick a side of the cube to rotate it. NL #yRight #yclick and drag to rotate the entire cube."
+    ],
+    "OPTIONS": [
+      "[Start]"
+    ]
+  },
+  "${ModID}:JellyDrop": {
+    "NAME": "[Jelly Drop] Get rid of falling jellies!",
+    "DESCRIPTIONS": [
+      "Get rid of falling jellies in this fun puzzle game! NL NL Connect 4 or more jellies of the same color to make them disappear! NL NL Arrow key (Left, Right) - Move NL Arrow key (Down) - Fall faster NL Arrow key (Up) or X key - Rotate clockwise NL Z key - Rotate counter-clockwise",
+      "Congratulations! NL NL You became the professional Jelly Drop player and got all the prizes.",
+      "Nice! NL NL You quickly grab the rewards.",
+      "Ouch! NL NL You barely got through the jelly mayhem. NL You are relieved, but return empty handed."
+    ],
+    "OPTIONS": [
+      "[Start] Play for #b80 seconds.",
+      "[Collect] #gObtain #gRewards.",
+      "[Leave]"
     ]
   }
 }

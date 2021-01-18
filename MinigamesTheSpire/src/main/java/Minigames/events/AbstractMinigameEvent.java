@@ -1,7 +1,7 @@
 package Minigames.events;
 
 import Minigames.games.AbstractMinigame;
-import com.badlogic.gdx.Gdx;
+import Minigames.util.HelperClass;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.AbstractImageEvent;
@@ -21,6 +21,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
         if (game != null)
         {
             game.dispose(); //player quit in middle of a minigame, dispose the old one.
+            game = null;
         }
 
         //TODO - Decide if alt music should play for all minigames.  Is currently only playing in Shell Game.  Could also play only during minigame time.
@@ -78,7 +79,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
     public void update() {
         if (game != null && game.playing())
         {
-            game.update(Gdx.graphics.getRawDeltaTime()); //no superfast mode shenangnagiagngas
+            game.update(HelperClass.getTime()); //no superfast mode shenangnagiagngas
 
             if (game.gameDone())
             {
