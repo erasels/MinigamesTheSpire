@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.spine.*;
@@ -71,6 +72,8 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
     public Color victoryColor = null;
     private float VICTORY_RAINBOW_SPEED;
     private float colorTimer;
+    private Color timerColor = Color.WHITE.cpy();
+    private float timerScale = 1.0f;
 
     //rewards calculation
     private int rewardsCount = 0;
@@ -255,6 +258,12 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         //update scoreboard
         tallyRewards(false);
         duration -= elapsed;
+        if (duration < 5.0f) {
+            timerColor = Color.RED.cpy();
+            timerScale = 1.0f + Interpolation.circleIn.apply(duration - (float)Math.floor(duration));
+        } else if (duration < 10.0f) {
+            timerColor = Color.YELLOW.cpy();
+        }
         if (duration <= 0.0f && !success) {
             state = GameState.DEFEAT;
             duration = DEFEAT_TIMER;
@@ -420,7 +429,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         float xOffset = -100.0f;
         float yOffset = 100.0f;
         if (state == GameState.PLAYING) {
-            FontHelper.renderFontCentered(sb, FontHelper.energyNumFontPurple, String.valueOf((int)Math.ceil(duration)), (Settings.WIDTH / 2.0f) + (bgSize / 2.0f) + (xOffset * Settings.scale), (Settings.HEIGHT / 2.0f) + (yOffset * Settings.scale), Color.WHITE.cpy(), 3.0f * Settings.scale);
+            FontHelper.renderFontCentered(sb, FontHelper.energyNumFontPurple, String.valueOf((int)Math.ceil(duration)), (Settings.WIDTH / 2.0f) + (bgSize / 2.0f) + (xOffset * Settings.scale), (Settings.HEIGHT / 2.0f) + (yOffset * Settings.scale), timerColor.cpy(), (3.0f * Settings.scale) * timerScale);
         }
         if (victoryColor != null) {
             FontHelper.renderFontCentered(sb, FontHelper.energyNumFontPurple, String.valueOf((int)Math.ceil(victoryTime)), (Settings.WIDTH / 2.0f) + (bgSize / 2.0f) + (xOffset * Settings.scale), (Settings.HEIGHT / 2.0f) + (yOffset * Settings.scale), victoryColor.cpy(), 3.0f * Settings.scale);
