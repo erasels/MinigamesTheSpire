@@ -174,7 +174,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
 
     @Override
     public float getMaxScale() {
-        return 1.3f * Settings.scale;
+        return 1.35f * Settings.scale;
     }
 
     @Override
