@@ -276,7 +276,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             timerColor = Color.YELLOW.cpy();
         }
         if (duration <= 0.0f && !success) {
-            CardCrawlGame.sound.play("ATTACK_BOWLING");
+            CardCrawlGame.sound.play("DEATH_STINGER");
             state = GameState.DEFEAT;
             duration = DEFEAT_TIMER;
         }
@@ -318,6 +318,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
             victoryColor = new Color(0, 0, 0, 1);
 
             //set the tiles to explode to random spots
+            CardCrawlGame.sound.play("ATTACK_BOWLING");
             for (Tile[] row : board) {
                 for (Tile tile : row) {
                     tile.setMovement(convertToBoardPosition(getRandomPoint(), false), (DEFEAT_TIMER * 9.0f / 10.0f));
