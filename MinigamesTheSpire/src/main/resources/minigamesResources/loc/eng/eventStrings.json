@@ -1,11 +1,13 @@
 {
   "${ModID}:Test": {
-    "NAME": "Test",
+    "NAME": "Test Minigames",
     "DESCRIPTIONS": [
-      "#r@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@"
+      "#r@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@",
+      ""
     ],
     "OPTIONS": [
-      "Begin"
+      "Begin",
+      ""
     ]
   },
   "${ModID}:SlimePopper": {
