@@ -115,9 +115,9 @@ public class Shell {
         sb.setColor(1F, 1F, 1F, alpha);
 
         if (this.hb.hovered && parent.phase == 3) {
-            sb.draw(hoveredShellTex, x + shellOffsetX, y + shellOffsetY - (hoveredShellTex.getHeight() / 2), hoveredShellTex.getWidth() * scale, hoveredShellTex.getHeight() * scale);
+            sb.draw(hoveredShellTex, x + shellOffsetX, y + shellOffsetY - (hoveredShellTex.getHeight() / 2f), hoveredShellTex.getWidth() * scale, hoveredShellTex.getHeight() * scale);
         } else {
-            sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY - (shellTex.getHeight() / 2), shellTex.getWidth() * scale, shellTex.getHeight() * scale);
+            sb.draw(shellTex, x + shellOffsetX, y + shellOffsetY - (shellTex.getHeight() / 2f), shellTex.getWidth() * scale, shellTex.getHeight() * scale);
         }
 
         hb.render(sb);

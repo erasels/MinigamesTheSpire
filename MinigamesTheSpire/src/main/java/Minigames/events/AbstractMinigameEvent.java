@@ -1,7 +1,7 @@
 package Minigames.events;
 
 import Minigames.games.AbstractMinigame;
-import com.badlogic.gdx.Gdx;
+import Minigames.util.HelperClass;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.events.AbstractImageEvent;
@@ -79,7 +79,7 @@ public abstract class AbstractMinigameEvent extends AbstractImageEvent {
     public void update() {
         if (game != null && game.playing())
         {
-            game.update(Gdx.graphics.getRawDeltaTime()); //no superfast mode shenangnagiagngas
+            game.update(HelperClass.getTime()); //no superfast mode shenangnagiagngas
 
             if (game.gameDone())
             {
