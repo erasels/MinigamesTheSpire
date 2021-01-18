@@ -3,7 +3,6 @@ package Minigames.games.slidepuzzle;
 import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
-import basemod.ReflectionHacks;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -405,7 +404,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
         }
 
         //render game timer
-        int bgSize = ReflectionHacks.getPrivateInherited(this, SlidePuzzleMinigame.class, "BG_SIZE");
+        float bgSize = BG_SIZE * getMaxScale();
         float xOffset = -100.0f;
         float yOffset = 100.0f;
         if (state == GameState.PLAYING) {
@@ -571,7 +570,7 @@ public class SlidePuzzleMinigame extends AbstractMinigame {
 
     //returns a random point in or reasonably near the game background
     private Vector2 getRandomPoint() {
-        int bgSize = ReflectionHacks.getPrivateInherited(this, SlidePuzzleMinigame.class, "BG_SIZE");
+        float bgSize = BG_SIZE * getMaxScale();
         Vector2 retVal = new Vector2();
         retVal.x = AbstractDungeon.miscRng.random((Settings.WIDTH / 2.0f) - bgSize, (Settings.WIDTH / 2.0f) + bgSize);
         retVal.y = AbstractDungeon.miscRng.random((Settings.HEIGHT / 2.0f) - bgSize, (Settings.HEIGHT / 2.0f) + bgSize);
