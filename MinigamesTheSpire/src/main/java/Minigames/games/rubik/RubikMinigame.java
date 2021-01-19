@@ -62,13 +62,13 @@ public class RubikMinigame extends AbstractMinigame
 
         switch (AbstractDungeon.actNum) {
             case 1:
-                timer = 120f;
+                timer = 150f;
                 break;
             case 2:
-                time = 90f;
+                time = 120f;
                 break;
             default:
-                time = 60f;
+                time = 90f;
                 break;
         }
         startTimer = timer;
@@ -424,7 +424,7 @@ public class RubikMinigame extends AbstractMinigame
         rotate();
 
         if (isSolved()) {
-            AbstractRelic relic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.COMMON);
+            AbstractRelic relic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.UNCOMMON);
             AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2f, Settings.HEIGHT / 2f, relic);
             isDone = true;
         }
