@@ -4,6 +4,7 @@ import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.fishing.FishingGame;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.input.bindings.InputBinding;
 import Minigames.games.input.bindings.MouseHoldObject;
 import Minigames.util.HelperClass;
 import basemod.Pair;
@@ -34,6 +35,7 @@ import java.util.*;
 public class RubikMinigame extends AbstractMinigame
 {
     public static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(Minigames.makeID("RubikCube"));
+    private static final String GIVE_UP = "Q";
 
     private PerspectiveCamera camera;
     private FrameBuffer fbo;
@@ -359,6 +361,12 @@ public class RubikMinigame extends AbstractMinigame
     {
         BindingGroup bindings = new BindingGroup();
 
+        bindings.addBinding(InputBinding.create(GIVE_UP, new InputBinding.InputInfo(Input.Keys.Q)));
+        bindings.bind(
+                GIVE_UP,
+                () -> timer = -1
+        );
+
         bindings.addMouseBind(
                 (x, y, pointer) -> {
                         if (isWithinArea(x, y)) {
@@ -476,7 +484,13 @@ public class RubikMinigame extends AbstractMinigame
         } else {
             c = Color.RED;
         }
-        FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (standardFontWidth/2f), fontHeight + (20f * Settings.scale), c);
+        FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (standardFontWidth/2f), fontHeight + (60f * Settings.scale), c);
+
+        msg = String.format(eventStrings.OPTIONS[1], GIVE_UP);
+        float width = FontHelper.getWidth(font, msg, 0.7f);
+        font.getData().setScale(0.7f);
+        FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (width/2f), fontHeight + (15f * Settings.scale), Color.RED);
+        font.getData().setScale(1f);
     }
 
     @Override
