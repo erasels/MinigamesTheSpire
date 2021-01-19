@@ -486,11 +486,10 @@ public class RubikMinigame extends AbstractMinigame
         }
         FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (standardFontWidth/2f), fontHeight + (60f * Settings.scale), c);
 
+        font = FontHelper.charDescFont;
         msg = String.format(eventStrings.OPTIONS[1], GIVE_UP);
-        float width = FontHelper.getWidth(font, msg, 0.7f);
-        font.getData().setScale(0.7f);
+        float width = FontHelper.getWidth(font, msg, font.getScaleX());
         FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (width/2f), fontHeight + (15f * Settings.scale), Color.RED);
-        font.getData().setScale(1f);
     }
 
     @Override
