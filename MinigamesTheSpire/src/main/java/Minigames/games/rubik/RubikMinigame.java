@@ -40,6 +40,8 @@ public class RubikMinigame extends AbstractMinigame
     private Environment environment;
     private Model model;
     private ModelInstance instance;
+    private Model hbModel;
+    private ModelInstance hb;
 
     private Vector2 lastMousePos;
     private Vector3 clickedSide = null;
@@ -85,6 +87,13 @@ public class RubikMinigame extends AbstractMinigame
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
 
         ModelBuilder modelBuilder = new ModelBuilder();
+        hbModel = modelBuilder.createBox(
+                8.2f, 8.2f, 8.2f,
+                new Material(ColorAttribute.createDiffuse(Color.MAGENTA)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal
+        );
+        hb = new ModelInstance(hbModel);
+
         modelBuilder.begin();
         modelBuilder.node().id = "back_top_right";
         faceTranslation.set(2.1f, 2.1f, 2.1f);
@@ -191,6 +200,7 @@ public class RubikMinigame extends AbstractMinigame
         super.dispose();
 
         mb.dispose();
+        hbModel.dispose();
         model.dispose();
         fbo.dispose();
     }
@@ -356,7 +366,7 @@ public class RubikMinigame extends AbstractMinigame
                                 y -= Settings.HEIGHT / 2;
                                 Ray ray = getPickRay(x, y);
                                 Renderable rend = new Renderable();
-                                Mesh mesh = instance.getRenderable(rend).meshPart.mesh;
+                                Mesh mesh = hb.getRenderable(rend).meshPart.mesh;
                                 List<Vector3> triangles = new ArrayList<>();
 
                                 int vertexSize = mesh.getVertexSize() / 4;
@@ -374,7 +384,7 @@ public class RubikMinigame extends AbstractMinigame
 
                                 Vector3 intersect = new Vector3();
                                 if (Intersector.intersectRayTriangles(ray, triangles, intersect)) {
-                                    intersect.mul(instance.transform.cpy().inv());
+                                    intersect.mul(hb.transform.cpy().inv());
                                     clickedSide = longestAxis(intersect);
                                 }
                             }
@@ -393,6 +403,7 @@ public class RubikMinigame extends AbstractMinigame
                             cameraToObject.inv();
                             Vector3 axisInObjCoord = axisInCamCoord.mul(cameraToObject);
                             instance.transform.rotate(axisInObjCoord, 2f * angle * MathUtils.radiansToDegrees);
+                            hb.transform.set(instance.transform);
 
                             lastMousePos = new Vector2(x, y);
                         },
