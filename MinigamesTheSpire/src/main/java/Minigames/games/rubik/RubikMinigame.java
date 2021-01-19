@@ -8,6 +8,7 @@ import Minigames.games.input.bindings.MouseHoldObject;
 import Minigames.util.HelperClass;
 import basemod.Pair;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -298,7 +299,8 @@ public class RubikMinigame extends AbstractMinigame
                     Matrix4 invWorld = new Matrix4().set(node.globalTransform).inv();
                     Vector3 axis = clickedSide.cpy().mul(invWorld);
                     Quaternion start = node.rotation.cpy();
-                    Quaternion end = node.rotation.cpy().mul(new Quaternion(axis, 90));
+                    float angle = (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)) ? 90 : -90;
+                    Quaternion end = node.rotation.cpy().mul(new Quaternion(axis, angle));
                     rotations.put(node.id, new Pair<>(start, end));
                 }
             });

@@ -177,7 +177,7 @@
   "${ModID}:RubikCube": {
     "NAME": "[Puzzle Cube] Unscramble the Cube!",
     "DESCRIPTIONS": [
-      "Unscramble the cube within the time limit. NL NL Controls: NL #yLeft #yclick a side of the cube to rotate it. NL #yRight #yclick and drag to rotate the entire cube."
+      "Unscramble the cube within the time limit. NL NL Controls: NL #yLeft #yclick a side of the cube to rotate it clockwise. NL #yLeft #yclick #y+ #yCtrl a side of the cube to rotate it counterclockwise. NL #yRight #yclick and drag to rotate the entire cube."
     ],
     "OPTIONS": [
       "[Start]"
