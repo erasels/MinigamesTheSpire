@@ -180,7 +180,8 @@
       "Unscramble the cube within the time limit. NL NL Controls: NL #yLeft #yclick a side of the cube to rotate it clockwise. NL #yLeft #yclick #y+ #yCtrl a side of the cube to rotate it counterclockwise. NL #yRight #yclick and drag to rotate the entire cube."
     ],
     "OPTIONS": [
-      "[Start]"
+      "[Start]",
+      "Press %s to Give Up"
     ]
   },
   "${ModID}:JellyDrop": {
