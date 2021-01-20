@@ -6,6 +6,8 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.input.ScrollInputProcessor;
 
+import static Minigames.Minigames.logger;
+
 public class BoundInputProcessor extends ScrollInputProcessor {
     private static final BindingGroup emptyBinding = new BindingGroup();
 
@@ -26,6 +28,7 @@ public class BoundInputProcessor extends ScrollInputProcessor {
         {
             bindings = inactiveBindings;
             inactiveBindings = null;
+            logger.info("Bindings reactivated.");
         }
         bindings.update(elapsed);
     }
@@ -89,6 +92,7 @@ public class BoundInputProcessor extends ScrollInputProcessor {
     public void deactivate() {
         if (bindings != emptyBinding)
         {
+            logger.info("Bindings deactivated. A popup or screen is open.");
             inactiveBindings = bindings;
             bindings = emptyBinding;
         }
