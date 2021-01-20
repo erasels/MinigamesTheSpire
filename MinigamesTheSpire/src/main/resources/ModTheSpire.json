@@ -1,7 +1,7 @@
 {
   "modid": "${ModID}",
   "name": "${project.name}",
-  "author_list": ["erasels"],
+  "author_list": ["erasels", "Alchyr", "Darkglade", "Squeeny", "NotInTheFace", "MichaelMayhem", "Vex", "Kiooeht", "JohnnyDevo", "JohnnyBazooka", "Celicath"],
   "description": "${project.description}",
   "version": "${project.version}",
   "sts_version": "${SlayTheSpire.version}",

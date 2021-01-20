@@ -2,9 +2,7 @@ package Minigames.games.shellgame;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
-import Minigames.games.mastermind.MastermindMinigame;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import Minigames.util.HelperClass;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.curses.Injury;
@@ -14,16 +12,12 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.GenericEventDialog;
-import com.megacrit.cardcrawl.helpers.CardLibrary;
-import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static Minigames.Minigames.getModID;
 import static Minigames.Minigames.makeID;
 
 public class ShellGame extends AbstractMinigame {
@@ -386,7 +380,7 @@ public class ShellGame extends AbstractMinigame {
                         shell3.setEnclosedLocations();
                         timeModifier = 1F;  //Reset time modifier back to normal so the timers aren't still going at lightning speed
                     } else if (timeToBeginNextSwap > 0F) {
-                        timeToBeginNextSwap -= Gdx.graphics.getDeltaTime() * timeModifier;
+                        timeToBeginNextSwap -= elapsed * timeModifier;
                         if (timeToBeginNextSwap <= 0F) {
                             decideSwap();
                         }

@@ -1,20 +1,24 @@
 {
   "${ModID}:Test": {
-    "NAME": "Test",
+    "NAME": "Test Minigames",
     "DESCRIPTIONS": [
-      "#r@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@"
+      "#r@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@",
+      ""
     ],
     "OPTIONS": [
-      "Begin"
+      "Begin",
+      ""
     ]
   },
   "${ModID}:SlimePopper": {
-    "NAME": "Test Slime Popper",
+    "NAME": "[Slime Popper] Play a retro-looking slime themed game.",
     "DESCRIPTIONS": [
-      "Test Slime Popper"
+      "Pop as many slimes as you can.",
+      "Looks like you win a prize!"
     ],
     "OPTIONS": [
-      "Start"
+      "[Begin] Let's pop some slimes!",
+      "[Leave] Well, that was...interesting."
     ]
   },
   "${ModID}:ActOneArcade": {
@@ -28,10 +32,10 @@
     ]
   },
   "${ModID}:ActTwoArcade": {
-    "NAME": "The Popular Stall",
+    "NAME": "The Popular Spot",
     "DESCRIPTIONS": [
-      "You see a group of the City's #plowlifes gathering around a stall, #pthieves and #pmuggers pushing each other to try and get closer. NL NL You unsheathe your weapon, then resheathe it a moment later. The stall's owner gazes up at you, unfazed by your sudden bout of #rviolence. NL NL \"What frightful #yguests I've been having lately! But no matter. How would you like to play a game?\"",
-      "The game ends, and the stall owner #ysmiles at you. NL NL \"Did you have fun? It's always nice to take a breather here in this #psuffocating #pSpire, isn't it?\" NL NL The owner wraps up his wares and vanishes, leaving his parting words ringing in your ear."
+      "You see a group of the City's #plowlifes gathering around a bulky machine, #pthieves and #pmuggers pushing each other to try and get closer. NL NL You unsheathe your weapon, then resheathe it a moment later. The machine responds by playing a little jingle. NL NL \"Are you the next challenger? Choose your game!\"",
+      "The game ends, and the machine plays another ~#yjingle~ mockingly. NL NL \"You were a worthy opponent, come back again!\" NL NL A parting @#rjingle@ plays as you take your leave."
     ],
     "OPTIONS": [
       "[Continue on with your adventure]"
@@ -132,7 +136,7 @@
       "[Leave] Your job here is done."
 	  ]
   },
-  "minigames:ShellGame": {
+  "${ModID}:ShellGame": {
     "NAME": "[Three Shell Monte] Follow the #yprize as it shuffles around!",
     "DESCRIPTIONS": [
       "\"Step right up! #bThree shells, two rewards, one #pgnarly #pCurse! NL NL Keep your eyes on the #yprize or you'll pick your #pdemise! NL NL #bOne try, no do-overs. Are you ready? Let's start!\"",
@@ -173,10 +177,25 @@
   "${ModID}:RubikCube": {
     "NAME": "[Puzzle Cube] Unscramble the Cube!",
     "DESCRIPTIONS": [
-      "Unscramble the cube within the time limit. NL NL Controls: NL #yLeft #yclick a side of the cube to rotate it. NL #yRight #yclick and drag to rotate the entire cube."
+      "Unscramble the cube within the time limit. NL NL Controls: NL #yLeft #yclick a side of the cube to rotate it clockwise. NL #yLeft #yclick #y+ #yCtrl a side of the cube to rotate it counterclockwise. NL #yRight #yclick and drag to rotate the entire cube."
     ],
     "OPTIONS": [
-      "[Start]"
+      "[Start]",
+      "Press %s to Give Up"
+    ]
+  },
+  "${ModID}:JellyDrop": {
+    "NAME": "[Jelly Drop] Get rid of falling jellies!",
+    "DESCRIPTIONS": [
+      "Get rid of falling jellies in this fun puzzle game! NL NL Connect 4 or more jellies of the same color to make them disappear! NL NL Arrow key (Left, Right) - Move NL Arrow key (Down) - Fall faster NL Arrow key (Up) or X key - Rotate clockwise NL Z key - Rotate counter-clockwise",
+      "Congratulations! NL NL You became the professional Jelly Drop player and got all the prizes.",
+      "Nice! NL NL You quickly grab the rewards.",
+      "Ouch! NL NL You barely got through the jelly mayhem. NL You are relieved, but return empty handed."
+    ],
+    "OPTIONS": [
+      "[Start] Play for #b80 seconds.",
+      "[Collect] #gObtain #gRewards.",
+      "[Leave]"
     ]
   }
 }

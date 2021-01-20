@@ -4,10 +4,12 @@ import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.fishing.FishingGame;
 import Minigames.games.input.bindings.BindingGroup;
+import Minigames.games.input.bindings.InputBinding;
 import Minigames.games.input.bindings.MouseHoldObject;
 import Minigames.util.HelperClass;
 import basemod.Pair;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,6 +35,7 @@ import java.util.*;
 public class RubikMinigame extends AbstractMinigame
 {
     public static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(Minigames.makeID("RubikCube"));
+    private static final String GIVE_UP = "Q";
 
     private PerspectiveCamera camera;
     private FrameBuffer fbo;
@@ -40,6 +43,8 @@ public class RubikMinigame extends AbstractMinigame
     private Environment environment;
     private Model model;
     private ModelInstance instance;
+    private Model hbModel;
+    private ModelInstance hb;
 
     private Vector2 lastMousePos;
     private Vector3 clickedSide = null;
@@ -59,13 +64,13 @@ public class RubikMinigame extends AbstractMinigame
 
         switch (AbstractDungeon.actNum) {
             case 1:
-                timer = 120f;
+                timer = 150f;
                 break;
             case 2:
-                time = 90f;
+                time = 120f;
                 break;
             default:
-                time = 60f;
+                time = 90f;
                 break;
         }
         startTimer = timer;
@@ -85,6 +90,13 @@ public class RubikMinigame extends AbstractMinigame
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
 
         ModelBuilder modelBuilder = new ModelBuilder();
+        hbModel = modelBuilder.createBox(
+                8.2f, 8.2f, 8.2f,
+                new Material(ColorAttribute.createDiffuse(Color.MAGENTA)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal
+        );
+        hb = new ModelInstance(hbModel);
+
         modelBuilder.begin();
         modelBuilder.node().id = "back_top_right";
         faceTranslation.set(2.1f, 2.1f, 2.1f);
@@ -191,6 +203,7 @@ public class RubikMinigame extends AbstractMinigame
         super.dispose();
 
         mb.dispose();
+        hbModel.dispose();
         model.dispose();
         fbo.dispose();
     }
@@ -288,7 +301,8 @@ public class RubikMinigame extends AbstractMinigame
                     Matrix4 invWorld = new Matrix4().set(node.globalTransform).inv();
                     Vector3 axis = clickedSide.cpy().mul(invWorld);
                     Quaternion start = node.rotation.cpy();
-                    Quaternion end = node.rotation.cpy().mul(new Quaternion(axis, 90));
+                    float angle = (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)) ? 90 : -90;
+                    Quaternion end = node.rotation.cpy().mul(new Quaternion(axis, angle));
                     rotations.put(node.id, new Pair<>(start, end));
                 }
             });
@@ -347,6 +361,12 @@ public class RubikMinigame extends AbstractMinigame
     {
         BindingGroup bindings = new BindingGroup();
 
+        bindings.addBinding(InputBinding.create(GIVE_UP, new InputBinding.InputInfo(Input.Keys.Q)));
+        bindings.bind(
+                GIVE_UP,
+                () -> timer = -1
+        );
+
         bindings.addMouseBind(
                 (x, y, pointer) -> {
                         if (isWithinArea(x, y)) {
@@ -356,7 +376,7 @@ public class RubikMinigame extends AbstractMinigame
                                 y -= Settings.HEIGHT / 2;
                                 Ray ray = getPickRay(x, y);
                                 Renderable rend = new Renderable();
-                                Mesh mesh = instance.getRenderable(rend).meshPart.mesh;
+                                Mesh mesh = hb.getRenderable(rend).meshPart.mesh;
                                 List<Vector3> triangles = new ArrayList<>();
 
                                 int vertexSize = mesh.getVertexSize() / 4;
@@ -374,7 +394,7 @@ public class RubikMinigame extends AbstractMinigame
 
                                 Vector3 intersect = new Vector3();
                                 if (Intersector.intersectRayTriangles(ray, triangles, intersect)) {
-                                    intersect.mul(instance.transform.cpy().inv());
+                                    intersect.mul(hb.transform.cpy().inv());
                                     clickedSide = longestAxis(intersect);
                                 }
                             }
@@ -393,6 +413,7 @@ public class RubikMinigame extends AbstractMinigame
                             cameraToObject.inv();
                             Vector3 axisInObjCoord = axisInCamCoord.mul(cameraToObject);
                             instance.transform.rotate(axisInObjCoord, 2f * angle * MathUtils.radiansToDegrees);
+                            hb.transform.set(instance.transform);
 
                             lastMousePos = new Vector2(x, y);
                         },
@@ -411,7 +432,7 @@ public class RubikMinigame extends AbstractMinigame
         rotate();
 
         if (isSolved()) {
-            AbstractRelic relic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.COMMON);
+            AbstractRelic relic = AbstractDungeon.returnRandomScreenlessRelic(AbstractRelic.RelicTier.UNCOMMON);
             AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2f, Settings.HEIGHT / 2f, relic);
             isDone = true;
         }
@@ -463,7 +484,12 @@ public class RubikMinigame extends AbstractMinigame
         } else {
             c = Color.RED;
         }
-        FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (standardFontWidth/2f), fontHeight + (20f * Settings.scale), c);
+        FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (standardFontWidth/2f), fontHeight + (60f * Settings.scale), c);
+
+        font = FontHelper.charDescFont;
+        msg = String.format(eventStrings.OPTIONS[1], GIVE_UP);
+        float width = FontHelper.getWidth(font, msg, font.getScaleX());
+        FontHelper.renderFontLeftTopAligned(sb, font, msg, (Settings.WIDTH / 2.0F) - (width/2f), fontHeight + (15f * Settings.scale), Color.RED);
     }
 
     @Override

@@ -14,8 +14,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.GenericEventDialog;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
+import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
@@ -57,6 +59,12 @@ public class SlimePopper extends AbstractMinigame {
 
     private final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(makeID("SlimePopper"));
     private final Map<String, String> dict = uiStrings.TEXT_DICT;
+    private final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(makeID("SlimePopper"));
+
+    public SlimePopper() {
+        hasInstructionScreen = false;
+        hasPostgameScreen = true;
+    }
 
     @Override
     public void initialize() {
@@ -72,6 +80,20 @@ public class SlimePopper extends AbstractMinigame {
         atlas = assetManager.get(ASSET_PATH, TextureAtlas.class);
         background = assetManager.get(BACKGROUND_PATH, Texture.class);
         items = new ArrayList<>();
+    }
+
+    @Override
+    public String getOption() {
+        return eventStrings.NAME;
+    }
+
+    @Override
+    public void setupPostgameScreen(GenericEventDialog event) {
+        GenericEventDialog.show();
+        event.updateBodyText(eventStrings.DESCRIPTIONS[1]);
+        event.setDialogOption(eventStrings.OPTIONS[1]);
+        AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
+        AbstractDungeon.combatRewardScreen.open();
     }
 
     @Override

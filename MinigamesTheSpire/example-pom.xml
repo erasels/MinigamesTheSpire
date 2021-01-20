@@ -5,9 +5,9 @@
     <!--The author name(s) as they appear in MTS and any other comments are in your ModTheSpire.json-->
     <groupId>UpdateBodyText</groupId>
     <artifactId>MinigamesTheSpire</artifactId>
-    <name>Minigames The Spire</name>
-    <version>0.0.1</version>
-    <description>Adds a bunch of minigames to the Spire.</description>
+    <name>Spire Arcade</name>
+    <version>1.0.0</version>
+    <description>Third modding anniversary project. This mod adds a bunch of minigames to the Spire which can be encountered via an event which you can stumble upon in any act.</description>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -15,7 +15,7 @@
         <SlayTheSpire.version>01-23-2019</SlayTheSpire.version>
         <ModTheSpire.version>3.18.2</ModTheSpire.version>
         <ModID>minigames</ModID>
-        <JarName>Minigames</JarName>
+        <JarName>SpireArcade</JarName>
         <!--CHANGE THIS TO YOUR STEAM INSTALLATION-->
         <Steam.path>K:/Steam/steamapps</Steam.path>
     </properties>
@@ -49,6 +49,23 @@
             <scope>system</scope>
             <systemPath>${Steam.path}/workshop/content/646570/1609158507/StSLib.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-box2d</artifactId>
+            <version>1.9.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.badlogicgames.gdx</groupId>
+                    <artifactId>gdx</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-box2d-platform</artifactId>
+            <classifier>natives-desktop</classifier>
+            <version>1.9.5</version>
+        </dependency>
     </dependencies>
 
 
@@ -58,12 +75,25 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*.psd</exclude>
-						<exclude>**/*.pdn</exclude>
+                        <exclude>**/*.pdn</exclude>
                     </excludes>
                 </configuration>
             </plugin>
