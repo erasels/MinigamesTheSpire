@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 
@@ -41,7 +42,13 @@ public class PopperItem {
         animTime = 0;
     }
 
-    private static final float DEATH_TIME = 0.1f * 7;
+    public void startDeath() {
+        isDying = true;
+        setAnimation("slimeDie");
+        CardCrawlGame.sound.play("MONSTER_SLIME_ATTACK");
+    }
+
+    protected float DEATH_TIME = 0.1f * 7;
     public void update(float elapsed) {
         animTime += elapsed;
         frame = animation.getKeyFrame(animTime, true);
@@ -56,11 +63,17 @@ public class PopperItem {
     }
 
     public void render(SpriteBatch sb) {
-        sb.draw(frame, hb.x, hb.y);
+        float w = hb.width;
+        float h = hb.height;
+        float w2 = w / 2f;
+        float h2 = h / 2f;
+        sb.draw(frame, hb.cX - w2, hb.cY - h2, -(hb.cX - w2), -(hb.cY - h2), w, h, Settings.scale, Settings.scale, 0f);
     }
 
     public enum TYPE {
         LOUSE,
-        SLIME
+        SLIME,
+        BOSS,
+        MED
     }
 }

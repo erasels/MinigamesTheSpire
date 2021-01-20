@@ -2,7 +2,6 @@ package Minigames.games.slimePopper;
 
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
-import Minigames.games.mastermind.MastermindMinigame;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,7 +23,9 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static Minigames.Minigames.makeID;
 
@@ -44,10 +45,16 @@ public class SlimePopper extends AbstractMinigame {
 
 
     private ArrayList<PopperItem> items;
-    private final float minX = x - SIZE * 0.5f * Settings.scale;
-    private final float maxX = x + SIZE * 0.5f * Settings.scale - PopperItem.SIZE;
-    private final float minY = y - SIZE * 0.5f * Settings.scale;
-    private final float maxY = y + SIZE * 0.5f * Settings.scale - PopperItem.SIZE;
+    private final float scale = Settings.scale;
+    private final float SIZE = 512f;
+    private final float HALF_SIZE = 256f;
+    private final float GUTTER_SIZE = 64f;
+    private final float HALF_GUTTER_SIZE = 32f;
+    private final float SIZE_SCALED = 512 * scale;
+    private final float minX = x - SIZE_SCALED * 0.5f;
+    private final float maxX = x + SIZE_SCALED * 0.5f - PopperItem.SIZE;
+    private final float minY = y - SIZE_SCALED * 0.5f;
+    private final float maxY = y + SIZE_SCALED * 0.5f - PopperItem.SIZE;
 
     private float meterPercent = 0f;
     private boolean meterUp = false;
@@ -96,11 +103,87 @@ public class SlimePopper extends AbstractMinigame {
         AbstractDungeon.combatRewardScreen.open();
     }
 
+    private final Color color = new Color(0xffffff00);
+    private final float fadeTime = Settings.FAST_MODE ? 0.7f : 2f;
+    private float fadeTimeElapsed = 0f;
+
+    private static final float METER_H = 128f * Settings.scale;
+
+    //These methods draw/scale/rotate whatever they are passed based on the scale/position/angle of the minigame.
+    private void draw(SpriteBatch sb, Texture t, float cX, float cY, int size) {
+        draw(sb, t, cX, cY, 0, size, size, false, false);
+    }
+
+    private void draw(SpriteBatch sb, Texture t, float cX, float cY, float angle, int baseWidth, int baseHeight, boolean flipX, boolean flipY) {
+        sb.draw(t, x + cX - baseWidth / 2.0f, y + cY - baseHeight / 2.0f, -(cX - baseWidth / 2.0f), -(cY - baseHeight / 2.0f), baseWidth, baseHeight, scale, scale, this.angle + angle, 0, 0, baseWidth, baseHeight, flipX, flipY);
+    }
+
+    private void draw(SpriteBatch sb, TextureAtlas.AtlasRegion r, float cX, float cY) {
+        float w = r.originalWidth;
+        float h = r.originalHeight;
+        float w2 = w / 2f;
+        float h2 = h / 2f;
+        sb.draw(r, x + cX - w2, y + cY - h2, -(cX - w2), -(cY - h2), w, h, scale, scale, 0f);
+    }
+
+    @Override
+    public void render(SpriteBatch sb) {
+        // render background
+        sb.setColor(color);
+        draw(sb, background, 0, 0, background.getWidth());
+        if (phase == 1) {
+            // render meter
+            float x = (HALF_SIZE + HALF_GUTTER_SIZE) * scale;
+            float y = Interpolation.linear.apply(-x, -x + METER_H, meterPercent);
+            TextureAtlas.AtlasRegion meter = atlas.findRegion("meter");
+            TextureAtlas.AtlasRegion needle = atlas.findRegion("needle");
+            draw(sb, meter, x + HALF_GUTTER_SIZE / 2f, -(HALF_SIZE + HALF_GUTTER_SIZE) + METER_H / 2f);
+            draw(sb, needle, x, y);
+        }
+        items.forEach(i -> i.render(sb));
+        if (phase == 1) {
+            FontHelper.renderFontCentered(sb, FontHelper.smallDialogOptionFont, dict.get("POWER_UP"), x, y - SIZE_SCALED / 4f, Color.GOLD);
+        }
+        if (phase == 4) {
+            FontHelper.renderFontCentered(sb, FontHelper.smallDialogOptionFont, dict.get("AIM"), x, y - SIZE_SCALED / 4f, Color.GOLD);
+        }
+        if (phase == 99) {
+            FontHelper.renderFontCentered(sb, FontHelper.smallDialogOptionFont, dict.get("GAME_OVER"), x, y, Color.GOLD);
+            FontHelper.renderFontCentered(sb, FontHelper.smallDialogOptionFont, String.format(dict.get("SCORE"), popCount), x, y + 64f, Color.GOLD);
+        } else if (phase > 1) {
+            //TODO: render rewards in left gutter
+            FontHelper.renderFontLeftTopAligned(sb,
+                    FontHelper.smallDialogOptionFont,
+                    String.format(dict.get("COUNTER"), popCount),
+                    x - (HALF_SIZE + GUTTER_SIZE / 2f) * scale,
+                    y - (HALF_SIZE + GUTTER_SIZE / 2f) * scale,
+                    Color.GOLD);
+            FontHelper.renderFontLeftTopAligned(sb,
+                    FontHelper.smallDialogOptionFont,
+                    "W",
+                    minX,
+                    minY,
+                    Color.GOLD);
+            FontHelper.renderFontLeftDownAligned(sb,
+                    FontHelper.smallDialogOptionFont,
+                    "X",
+                    maxX,
+                    maxY,
+                    Color.GOLD);
+        }
+    }
+
     @Override
     public void update(float elapsed) {
         super.update(elapsed);
+        float nextY;
         switch (phase) {
+            case -2: //fallthrough
+            case -1:
+                fadeTimeElapsed += elapsed;
+                color.a = Interpolation.fade.apply(fadeTimeElapsed / fadeTime);
             case 0:
+                color.a = 1f;
                 phase = 1;
                 setupBoard1();
                 items.forEach(i -> i.update(elapsed));
@@ -133,13 +216,13 @@ public class SlimePopper extends AbstractMinigame {
             case 5:
                 items.stream().filter(i -> i.type == PopperItem.TYPE.SLIME).forEach(i -> bounce(i, elapsed));
 
-                float nextY = louse3.hb.y + louse3.yVelocity * elapsed;
-                if (nextY >= maxY) {
+                nextY = louse3.hb.cY + louse3.yVelocity * elapsed;
+                if (nextY + PopperItem.SIZE / 2f >= maxY) {
                     phase = 6;
                     items.remove(louse3);
                     louse3 = null;
                 } else {
-                    louse3.hb.moveY(nextY + PopperItem.SIZE / 2f);
+                    louse3.hb.moveY(nextY);
                     louse3.update(elapsed);
                 }
                 collisionDetect();
@@ -152,43 +235,26 @@ public class SlimePopper extends AbstractMinigame {
                 }
                 break;
             case 7:
+                phase = 8;
+                setupBoard3();
+                time = 0;
+                items.forEach(i -> i.update(elapsed));
+                CardCrawlGame.sound.play("DARKLING_REGROW_1");
                 break;
-        }
-    }
-
-    private static final float METER_W = 32f * Settings.scale;
-    private static final float METER_H = 128f * Settings.scale;
-    private static final float NEEDLE_OFFSET = 16f * Settings.scale;
-
-    @Override
-    public void render(SpriteBatch sb) {
-        if (phase >= 0) {
-            // render background
-            sb.setColor(Color.WHITE);
-            drawTexture(sb, background, 0, 0, background.getWidth());
-        }
-        super.render(sb);
-        if (phase == 1) {
-            // render meter
-            float x = maxX;
-            float y = Interpolation.linear.apply(minY, minY + METER_H, meterPercent);
-            TextureAtlas.AtlasRegion meter = atlas.findRegion("meter");
-            TextureAtlas.AtlasRegion needle = atlas.findRegion("needle");
-            sb.draw(meter, x, minY);
-            sb.draw(needle, x - NEEDLE_OFFSET, y - NEEDLE_OFFSET);
-        }
-        items.forEach(i -> i.render(sb));
-        if (phase == 1) {
-            FontHelper.renderFontCentered(sb, FontHelper.smallDialogOptionFont, dict.get("POWER_UP"), x, y - SIZE / 4f, Color.GOLD);
-        }
-        if (phase == 4) {
-            FontHelper.renderFontCentered(sb, FontHelper.smallDialogOptionFont, dict.get("AIM"), x, y - SIZE / 4f, Color.GOLD);
-        }
-        if (phase == 7) {
-            FontHelper.renderFontCentered(sb, FontHelper.smallDialogOptionFont, dict.get("GAME_OVER"), x, y, Color.GOLD);
-            FontHelper.renderFontCentered(sb, FontHelper.smallDialogOptionFont, String.format(dict.get("SCORE"), popCount), x, y + 64f, Color.GOLD);
-        } else if (phase > 1) {
-            FontHelper.renderFontLeftTopAligned(sb, FontHelper.smallDialogOptionFont, String.format(dict.get("COUNTER"), popCount), minX, minY - 32f, Color.GOLD);
+            case 8:
+                if (louse3.isDying) {
+                    nextY = louse3.hb.cY + louse3.yVelocity * elapsed;
+                    if (nextY + PopperItem.SIZE / 2f >= maxY) {
+                        louse3.isDying = false;
+                    } else {
+                        louse3.hb.moveY(nextY);
+                    }
+                } else {
+                    louse3.hb.move(MathUtils.clamp(InputHelper.mX, minX + PopperItem.SIZE, maxX), minY + PopperItem.SIZE * 2f);
+                }
+                items.forEach(i -> i.update(elapsed));
+                collisionDetectBoss();
+                break;
         }
     }
 
@@ -211,7 +277,12 @@ public class SlimePopper extends AbstractMinigame {
             louse3.setAnimation("louseRoll");
             CardCrawlGame.sound.play("BLUNT_FAST");
             phase = 5;
-        } else if (phase == 7) {
+        } else if (phase == 8) {
+            louse3.yVelocity = 800f;
+            louse3.setAnimation("louseRoll");
+            louse3.isDying = true;
+            CardCrawlGame.sound.play("BLUNT_FAST");
+        } else if (phase == 99) {
             isDone = true;
             AbstractRoom room = AbstractDungeon.getCurrRoom();
             room.rewards.clear();
@@ -237,12 +308,12 @@ public class SlimePopper extends AbstractMinigame {
     private void setupBoard1() {
         items.clear();
         louse1 = new PopperItem(PopperItem.TYPE.LOUSE, "louseIdle");
-        louse1.hb.move(minX + PopperItem.SIZE * 1.5f, minY + PopperItem.SIZE / 2f);
+        louse1.hb.move(x - (256f - 64f) * scale, y - (256f - 64f) * scale);
         louse1.friction = true;
         items.add(louse1);
 
         louse2 = new PopperItem(PopperItem.TYPE.LOUSE, "louseIdle");
-        louse2.hb.move(maxX - PopperItem.SIZE, minY + PopperItem.SIZE / 2f);
+        louse2.hb.move(x + (256f - 64f) * scale, y - (256f - 64f) * scale);
         louse2.friction = true;
         items.add(louse2);
 
@@ -278,17 +349,30 @@ public class SlimePopper extends AbstractMinigame {
         }
 
         louse3 = new PopperItem(PopperItem.TYPE.LOUSE, "louseIdle");
-        louse3.hb.move(x, minY + PopperItem.SIZE / 2f);
+        louse3.hb.move(x, minY + PopperItem.SIZE);
         items.add(louse3);
     }
 
+    private void setupBoard3() {
+        items.clear();
+        louse3 = new PopperItem(PopperItem.TYPE.LOUSE, "louseIdle");
+        louse3.hb.move(x, minY + PopperItem.SIZE);
+        items.add(louse3);
+
+        PopperBoss popperBoss = new PopperBoss("bossIdle");
+        popperBoss.hb.move(x, y + 128f);
+        popperBoss.yVelocity = -10f;
+        popperBoss.xVelocity = 50f * MathUtils.randomSign();
+        items.add(popperBoss);
+    }
+
     private void bounce(PopperItem i, float elapsed) {
-        float minX = (phase == 4) ? x - SIZE / 4f : this.minX;
-        float maxX = (phase == 4) ? x + SIZE / 4f : this.maxX;
-        float minY = (phase == 4) ? y - SIZE / 4f : this.minY;
-        float maxY = (phase == 4) ? y + SIZE / 4f : this.maxY;
-        float nextX = i.hb.x + i.xVelocity * elapsed;
-        float nextY = i.hb.y + i.yVelocity * elapsed;
+        float minX = (phase == 4) ? x - SIZE_SCALED / 4f : this.minX + PopperItem.SIZE / 2f;
+        float maxX = (phase == 4) ? x + SIZE_SCALED / 4f : this.maxX - PopperItem.SIZE / 2f;
+        float minY = (phase == 4) ? y - SIZE_SCALED / 4f : this.minY + PopperItem.SIZE / 2f;
+        float maxY = (phase == 4) ? y + SIZE_SCALED / 4f : this.maxY - PopperItem.SIZE / 2f;
+        float nextX = i.hb.cX + i.xVelocity * elapsed;
+        float nextY = i.hb.cY + i.yVelocity * elapsed;
         if (nextX <= minX) {
             nextX = minX;
             i.xVelocity *= -1;
@@ -309,7 +393,7 @@ public class SlimePopper extends AbstractMinigame {
             i.yVelocity *= -1;
             if (i.type == PopperItem.TYPE.LOUSE) i.yVelocity += MathUtils.random(-20f, 20f);
         }
-        i.hb.move(nextX + PopperItem.SIZE / 2f, nextY + PopperItem.SIZE / 2f);
+        i.hb.move(nextX, nextY);
         i.update(elapsed);
     }
 
@@ -331,10 +415,7 @@ public class SlimePopper extends AbstractMinigame {
     }
 
     private boolean near(PopperItem a, PopperItem b) {
-        float dx = a.hb.cX - b.hb.cX;
-        float dy = a.hb.cY - b.hb.cY;
-        double dist = Math.sqrt(dx * dx + dy * dy);
-        return dist < 20;
+        return a.hb.intersects(b.hb);
     }
 
     private void collisionDetect() {
@@ -342,28 +423,40 @@ public class SlimePopper extends AbstractMinigame {
             if (item.isDead) popCount += 1;
             return item.isDead;
         });
-        items.stream().filter(item -> item.type == PopperItem.TYPE.SLIME && !item.isDying)
+        items.stream()
+                .filter(item -> item.type == PopperItem.TYPE.SLIME && !item.isDying)
                 .forEach(slime -> {
-                    if (louse1 != null && near(louse1, slime)) {
-                        slime.isDying = true;
-                        slime.setAnimation("slimeDie");
-                        louse1.xVelocity = louse1.xVelocity * 0.8f + MathUtils.random(-20f, 20f);
-                        louse1.yVelocity = louse1.yVelocity * 0.8f + MathUtils.random(-20f, 20f);
-                        CardCrawlGame.sound.play("MONSTER_SLIME_ATTACK");
-                    } else if (louse2 != null && near(louse2, slime)) {
-                        slime.isDying = true;
-                        slime.setAnimation("slimeDie");
-                        louse2.xVelocity = louse2.xVelocity * 0.8f + MathUtils.random(-20f, 20f);
-                        louse2.yVelocity = louse2.yVelocity * 0.8f + MathUtils.random(-20f, 20f);
-                        CardCrawlGame.sound.play("MONSTER_SLIME_ATTACK");
-                    } else if (louse3 != null && near(louse3, slime)) {
-                        slime.isDying = true;
-                        slime.setAnimation("slimeDie");
-                        CardCrawlGame.sound.play("MONSTER_SLIME_ATTACK");
-                    }
+                    Stream.of(louse1, louse2, louse3)
+                            .forEachOrdered(louse -> {
+                                if (louse != null && near(louse, slime)) {
+                                    slime.startDeath();
+                                    if (louse.friction) {
+                                        louse.xVelocity = louse.xVelocity * 0.8f + MathUtils.random(-30f, 30f);
+                                        louse.yVelocity = louse.yVelocity * 0.8f + MathUtils.random(-30f, 30f);
+                                    }
+                                }
+                            });
                 });
     }
 
-    public AbstractMinigame makeCopy(){ return new SlimePopper(); }
+    private void collisionDetectBoss() {
+        items.removeIf(item -> {
+            if (item.isDead) popCount += 1;
+            return item.isDead;
+        });
+        items.stream()
+                .filter(item -> item.type == PopperItem.TYPE.BOSS && !item.isDying)
+                .map(item -> ((PopperBoss)item))
+                .forEach(boss -> {
+                        if (louse3 != null && louse3.isDying && near(louse3, boss)) {
+                            boss.dealDamage(louse3);
+                            louse3.isDying = false;
+                        }
+                    });
+    }
+
+    public AbstractMinigame makeCopy() {
+        return new SlimePopper();
+    }
 
 }
