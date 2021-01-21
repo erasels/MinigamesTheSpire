@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
@@ -34,7 +33,7 @@ public class PopperMed extends PopperItem {
     }
 
     public void dealDamage(PopperItem louse) {
-        CardCrawlGame.sound.play("MONSTER_SLIME_ATTACK");
+        SlimePopper.playSlimeSoundRegulated();
         float xDist = Math.abs(hb.cX - louse.hb.cX);
         float a = 1f - MathUtils.clamp((xDist * 2f) / hb.width, 0f, 1f);
         int damage = MathUtils.round(Interpolation.pow2Out.apply(5, 25, a));

@@ -42,6 +42,7 @@ public class SlimePopper extends AbstractMinigame {
     public static final String ASSET_PATH = "minigamesResources/img/games/slimePopper/sprites.atlas";
     public static final String BACKGROUND_PATH = "minigamesResources/img/games/slimePopper/background.png";
     public static final AssetManager assetManager = new AssetManager();
+    private static final float SLIMED_ATK_LENGTH = 1.64f;
     public static TextureAtlas atlas;
     private static Texture background;
 
@@ -430,8 +431,13 @@ public class SlimePopper extends AbstractMinigame {
                 time += elapsed;
                 break;
         }
+        if(endClicked) {
+            isDone = true;
+        }
+        slimeSoundtimer -= elapsed;
     }
 
+    private boolean endClicked = false;
     private void handleClick(Vector2 clickPos) {
         if (phase == 1) {
             float factor = Interpolation.pow2In.apply(1 - 2f * Math.abs(meterPercent - 0.5f));
@@ -463,15 +469,17 @@ public class SlimePopper extends AbstractMinigame {
                 shootLouse.isDying = true;
             }
         } else if (phase == 99) {
-            isDone = true;
-            AbstractRoom room = AbstractDungeon.getCurrRoom();
-            room.rewards.clear();
-            room.addGoldToRewards(bowlingPopped * GOLD_MULTIPLIER);
-            if (lineupPopped >= POTION_GOAL) {
-                room.addPotionToRewards(rewardPotion);
-            }
-            if (bossPopped >= 7) {
-                room.addRelicToRewards(rewardRelic);
+            if(!endClicked) {
+                endClicked = true;
+                AbstractRoom room = AbstractDungeon.getCurrRoom();
+                room.rewards.clear();
+                room.addGoldToRewards(bowlingPopped * GOLD_MULTIPLIER);
+                if (lineupPopped >= POTION_GOAL) {
+                    room.addPotionToRewards(rewardPotion);
+                }
+                if (bossPopped >= 7) {
+                    room.addRelicToRewards(rewardRelic);
+                }
             }
         }
     }
@@ -693,6 +701,16 @@ public class SlimePopper extends AbstractMinigame {
                         shootLouse.isDying = false;
                     }
                 });
+    }
+
+    private static float slimeSoundtimer = 0;
+    public static void playSlimeSoundRegulated() {
+        if(slimeSoundtimer <= 0) {
+            slimeSoundtimer = SLIMED_ATK_LENGTH;
+            CardCrawlGame.sound.play("MONSTER_SLIME_ATTACK");
+        } else {
+            slimeSoundtimer /= 2f;
+        }
     }
 
     public AbstractMinigame makeCopy() {

@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 
@@ -48,7 +46,7 @@ public class PopperItem {
     public void startDeath() {
         isDying = true;
         setAnimation("slimeDie");
-        CardCrawlGame.sound.play("MONSTER_SLIME_ATTACK");
+        SlimePopper.playSlimeSoundRegulated();
     }
 
     protected float DEATH_TIME = 0.1f * 7;
