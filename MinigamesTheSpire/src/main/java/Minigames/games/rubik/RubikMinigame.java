@@ -67,10 +67,10 @@ public class RubikMinigame extends AbstractMinigame
                 timer = 150f;
                 break;
             case 2:
-                time = 120f;
+                timer = 120f;
                 break;
             default:
-                time = 90f;
+                timer = 90f;
                 break;
         }
         startTimer = timer;
