@@ -1,11 +1,10 @@
 package Minigames.games.slimePopper;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
@@ -58,8 +57,8 @@ public class PopperItem {
         frame = animation.getKeyFrame(animTime, true);
         hb.update();
         if (friction) {
-            xVelocity = MathUtils.lerp(xVelocity, 0f, elapsed / 1.3f);
-            yVelocity = MathUtils.lerp(yVelocity, 0f, elapsed / 1.3f);
+            xVelocity = Interpolation.linear.apply(xVelocity, 0f, elapsed / 1.3f);
+            yVelocity = Interpolation.linear.apply(yVelocity, 0f, elapsed / 1.3f);
         }
         if (isDying && animTime > DEATH_TIME) {
             isDead = true;

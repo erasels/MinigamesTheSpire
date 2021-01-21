@@ -4,11 +4,9 @@ import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -273,7 +271,7 @@ public class SlimePopper extends AbstractMinigame {
             }
             yOff -= spacer * 2;
             if (tickUpGold < bowlingPopped * GOLD_MULTIPLIER - 3) {
-                tickUpGold = MathUtils.lerp(tickUpGold, bowlingPopped * GOLD_MULTIPLIER, time * 3f);
+                tickUpGold = Interpolation.linear.apply(tickUpGold, bowlingPopped * GOLD_MULTIPLIER, time * 3f);
                 time = 0f;
             } else {
                 tickUpGold = bowlingPopped * GOLD_MULTIPLIER;
