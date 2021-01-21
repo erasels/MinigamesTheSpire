@@ -4,7 +4,11 @@
       "POWER_UP": "Power Up!!",
       "AIM": "Aim!",
       "GAME_OVER": "Game Over",
+      "YOU_WIN": "You Win!",
       "SCORE": "Final Score: %d",
+      "GOLD": "Earned %d gold",
+      "POTION": "Won a potion",
+      "RELIC": "Grand Prize - %s",
       "COUNTER": "Popped %d Slimes"
     }
   },

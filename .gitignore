@@ -81,6 +81,8 @@ $RECYCLE.BIN/
 .idea/workspace.xml
 .idea/workspace.xml
 
-#Sts
 MinigamesTheSpire/pom.xml
 MinigamesTheSpire/dependency-reduced-pom.xml
+
+# Sprites
+MinigamesTheSpire/productionAssets/
