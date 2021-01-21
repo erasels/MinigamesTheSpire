@@ -1,5 +1,8 @@
 package Minigames.games.slimePopper;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,6 +24,7 @@ public class PopperItem {
     public float xVelocity = 0f;
     public float yVelocity = 0f;
     public boolean friction = false;
+    public boolean isPreview = false;
 
     private float animTime = 0f;
 
@@ -54,20 +58,25 @@ public class PopperItem {
         frame = animation.getKeyFrame(animTime, true);
         hb.update();
         if (friction) {
-            xVelocity = MathUtils.lerp(xVelocity, 0f, animTime / 500f);
-            yVelocity = MathUtils.lerp(yVelocity, 0f, animTime / 500f);
+            xVelocity = MathUtils.lerp(xVelocity, 0f, elapsed / 1.3f);
+            yVelocity = MathUtils.lerp(yVelocity, 0f, elapsed / 1.3f);
         }
         if (isDying && animTime > DEATH_TIME) {
             isDead = true;
         }
     }
 
+    private static final Color halfTrans = new Color(0xffffff77);
     public void render(SpriteBatch sb) {
+        sb.setColor(Color.WHITE);
+        if (isPreview) {
+            sb.setColor(halfTrans);
+        }
         float w = hb.width;
         float h = hb.height;
         float w2 = w / 2f;
         float h2 = h / 2f;
-        sb.draw(frame, hb.cX - w2, hb.cY - h2, -(hb.cX - w2), -(hb.cY - h2), w, h, Settings.scale, Settings.scale, 0f);
+        sb.draw(frame, hb.x, hb.y, hb.width, hb.height);
     }
 
     public enum TYPE {

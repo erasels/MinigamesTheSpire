@@ -12,18 +12,18 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 
-public class PopperBoss extends PopperItem {
-    public static final float SIZE = 128f * Settings.scale;
+public class PopperMed extends PopperItem {
+    public static final float SIZE = 64f * Settings.scale;
 
-    public int maxHp = AbstractDungeon.ascensionLevel >= 15 ? 700 : 500;
+    public int maxHp = AbstractDungeon.ascensionLevel >= 15 ? 350 : 250;
     public int hp = maxHp;
 
     private final TextureRegion hpRegion;
 
-    public PopperBoss() {
-        super(TYPE.BOSS, "bossIdle");
+    public PopperMed() {
+        super(TYPE.MED, "medSlimeIdle");
         hb = new Hitbox(SIZE, SIZE);
-        DEATH_TIME = 0.1f * 7;
+        DEATH_TIME = 0.1f * 4;
 
         Pixmap pm = new Pixmap(1, 1, Pixmap.Format.RGB888);
         pm.setColor(0xffffffff);
@@ -47,7 +47,7 @@ public class PopperBoss extends PopperItem {
     @Override
     public void startDeath() {
         isDying = true;
-        setAnimation("bossSplit");
+        setAnimation("medSplit");
     }
 
     @Override
