@@ -302,10 +302,10 @@ public abstract class AbstractMinigame implements TextReceiver {
     }
 
     //This is for a future update of TextReceiver.
+    @Override
     public boolean isDone() {
         if (CardCrawlGame.isPopupOpen || AbstractDungeon.screen != AbstractDungeon.CurrentScreen.NONE || isDone || !CardCrawlGame.isInARun()) {
             blockingInput = false;
-            TextInput.stopTextReceiver(this);
             if (Input.processor.inactiveBindings == null) {
                 if (isDone)
                 {
