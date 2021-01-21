@@ -10,7 +10,7 @@ import com.megacrit.cardcrawl.helpers.Hitbox;
 
 import java.util.HashMap;
 
-public class PopperItem {
+public abstract class PopperItem implements Comparable<PopperItem> {
     public TYPE type;
     public Hitbox hb;
     public static final float SIZE = 32f * Settings.scale;
@@ -29,6 +29,8 @@ public class PopperItem {
     private Animation<TextureRegion> animation;
     TextureRegion frame;
 
+    protected int priority = 5;
+
     public PopperItem(TYPE type, String animationName) {
         this.type = type;
         hb = new Hitbox(SIZE, SIZE);
@@ -43,11 +45,7 @@ public class PopperItem {
         animTime = 0;
     }
 
-    public void startDeath() {
-        isDying = true;
-        setAnimation("slimeDie");
-        SlimePopper.playSlimeSoundRegulated();
-    }
+    public abstract void startDeath();
 
     protected float DEATH_TIME = 0.1f * 7;
     public void update(float elapsed) {
@@ -81,5 +79,10 @@ public class PopperItem {
         SLIME,
         BOSS,
         MED
+    }
+
+    @Override
+    public int compareTo(PopperItem o) {
+        return priority - o.priority;
     }
 }
