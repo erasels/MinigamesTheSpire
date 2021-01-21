@@ -8,6 +8,7 @@
       "SCORE": "Final Score: %d",
       "GOLD": "Earned %d gold",
       "POTION": "Won a potion",
+      "NO_POTION": "Didn't win a potion",
       "RELIC": "Grand Prize - %s",
       "COUNTER": "Popped %d Slimes"
     }
