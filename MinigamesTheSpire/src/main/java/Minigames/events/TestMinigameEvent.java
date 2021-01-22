@@ -28,7 +28,7 @@ public class TestMinigameEvent extends AbstractMinigameEvent {
     public void endOfEvent() {
         super.endOfEvent();
         this.imageEventText.loadImage("images/events/ballAndCup.jpg"); //in case one of the minigames change the image
-        this.imageEventText.updateBodyText(DESCRIPTIONS[1]);
+        this.imageEventText.updateBodyText(DESCRIPTIONS[0]);
         this.imageEventText.setDialogOption(OPTIONS[0]);
     }
 }
