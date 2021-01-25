@@ -4,11 +4,9 @@ import Minigames.Minigames;
 import Minigames.games.AbstractMinigame;
 import Minigames.games.input.bindings.BindingGroup;
 import Minigames.games.input.bindings.InputBinding;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,7 +26,6 @@ import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.PotionHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
-import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
@@ -50,7 +47,9 @@ public class JellyDropGame extends AbstractMinigame {
 	ArrayList<Jelly> jelliesNext;
 	float rot;
 
-	int waitFrames = 75;
+	int waitFrames;
+
+	static final int timeLimit = 90;
 	static final float xSpeed = 0.2f;
 	static final float ySpeed = -0.07f;
 	static final float rotSpeed = 0.05f;
@@ -60,11 +59,12 @@ public class JellyDropGame extends AbstractMinigame {
 	static final float wallRight = 9.0f;
 	static final float radius = 1.3f;
 
+	static final int GOLD_GAIN = 25;
+
 	public static String filename = "JellyDropData";
 	public static Color titleColor = new Color(0.90f, 0.80f, 0.60f, 1.0f);
 	public static Color numColor = new Color(0.68f, 0.85f, 0.90f, 1.0f);
 	public static Color finishColor = new Color(1.0f, 0.5f, 1.0f, 1.0f);
-	public static Color otherColor = Color.CHARTREUSE;
 
 	public static Texture[] textures;
 	BitmapFont font = FontHelper.SCP_cardTitleFont_small;
@@ -77,14 +77,17 @@ public class JellyDropGame extends AbstractMinigame {
 	int displayScore;
 	int hiscore = 0;
 	int scoreAdd;
+	int jellyPopped;
 	int scoreFrames;
 	int finishFrames;
 	int prevScoreAdd;
+	int prevMultiplier;
 	int count;
 	boolean gameOver;
+	int noCheckExplosionFrames;
 
 	private float accumulator = 0;
-	int frames = 0;
+	int frames;
 	int timeLeft;
 	float timeScale;
 	Color timeColor;
@@ -114,6 +117,7 @@ public class JellyDropGame extends AbstractMinigame {
 		score = 0;
 		displayScore = 0;
 		scoreAdd = 0;
+		jellyPopped = 0;
 		scoreFrames = 0;
 		prevScoreAdd = 0;
 		count = 0;
@@ -173,9 +177,12 @@ public class JellyDropGame extends AbstractMinigame {
 		super.initialize();
 		background = new Texture(Minigames.makeGamePath("JellyDrop/background.png"));
 		finishFrames = 0;
-		timeLeft = 80;
+		timeLeft = timeLimit;
 		timeScale = 1;
 		timeColor = Color.WHITE.cpy();
+		waitFrames = 90;
+		frames = -waitFrames;
+		noCheckExplosionFrames = 0;
 	}
 
 	private boolean collideWithOtherJellies(Jelly j) {
@@ -234,9 +241,10 @@ public class JellyDropGame extends AbstractMinigame {
 						if (j.explosionCounter < 0) {
 							j.explode();
 							scoreAdd++;
+							jellyPopped++;
 							scoreFrames = 135;
 							if (!soundPlayed) {
-								CardCrawlGame.sound.play("SLIME_BLINK_" + MathUtils.random(1, 4));
+								CardCrawlGame.sound.playAV("SLIME_BLINK_" + MathUtils.random(2, 3), 0.5f, 2.0f);
 								soundPlayed = true;
 							}
 						}
@@ -252,6 +260,7 @@ public class JellyDropGame extends AbstractMinigame {
 							if (j2.explosionCounter >= 0 && j1.color == j2.color) {
 								j1.explode();
 								scoreAdd++;
+								jellyPopped++;
 								scoreFrames = 135;
 								if (!soundPlayed) {
 									CardCrawlGame.sound.play("SLIME_BLINK_" + MathUtils.random(1, 4));
@@ -267,7 +276,15 @@ public class JellyDropGame extends AbstractMinigame {
 
 	@Override
 	public void update(float elapsed) {
+		float prevScale = scale;
 		super.update(elapsed);
+		if (prevScale != scale && scale != 0) {
+			camera.viewportWidth = 40.0f * Settings.WIDTH / SIZE / scale;
+			camera.viewportHeight = 40.0f * Settings.HEIGHT / SIZE / scale;
+			camera.update();
+			psb.setProjectionMatrix(camera.combined);
+		}
+
 		float frameTime = Math.min(elapsed, 0.25f);
 		accumulator += frameTime;
 		while (accumulator >= TIME_STEP) {
@@ -276,7 +293,7 @@ public class JellyDropGame extends AbstractMinigame {
 					int[] size = new int[3];
 					for (int i = 0; i < 3; i++) {
 						size[i] = 1;
-						if (MathUtils.random(0, 119 - 20 * AbstractDungeon.actNum) < count) {
+						if (MathUtils.random(0, timeLimit * 2 - 1) < timeLimit - timeLeft) {
 							size[i]++;
 						}
 					}
@@ -301,6 +318,7 @@ public class JellyDropGame extends AbstractMinigame {
 			if (jelliesControl.isEmpty()) {
 				if (!gameOver) {
 					waitFrames--;
+					noCheckExplosionFrames--;
 					if (waitFrames <= 0) {
 						ArrayList<Jelly> temp = jelliesControl;
 						jelliesControl = jelliesNext;
@@ -317,7 +335,7 @@ public class JellyDropGame extends AbstractMinigame {
 				}
 			} else {
 				float dx = 0;
-				float dy = ySpeed - count * (0.001f * AbstractDungeon.actNum);
+				float dy = ySpeed - count * 0.002f;
 
 				if (directionRight) {
 					dx += xSpeed;
@@ -382,8 +400,10 @@ public class JellyDropGame extends AbstractMinigame {
 					for (Jelly j : jelliesControl) {
 						j.lockIn();
 					}
+					float y = jelliesControl.get(1).centerBody.getPosition().y;
 					jelliesControl.clear();
-					waitFrames = 35;
+					waitFrames = 25 + (int) (y / 2);
+					noCheckExplosionFrames = 15;
 				} else {
 					Vector2 prevPos = jelliesControl.get(1).centerBody.getPosition();
 
@@ -398,13 +418,15 @@ public class JellyDropGame extends AbstractMinigame {
 			}
 			world.step(TIME_STEP, 2, 2);
 
-			checkExplosion(waitFrames < 20);
+			checkExplosion(noCheckExplosionFrames <= 0);
 			if (scoreFrames > 0) {
 				scoreFrames--;
 				if (scoreAdd > 0 && scoreFrames == 60) {
-					score += scoreAdd * getMultiplier(scoreAdd);
+					prevMultiplier = getMultiplier(jellyPopped);
+					score += scoreAdd * prevMultiplier;
 					prevScoreAdd = scoreAdd;
 					scoreAdd = 0;
+					jellyPopped = 0;
 				}
 			}
 
@@ -436,7 +458,7 @@ public class JellyDropGame extends AbstractMinigame {
 
 			if (!gameOver) {
 				int prev = timeLeft;
-				timeLeft = 80 - (frames / 60);
+				timeLeft = timeLimit - (frames > 0 ? frames / 60 : 0);
 				if (timeLeft <= 5) {
 					if (prev > 5) {
 						timeColor = Color.RED.cpy();
@@ -503,11 +525,20 @@ public class JellyDropGame extends AbstractMinigame {
 	public void render(SpriteBatch sb) {
 		super.render(sb);
 		sb.end();
+
+		int halfSize = (int) (SIZE * scale / 2 + 0.99f);
+		Gdx.gl.glScissor(Settings.WIDTH / 2 - halfSize, Settings.HEIGHT / 2 - halfSize, halfSize * 2, halfSize * 2);
+		if (!gameOver) {
+			Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
+		}
 		psb.begin();
 		for (Jelly j : jellies) {
 			j.spriteRender(psb);
 		}
 		psb.end();
+		if (!gameOver) {
+			Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
+		}
 
 		sb.begin();
 		FontHelper.renderFontLeft(sb, font, uiStrings.TEXT_DICT.get("HISCORE"),
@@ -530,7 +561,7 @@ public class JellyDropGame extends AbstractMinigame {
 
 		if (scoreFrames > 0) {
 			FontHelper.renderFontRightAligned(sb, font,
-					scoreAdd > 0 ? scoreAdd + "X" + getMultiplier(scoreAdd) : prevScoreAdd + "X" + getMultiplier(prevScoreAdd),
+					scoreAdd > 0 ? scoreAdd + "X" + getMultiplier(jellyPopped) : prevScoreAdd + "X" + prevMultiplier,
 					Settings.WIDTH / 2.0f + 700.0f * Settings.scale,
 					Settings.HEIGHT / 2.0f + (scoreAdd > 0 ? 40.0f : 110.0f - scoreFrames) * Settings.scale,
 					numColor);
@@ -557,7 +588,7 @@ public class JellyDropGame extends AbstractMinigame {
 				case 0:
 				case 2:
 				case 4:
-					msg += (i / 2 + 1) * (5 + 5 * AbstractDungeon.actNum) + uiStrings.TEXT_DICT.get("GOLD");
+					msg += GOLD_GAIN + uiStrings.TEXT_DICT.get("GOLD");
 					break;
 				case 1:
 					msg += uiStrings.TEXT_DICT.get("POTION");
@@ -641,8 +672,8 @@ public class JellyDropGame extends AbstractMinigame {
 	public boolean postgameButtonPressed(int buttonIndex, GenericEventDialog event) {
 		if (score >= 50) {
 			AbstractDungeon.getCurrRoom().rewards.clear();
-			int multiplier = score >= 250 ? 6 : score >= 150 ? 3 : 1;
-			AbstractDungeon.getCurrRoom().addGoldToRewards((5 + 5 * AbstractDungeon.actNum) * multiplier);
+			int multiplier = score >= 250 ? 3 : score >= 150 ? 2 : 1;
+			AbstractDungeon.getCurrRoom().addGoldToRewards(GOLD_GAIN * multiplier);
 			if (score >= 100) {
 				RewardItem reward = new RewardItem(PotionHelper.getRandomPotion());
 				AbstractDungeon.getCurrRoom().rewards.add(reward);
@@ -652,16 +683,7 @@ public class JellyDropGame extends AbstractMinigame {
 				AbstractDungeon.getCurrRoom().rewards.add(reward);
 			}
 			if (score >= 300) {
-				AbstractRelic.RelicTier tier;
-				if (AbstractDungeon.actNum == 1) {
-					tier = AbstractRelic.RelicTier.COMMON;
-				} else if (AbstractDungeon.actNum == 2) {
-					tier = AbstractRelic.RelicTier.UNCOMMON;
-				} else {
-					tier = AbstractRelic.RelicTier.RARE;
-				}
-				AbstractRelic r = AbstractDungeon.returnRandomScreenlessRelic(tier);
-				AbstractDungeon.getCurrRoom().addRelicToRewards(r);
+				AbstractDungeon.getCurrRoom().addRelicToRewards(AbstractDungeon.returnRandomScreenlessRelic(AbstractDungeon.returnRandomRelicTier()));
 			}
 			AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
 			AbstractDungeon.combatRewardScreen.open();
