@@ -93,11 +93,11 @@
       "[Start] Ready?",
       "[Finish]",
       "[Ouch] #rLose #r1 #rHP.",
-      "[Renewed] #gHeal #g",
+      "[Renewed] #gMax #gHP #g+5. #gHeal #g5 #gHP.",
       "[Perfection] #gMax #gHP #g+",
-      " #gHP.",
+      ". #gHeal #gto #gfull #gHP.",
       ". #gHeal #g",
-      ". #gHeal #gto #gfull #gHP."
+      " #gHP."
     ]
   },
   "${ModID}:MastermindMinigame": {
