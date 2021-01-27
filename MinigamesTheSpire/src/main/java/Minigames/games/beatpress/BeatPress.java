@@ -168,19 +168,10 @@ public class BeatPress extends AbstractMinigame {
                 }
                 break;
             case NOT_BAD:
-                switch (AbstractDungeon.actNum) {
-                    case 1:
-                        heal = 10;
-                        break;
-                    case 2:
-                        heal = 15;
-                        break;
-                    default:
-                        heal = 20;
-                        break;
-                }
+                heal = 5;
+                maxhp = 5;
                 event.updateBodyText(DESCRIPTIONS[3]);
-                event.setDialogOption(OPTIONS[4] + heal + OPTIONS[6]);
+                event.setDialogOption(OPTIONS[4]);
                 break;
             case PERFECT:
                 event.updateBodyText(DESCRIPTIONS[4]);
@@ -189,10 +180,10 @@ public class BeatPress extends AbstractMinigame {
                 switch (AbstractDungeon.actNum) {
                     case 1:
                     case 2:
-                        event.setDialogOption(OPTIONS[5] + maxhp + OPTIONS[7] + heal + OPTIONS[6]);
+                        event.setDialogOption(OPTIONS[5] + maxhp + OPTIONS[7] + heal + OPTIONS[8]);
                         break;
                     default:
-                        event.setDialogOption(OPTIONS[5] + maxhp + OPTIONS[8]);
+                        event.setDialogOption(OPTIONS[5] + maxhp + OPTIONS[6]);
                         break;
                 }
                 break;
@@ -204,11 +195,11 @@ public class BeatPress extends AbstractMinigame {
         switch (finalRating) {
             case OUCH:
                 if (AbstractDungeon.actNum > 2) {
-                    AbstractDungeon.player.damage(new DamageInfo((AbstractCreature)null, 1, DamageInfo.DamageType.HP_LOSS));
+                    AbstractDungeon.player.damage(new DamageInfo(null, 1, DamageInfo.DamageType.HP_LOSS));
                 }
                 break;
             case NOT_BAD:
-                //heal
+                AbstractDungeon.player.increaseMaxHp(maxhp, true);
                 AbstractDungeon.player.heal(heal);
                 break;
             case PERFECT:
