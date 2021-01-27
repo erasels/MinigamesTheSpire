@@ -175,7 +175,7 @@ public class BeatPress extends AbstractMinigame {
                 break;
             case PERFECT:
                 event.updateBodyText(DESCRIPTIONS[4]);
-                maxhp = AbstractDungeon.actNum * 5;
+                maxhp = 5 + (AbstractDungeon.actNum * 5);
                 heal = 5 + AbstractDungeon.actNum * 10; //only used in act 1 or 2.
                 switch (AbstractDungeon.actNum) {
                     case 1:
