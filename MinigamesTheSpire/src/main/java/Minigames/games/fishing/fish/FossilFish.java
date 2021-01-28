@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FossilFish extends AbstractFish{
-    public static final float MAX_HP = 0.4f;
+    public static final float MAX_HP = 0.375f;
     private static final ArrayList<Vector2> BEHAVIORS = new ArrayList<>(Arrays.asList(
             new Vector2(2.5f, 0.5f),
             new Vector2(1f, 0.6f),

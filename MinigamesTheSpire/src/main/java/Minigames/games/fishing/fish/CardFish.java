@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CardFish extends AbstractFish{
-    public static final float MAX_HP = 0.33f;
+    public static final float MAX_HP = 0.3f;
     private static final ArrayList<Vector2> BEHAVIORS = new ArrayList<>(Arrays.asList(
             new Vector2(4f, 1f),
             new Vector2(4f, 0f),
@@ -29,7 +29,9 @@ public class CardFish extends AbstractFish{
 
     @Override
     public ArrayList<RewardItem> returnReward() {
-        return new ArrayList<>(Arrays.asList(new RewardItem(AbstractDungeon.player.getCardColor())));
+        return new ArrayList<>(Arrays.asList(new RewardItem(AbstractDungeon.player.getCardColor()),
+                new RewardItem(AbstractDungeon.player.getCardColor()),
+                new RewardItem(AbstractDungeon.player.getCardColor())));
     }
 
     @Override

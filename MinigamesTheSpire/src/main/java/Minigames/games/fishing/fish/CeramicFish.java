@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CeramicFish extends AbstractFish{
-    public static final float MAX_HP = 0.55f;
+    public static final float MAX_HP = 0.45f;
     private static final ArrayList<Vector2> BEHAVIORS = new ArrayList<>(Arrays.asList(
             new Vector2(5f, 0.3f),
             new Vector2(3f, 1f),

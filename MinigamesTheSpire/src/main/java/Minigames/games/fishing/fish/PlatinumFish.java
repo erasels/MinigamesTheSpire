@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PlatinumFish extends AbstractFish{
-    public static final float MAX_HP = 0.6f;
+    public static final float MAX_HP = 0.55f;
     private static final ArrayList<Vector2> BEHAVIORS = new ArrayList<>(Arrays.asList(
             new Vector2(3f, 1f),
             new Vector2(4f, 0f),
@@ -29,7 +29,7 @@ public class PlatinumFish extends AbstractFish{
 
     @Override
     public ArrayList<RewardItem> returnReward() {
-        return new ArrayList<>(Arrays.asList(new RewardItem(160)));
+        return new ArrayList<>(Arrays.asList(new RewardItem(230)));
     }
 
     @Override

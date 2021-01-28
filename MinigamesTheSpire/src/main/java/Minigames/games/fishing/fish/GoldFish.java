@@ -28,7 +28,7 @@ public class GoldFish extends AbstractFish{
 
     @Override
     public ArrayList<RewardItem> returnReward() {
-        return new ArrayList<>(Arrays.asList(new RewardItem(60)));
+        return new ArrayList<>(Arrays.asList(new RewardItem(80)));
     }
 
     @Override

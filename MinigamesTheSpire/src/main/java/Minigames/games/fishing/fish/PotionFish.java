@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PotionFish extends AbstractFish{
-    public static final float MAX_HP = 0.6f;
+    public static final float MAX_HP = 0.45f;
     private static final ArrayList<Vector2> BEHAVIORS = new ArrayList<>(Arrays.asList(
             new Vector2(10f, 1f),
             new Vector2(1.5f, 0.7f),
@@ -30,7 +30,8 @@ public class PotionFish extends AbstractFish{
 
     @Override
     public ArrayList<RewardItem> returnReward() {
-        return new ArrayList<>(Arrays.asList(new RewardItem(AbstractDungeon.returnRandomPotion())));
+        return new ArrayList<>(Arrays.asList(new RewardItem(AbstractDungeon.returnRandomPotion()),
+                new RewardItem(AbstractDungeon.returnRandomPotion())));
     }
 
     @Override
