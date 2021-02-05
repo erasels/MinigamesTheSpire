@@ -101,7 +101,7 @@
   "${ModID}:MastermindMinigame": {
     "NAME": "Mastermind",
     "DESCRIPTIONS": [
-      "The goal of Mastermind is to crack the secret code consisting of 4 icons with 6 possible symbols. NL NL You have 8 guesses and after each guess you get hints about the code: black hints mean that icons have the correct symbols and are in the correct places, while white hints mean that icons have the correct symbols, but are in incorrect places. NL NL Good luck!",
+      "The goal of Mastermind is to crack the secret code consisting of 4 icons with 6 possible symbols. NL NL You have 8 guesses and after each guess you get hints about the code: black hints mean that icons have the correct symbols and are in the correct places, while white hints mean that icons have the correct symbols, but are in incorrect places. Positions of hints do not correspond to the code, only the number of black and white hints is important. NL NL Good luck!",
       "Congratulations! NL NL After cracking the code, the secret stash opens and you find a treasure of great value inside it.",
       "Too bad... NL NL Better luck next time!"
     ],
