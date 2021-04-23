@@ -26,6 +26,7 @@ import basemod.interfaces.PostUpdateSubscriber;
 import basemod.patches.com.megacrit.cardcrawl.characters.AbstractPlayer.SeenEvents;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.dungeons.Exordium;
 import com.megacrit.cardcrawl.dungeons.TheBeyond;
@@ -122,6 +123,9 @@ public class Minigames implements
     }
 
     private static String locPath() {
+        if(Settings.language == Settings.GameLanguage.RUS) {
+            return "rus";
+        }
         return "eng";
     }
 
