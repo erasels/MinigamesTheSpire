@@ -2,7 +2,7 @@
   "${ModID}:SlimePopper": {
     "TEXT_DICT": {
       "POWER_UP": "Power Up!!",
-      "AIM": "Aim!",
+      "AIM": "Aim with mouse, click to fire",
       "GAME_OVER": "Game Over",
       "YOU_WIN": "You Win!",
       "SCORE": "Final Score: %d",

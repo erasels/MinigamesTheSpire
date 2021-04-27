@@ -9,14 +9,14 @@
     ]
   },
   "${ModID}:SlimePopper": {
-    "NAME": "[Slime Popper] Play a retro-looking slime themed game.",
+    "NAME": "[Slime Popper] Shoot down falling slimes",
     "DESCRIPTIONS": [
       "Pop as many slimes as you can.",
       "Looks like you win a prize!"
     ],
     "OPTIONS": [
       "[Begin] Let's pop some slimes!",
-      "[Leave] Well, that was...interesting."
+      "[Leave] You collect your winnings and continue on."
     ]
   },
   "${ModID}:ActOneArcade": {
