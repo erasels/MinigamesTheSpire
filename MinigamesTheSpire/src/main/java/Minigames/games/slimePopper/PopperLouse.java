@@ -1,15 +1,6 @@
 package Minigames.games.slimePopper;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.helpers.Hitbox;
-
-import java.util.HashMap;
 
 public class PopperLouse extends PopperItem {
     public boolean isFiring = false;
@@ -24,10 +15,10 @@ public class PopperLouse extends PopperItem {
 
     public void startReset() {
         isFiring = false;
-        isPreview = true;
+        previewTime = 0.1f;
         isResetting = true;
-        resetTimer = 0.15f;
-        float angle = MathUtils.random(360);
+        resetTimer = 0.1f;
+        float angle = MathUtils.random(125f, 315f);
         float mag = MathUtils.random(300f, 400f);
         xVelocity = mag * MathUtils.cosDeg(angle);
         yVelocity = mag * MathUtils.sinDeg(angle);
@@ -35,7 +26,7 @@ public class PopperLouse extends PopperItem {
 
     public void reset() {
         isFiring = false;
-        isPreview = false;
+        previewTime = 0f;
         isResetting = false;
         resetTimer = 0.25f;
         setAnimation("louseIdle");

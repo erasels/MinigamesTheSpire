@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 
@@ -21,7 +22,7 @@ public abstract class PopperItem implements Comparable<PopperItem> {
     public float xVelocity = 0f;
     public float yVelocity = 0f;
     public boolean friction = false;
-    public boolean isPreview = false;
+    public float previewTime = 0f;
 
     private float animTime = 0f;
 
@@ -52,6 +53,11 @@ public abstract class PopperItem implements Comparable<PopperItem> {
         animTime += elapsed;
         frame = animation.getKeyFrame(animTime, true);
         hb.update();
+        if (previewTime > 0f) {
+            previewTime -= elapsed;
+            halfTrans.a = Interpolation.linear.apply(0.01f, 0.9f, previewTime / 0.1f);
+            return;
+        }
         if (friction) {
             xVelocity = Interpolation.linear.apply(xVelocity, 0f, elapsed / 1.3f);
             yVelocity = Interpolation.linear.apply(yVelocity, 0f, elapsed / 1.3f);
@@ -61,10 +67,11 @@ public abstract class PopperItem implements Comparable<PopperItem> {
         }
     }
 
-    private static final Color halfTrans = new Color(0xffffff77);
+    private final Color halfTrans = new Color(0xffffff77);
     public void render(SpriteBatch sb) {
+        Color orig = sb.getColor();
         sb.setColor(Color.WHITE);
-        if (isPreview) {
+        if (previewTime > 0f) {
             sb.setColor(halfTrans);
         }
         float w = hb.width;
@@ -72,13 +79,15 @@ public abstract class PopperItem implements Comparable<PopperItem> {
         float w2 = w / 2f;
         float h2 = h / 2f;
         sb.draw(frame, hb.x, hb.y, hb.width, hb.height);
+        sb.setColor(orig);
     }
 
     public enum TYPE {
         LOUSE,
         SLIME,
         BOSS,
-        MED
+        MED,
+        POTION
     }
 
     @Override
